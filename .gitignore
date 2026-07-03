@@ -1,0 +1,4 @@
+# Publicar SOLO la web (index.html). Ignorar todo lo demás.
+/*
+!.gitignore
+!index.html

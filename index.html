@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiCasaPerfecta | Tienda de productos para el hogar</title>
+    <meta name="description" content="Tienda especializada en productos para el hogar. Fichas técnicas, comparativas, reseñas honestas y las mejores ofertas de Amazon.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #16192c;
+            --ink-70: rgba(22, 25, 44, .7);
+            --ink-50: rgba(22, 25, 44, .5);
+            --cream: #fff8f0;
+            --mint: rgba(203, 242, 211, .5);
+            --mint-solid: #cbf2d3;
+            --lime: rgba(230, 242, 180, .35);
+            --line: rgba(22, 25, 44, .12);
+            --gold: #e8a93b;
+            --serif: 'Crimson Pro', Georgia, serif;
+            --sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            line-height: 1.6;
+            color: var(--ink);
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+        h1, h2, h3, .serif { font-family: var(--serif); font-weight: 300; letter-spacing: -.5px; }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 84px;
+            display: flex; align-items: center; z-index: 1000;
+            background: rgba(255, 255, 255, .82); backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent; transition: border-color .3s;
+        }
+        .navbar.scrolled { border-bottom: 1px solid var(--line); }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .logo { font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -.5px; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; align-items: center; gap: 30px; }
+        .nav-links a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400; opacity: .75; transition: opacity .25s; }
+        .nav-links a:hover { opacity: 1; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            min-height: 54px; padding: 0 30px; border-radius: 40px;
+            font-family: var(--sans); font-size: 16px; font-weight: 500;
+            text-decoration: none; cursor: pointer; border: none; transition: all .25s ease;
+        }
+        .btn-dark { background: var(--ink); color: #fff; }
+        .btn-dark:hover { background: #313660; transform: translateY(-2px); }
+        .btn-light { background: #ebf0f5; color: var(--ink); }
+        .btn-light:hover { background: #dde6ee; }
+        .btn-sm { min-height: 46px; font-size: 15px; padding: 0 24px; }
+        .nav-cta { padding: 0 26px; min-height: 46px; }
+        .btn-block { width: 100%; }
+
+        /* ---------- Hero ---------- */
+        .hero {
+            min-height: 92vh; display: flex; align-items: center; text-align: center;
+            padding: 130px 0 90px; background-color: #fff;
+            background-image:
+                radial-gradient(circle at 15% 30%, var(--lime), transparent 40%),
+                radial-gradient(circle at 85% 70%, var(--mint), transparent 42%);
+        }
+        .pill-badge {
+            display: inline-block; padding: 7px 18px; border-radius: 40px;
+            background: rgba(203, 242, 211, .6); color: #2f6b45;
+            font-size: 13px; font-weight: 500; letter-spacing: .5px; margin-bottom: 28px;
+        }
+        .hero h1 { font-size: clamp(46px, 7vw, 84px); line-height: 1.02; max-width: 820px; margin: 0 auto 26px; }
+        .hero h1 em { font-style: italic; color: #6b7a3f; }
+        .hero p { max-width: 440px; margin: 0 auto 38px; color: var(--ink-70); font-size: 18px; letter-spacing: .3px; }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* ---------- Section base ---------- */
+        .section { padding: 110px 0; }
+        .section-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+        .section-head .eyebrow { display: block; font-size: 14px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-50); margin-bottom: 16px; }
+        .section-head h2 { font-size: clamp(34px, 4.5vw, 52px); line-height: 1.1; }
+        .section-head p { margin-top: 18px; color: var(--ink-70); font-size: 18px; }
+
+        /* ---------- Filter chips ---------- */
+        .filters { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 50px; }
+        .chip {
+            padding: 10px 22px; border-radius: 40px; border: 1px solid var(--line);
+            background: #fff; color: var(--ink); font-family: var(--sans); font-size: 15px;
+            cursor: pointer; transition: all .2s;
+        }
+        .chip:hover { border-color: var(--ink); }
+        .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+        /* ---------- Products ---------- */
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 28px; }
+        .product-card {
+            background: #fff; border: 1px solid var(--line); border-radius: 22px; overflow: hidden;
+            display: flex; flex-direction: column; position: relative;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .product-card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -20px rgba(22, 25, 44, .22); }
+
+        .ribbon {
+            position: absolute; top: 16px; left: 16px; z-index: 2;
+            background: var(--ink); color: #fff; font-size: 12px; font-weight: 600;
+            letter-spacing: .5px; padding: 6px 14px; border-radius: 40px;
+        }
+        .discount-tag {
+            position: absolute; top: 16px; right: 16px; z-index: 2;
+            background: var(--mint-solid); color: #1f5c34; font-size: 13px; font-weight: 600;
+            padding: 6px 12px; border-radius: 40px;
+        }
+
+        .product-image { height: 210px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--cream); }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        .product-image .placeholder {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 74px;
+            background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream);
+        }
+
+        .product-content { padding: 24px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+        .card-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .tag { font-size: 12px; font-weight: 500; padding: 4px 11px; border-radius: 40px; background: rgba(22,25,44,.06); color: var(--ink-70); }
+        .tag.brand { background: rgba(203, 242, 211, .5); color: #2f6b45; }
+        .tag.price-range { letter-spacing: 1px; }
+
+        .product-title { font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.25; letter-spacing: -.3px; margin-bottom: 8px; }
+        .ideal-para { font-size: 14px; color: var(--ink-50); margin-bottom: 14px; }
+        .ideal-para strong { color: var(--ink-70); font-weight: 500; }
+
+        /* rating */
+        .rating { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+        .stars { position: relative; display: inline-block; font-size: 16px; line-height: 1; color: #dcdce0; letter-spacing: 2px; }
+        .stars .fill { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: var(--gold); }
+        .rating .count { font-size: 13px; color: var(--ink-50); }
+
+        /* price */
+        .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
+        .price-now { font-size: 26px; font-weight: 600; font-family: var(--sans); }
+        .price-old { font-size: 16px; color: var(--ink-50); text-decoration: line-through; }
+
+        .card-actions { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+        .link-ficha { background: none; border: none; color: var(--ink); font-family: var(--sans); font-size: 14px; cursor: pointer; opacity: .7; transition: opacity .2s; padding: 4px; }
+        .link-ficha:hover { opacity: 1; }
+        .arrow { transition: transform .25s; display: inline-block; }
+        .product-cta:hover .arrow { transform: translateX(4px); }
+
+        /* ---------- Modal (ficha completa) ---------- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(22, 25, 44, .55); backdrop-filter: blur(4px);
+            z-index: 2000; display: none; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #fff; border-radius: 24px; max-width: 860px; width: 100%;
+            overflow: hidden; position: relative; box-shadow: 0 40px 80px -20px rgba(22,25,44,.4);
+        }
+        .modal-close {
+            position: absolute; top: 18px; right: 18px; z-index: 5; width: 40px; height: 40px; border-radius: 50%;
+            border: none; background: rgba(255,255,255,.9); font-size: 20px; cursor: pointer; color: var(--ink);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: #fff; }
+        .modal-hero { display: grid; grid-template-columns: 1fr 1fr; }
+        .modal-img { min-height: 260px; background: var(--cream); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-img .placeholder { font-size: 90px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
+        .modal-intro { padding: 40px 38px; }
+        .modal-intro h3 { font-size: 32px; line-height: 1.1; margin: 12px 0; }
+        .modal-editorial { font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--ink-70); margin: 16px 0 22px; }
+        .modal-body { padding: 34px 38px 40px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        .block-title { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-50); margin-bottom: 16px; }
+
+        .specs li { list-style: none; display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+        .specs li span:first-child { color: var(--ink-70); }
+        .specs li span:last-child { font-weight: 500; text-align: right; }
+
+        .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
+        .proscons ul { list-style: none; }
+        .proscons li { font-size: 15px; padding: 7px 0 7px 26px; position: relative; color: var(--ink-70); }
+        .pros li::before { content: '✓'; position: absolute; left: 0; color: #2f9e57; font-weight: 700; }
+        .cons li::before { content: '✕'; position: absolute; left: 0; color: #d15b5b; font-weight: 700; }
+        .proscons h5 { font-family: var(--sans); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+
+        .radar-wrap { display: flex; flex-direction: column; align-items: center; }
+        .radar-wrap svg { max-width: 240px; width: 100%; }
+        .radar-wrap svg text { font-family: var(--sans); fill: var(--ink-70); }
+
+        .reviews-box { margin-top: 30px; background: var(--cream); border-radius: 16px; padding: 26px 28px; }
+        .reviews-head { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .reviews-score { font-size: 40px; font-weight: 600; line-height: 1; }
+        .reviews-summary { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-70); }
+        .modal-footer { margin-top: 30px; }
+
+        .disclaimer {
+            margin-top: 56px; max-width: 780px; margin-left: auto; margin-right: auto; text-align: center;
+            background: var(--cream); border: 1px solid var(--line); border-radius: 16px;
+            padding: 22px 28px; font-size: 14px; color: var(--ink-70); line-height: 1.6;
+        }
+
+        /* ---------- Benefits ---------- */
+        .benefits { background: var(--mint); }
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .benefit-item { background: rgba(255, 255, 255, .7); border-radius: 18px; padding: 40px 32px; transition: transform .3s ease; }
+        .benefit-item:hover { transform: translateY(-5px); }
+        .benefit-icon { font-size: 38px; margin-bottom: 20px; display: block; }
+        .benefit-item h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 12px; }
+        .benefit-item p { color: var(--ink-70); font-size: 16px; line-height: 1.55; }
+
+        /* ---------- Newsletter ---------- */
+        .newsletter {
+            text-align: center; padding: 130px 0; background-color: #fff;
+            background-image: radial-gradient(circle at 20% 20%, var(--lime), transparent 45%), radial-gradient(circle at 80% 80%, var(--mint), transparent 45%);
+        }
+        .newsletter h2 { font-size: clamp(38px, 5.5vw, 64px); line-height: 1.05; max-width: 720px; margin: 0 auto 20px; }
+        .newsletter > .container > p { max-width: 460px; margin: 0 auto 40px; color: var(--ink-70); font-size: 18px; }
+        .newsletter-form { display: flex; gap: 12px; max-width: 520px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+        .newsletter-form input { flex: 1; min-width: 240px; padding: 0 24px; height: 54px; border: 1px solid var(--line); border-radius: 40px; font-family: var(--sans); font-size: 16px; background: #fff; outline: none; transition: border-color .25s; }
+        .newsletter-form input:focus { border-color: var(--ink); }
+
+        /* ---------- Footer ---------- */
+        footer { background: var(--ink); color: #fff; padding: 90px 0 40px; }
+        .footer-content { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-brand .logo { color: #fff; margin-bottom: 18px; display: inline-block; }
+        .footer-brand p { color: rgba(255, 255, 255, .6); font-size: 15px; max-width: 300px; line-height: 1.6; }
+        .footer-section h4 { font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: rgba(255, 255, 255, .5); margin-bottom: 18px; }
+        .footer-section a { display: block; color: rgba(255, 255, 255, .8); text-decoration: none; margin-bottom: 12px; font-size: 15px; transition: color .25s; }
+        .footer-section a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, .12); padding-top: 28px; font-size: 14px; color: rgba(255, 255, 255, .5); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .modal-hero { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; gap: 28px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .section { padding: 80px 0; }
+            .container { padding: 0 22px; }
+        }
+        @media (max-width: 560px) {
+            .products-grid, .benefits-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .footer-brand { grid-column: 1 / -1; }
+            .proscons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="#inicio" class="logo">MiCasaPerfecta</a>
+            <div class="nav-links" id="topMenu">
+                <a href="#tienda">Tienda</a>
+                <!-- categorías (showInTopMenu) inyectadas por JS -->
+            </div>
+            <a href="#tienda" class="btn btn-dark nav-cta">Ver tienda</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <span class="pill-badge">✦ Tienda de productos para el hogar</span>
+            <h1>Tu hogar, <em>inteligente</em> y hermoso</h1>
+            <p>Comparamos, probamos y seleccionamos los mejores productos para tu casa. Fichas técnicas completas, reseñas honestas y las mejores ofertas.</p>
+            <div class="hero-actions">
+                <a href="#tienda" class="btn btn-dark">Explorar la tienda</a>
+                <a href="#beneficios" class="btn btn-light">Por qué confiar en nosotros</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tienda -->
+    <section class="section" id="tienda">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Catálogo</span>
+                <h2>Nuestra selección</h2>
+                <p>Filtra por categoría y abre la ficha completa de cada producto: especificaciones, gráfico de rendimiento, pros y contras, y opiniones reales.</p>
+            </div>
+
+            <div class="filters" id="filters"><!-- chips por JS --></div>
+            <div class="products-grid" id="productsGrid"><!-- tarjetas por JS --></div>
+
+            <div class="disclaimer">
+                <strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. Los precios y la disponibilidad pueden variar.
+            </div>
+        </div>
+    </section>
+
+    <!-- Beneficios -->
+    <section class="section benefits" id="beneficios">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Nuestra promesa</span>
+                <h2>¿Por qué comprar con nosotros?</h2>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item"><span class="benefit-icon">✅</span><h3>Fichas honestas</h3><p>Analizamos cada producto con datos técnicos reales antes de recomendarlo.</p></div>
+                <div class="benefit-item"><span class="benefit-icon">⭐</span><h3>Mejores precios</h3><p>Comparamos ofertas para darte la mejor relación calidad-precio del mercado.</p></div>
+                <div class="benefit-item"><span class="benefit-icon">🚚</span><h3>Envío rápido</h3><p>A través de Amazon Prime, recibe tus compras en 24-48 h en zonas disponibles.</p></div>
+                <div class="benefit-item"><span class="benefit-icon">📊</span><h3>Comparativas claras</h3><p>Gráficos de rendimiento y pros/contras para decidir en segundos.</p></div>
+                <div class="benefit-item"><span class="benefit-icon">🔒</span><h3>Compra segura</h3><p>Todos los productos cuentan con la garantía de Amazon. Compra con confianza.</p></div>
+                <div class="benefit-item"><span class="benefit-icon">💬</span><h3>Opiniones reales</h3><p>Resumimos miles de reseñas de clientes para ahorrarte tiempo.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <h2>Recibe las mejores ofertas</h2>
+            <p>Suscríbete para recibir análisis exclusivos, guías de compra y descuentos especiales en tu correo.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <button type="submit" class="btn btn-dark">Suscribirse</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#inicio" class="logo">MiCasaPerfecta</a>
+                    <p>Tu tienda de referencia en productos para el hogar. Te ayudamos a crear espacios hermosos, cómodos y funcionales.</p>
+                </div>
+                <div class="footer-section"><h4>Tienda</h4><a href="#tienda">Catálogo</a><a href="#beneficios">Nosotros</a><a href="#newsletter">Novedades</a><a href="#contacto">Contacto</a></div>
+                <div class="footer-section"><h4>Legal</h4><a href="#">Privacidad</a><a href="#">Términos</a><a href="#">Divulgación de afiliados</a><a href="#">Cookies</a></div>
+                <div class="footer-section"><h4>Síguenos</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">TikTok</a></div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 MiCasaPerfecta. Todos los derechos reservados.</span>
+                <span>Sitio de afiliación con Amazon Associates</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal ficha completa -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+    /* =====================================================================
+       COLECCIÓN "products" — FUENTE ÚNICA DE DATOS (schema)
+       ---------------------------------------------------------------------
+       Este sitio es estático: no hay base de datos. Este array hace de
+       colección `products`. El MISMO schema aplica a los entornos
+       "Datos de prueba" y "Datos en tiempo real" (para producción basta
+       con sustituir los valores de ejemplo por los reales).
+
+       SCHEMA (todos los campos nuevos son opcionales):
+       Conservados : name, description, affiliate_link, isFeatured,
+                     retailPrice, discountedPrice, category, showInTopMenu
+       Eliminados  : image, range
+       Identificación      : image_url, marca, rango_precio (bajo|medio|alto)
+       Especificaciones    : tipo_uso (casa|apartamento|interior/exterior),
+                             tiempo_carga (nº), garantia_años (nº)
+       Scores 0-10 (radar) : score_calidad_precio, score_autonomia, score_potencia
+       Editorial           : ideal_para, pros ("a|b|c"), contras ("a|b"),
+                             destacado_editorial
+       Opiniones           : valoracion_media (decimal), resenas_cantidad (nº),
+                             resenas_resumen (texto largo)
+       ===================================================================== */
+
+    const products = [
+      {
+        name: "Robot Aspirador Inteligente",
+        description: "Limpia tu hogar automáticamente con mapeo por láser y control por app.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_1",
+        isFeatured: true,
+        retailPrice: 299,
+        discountedPrice: 219,
+        category: "Limpieza",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "RoboClean",
+        rango_precio: "medio",
+        tipo_uso: "casa",
+        tiempo_carga: 4,
+        "garantia_años": 2,
+        score_calidad_precio: 9,
+        score_autonomia: 8,
+        score_potencia: 7,
+        ideal_para: "Casas grandes con mascotas",
+        pros: "Mapeo inteligente por láser|Muy silencioso|Vaciado automático|Control por app y voz",
+        contras: "No sube escaleras|La app va lenta a veces",
+        destacado_editorial: "El equilibrio perfecto entre precio y potencia de succión. Nuestro favorito para el día a día.",
+        valoracion_media: 4.5,
+        resenas_cantidad: 2380,
+        resenas_resumen: "Los usuarios destacan lo bien que gestiona el pelo de mascotas y la autonomía. La app recibe alguna crítica por lentitud puntual, pero la limpieza es sobresaliente."
+      },
+      {
+        name: "Cafetera Premium Programable",
+        description: "Despierta con café perfecto cada mañana. Programable y fácil de limpiar.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_2",
+        isFeatured: false,
+        retailPrice: 149,
+        discountedPrice: 119,
+        category: "Cocina",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "AromaLab",
+        rango_precio: "medio",
+        tipo_uso: "apartamento",
+        tiempo_carga: 0,
+        "garantia_años": 3,
+        score_calidad_precio: 8,
+        score_autonomia: 6,
+        score_potencia: 9,
+        ideal_para: "Amantes del café recién molido",
+        pros: "Molinillo integrado|Programable 24h|Mantiene temperatura|Jarra térmica",
+        contras: "Ocupa espacio|Ruidosa al moler",
+        destacado_editorial: "Café de nivel barista sin salir de casa. El molinillo integrado marca la diferencia.",
+        valoracion_media: 4.7,
+        resenas_cantidad: 1540,
+        resenas_resumen: "Muy valorada por la calidad del café y la programación. Algunos mencionan el ruido del molinillo, pero coinciden en que el resultado lo compensa."
+      },
+      {
+        name: "Iluminación LED Inteligente",
+        description: "Control total de la luz desde tu teléfono. 16 millones de colores y ahorro de energía.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_3",
+        isFeatured: false,
+        retailPrice: 59,
+        discountedPrice: 39,
+        category: "Iluminación",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "LumiHome",
+        rango_precio: "bajo",
+        tipo_uso: "interior/exterior",
+        tiempo_carga: 0,
+        "garantia_años": 2,
+        score_calidad_precio: 10,
+        score_autonomia: 7,
+        score_potencia: 6,
+        ideal_para: "Crear ambientes y ahorrar energía",
+        pros: "16M de colores|Compatible con Alexa y Google|Bajo consumo|Instalación sencilla",
+        contras: "Requiere WiFi 2.4GHz|Sin puente para muchos focos",
+        destacado_editorial: "La forma más barata de dar un salto a la casa inteligente. Relación calidad-precio insuperable.",
+        valoracion_media: 4.3,
+        resenas_cantidad: 3120,
+        resenas_resumen: "Gran acogida por el precio y la facilidad de uso. Alguna crítica por la necesidad de WiFi de 2.4GHz, pero la experiencia general es muy positiva."
+      },
+      {
+        name: "Purificador de Aire Premium",
+        description: "Aire limpio y fresco en tu hogar. Filtro HEPA que elimina alérgenos y olores.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_4",
+        isFeatured: true,
+        retailPrice: 249,
+        discountedPrice: 199,
+        category: "Salud",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "PureAir",
+        rango_precio: "alto",
+        tipo_uso: "casa",
+        tiempo_carga: 0,
+        "garantia_años": 5,
+        score_calidad_precio: 7,
+        score_autonomia: 9,
+        score_potencia: 9,
+        ideal_para: "Personas con alergias o asma",
+        pros: "Filtro HEPA H13|Sensor de calidad del aire|Modo noche silencioso|Cubre hasta 60m²",
+        contras: "Filtros de recambio caros|Precio elevado",
+        destacado_editorial: "El más potente de la comparativa. Si la calidad del aire es tu prioridad, es la mejor inversión.",
+        valoracion_media: 4.6,
+        resenas_cantidad: 980,
+        resenas_resumen: "Los alérgicos notan mejoría rápida y valoran el modo noche. El principal reproche es el coste de los filtros de recambio a largo plazo."
+      },
+      {
+        name: "Almohada Viscoelástica",
+        description: "Descansa como nunca. Soporte ergonómico, antiácaros e hipoalergénica.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_5",
+        isFeatured: false,
+        retailPrice: 49,
+        discountedPrice: 34,
+        category: "Descanso",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "DreamRest",
+        rango_precio: "bajo",
+        tipo_uso: "apartamento",
+        tiempo_carga: 0,
+        "garantia_años": 3,
+        score_calidad_precio: 9,
+        score_autonomia: 8,
+        score_potencia: 5,
+        ideal_para: "Dolores de cuello y cervicales",
+        pros: "Soporte ergonómico|Transpirable|Funda lavable|Antiácaros",
+        contras: "Olor inicial a espuma|Firmeza no apta para todos",
+        destacado_editorial: "Un cambio notable para quien sufre del cuello. Calidad de gama alta a precio de entrada.",
+        valoracion_media: 4.4,
+        resenas_cantidad: 4210,
+        resenas_resumen: "Recomendadísima para dolores cervicales. El olor inicial desaparece en días; la firmeza gusta a la mayoría aunque no a todos."
+      },
+      {
+        name: "Almacenamiento Modular",
+        description: "Organiza tu hogar de forma inteligente. Cubos modulares resistentes.",
+        affiliate_link: "AQUI_TU_ENLACE_AMAZON_6",
+        isFeatured: false,
+        retailPrice: 89,
+        discountedPrice: 69,
+        category: "Organización",
+        showInTopMenu: true,
+        image_url: "",
+        marca: "OrdenMax",
+        rango_precio: "bajo",
+        tipo_uso: "interior/exterior",
+        tiempo_carga: 0,
+        "garantia_años": 2,
+        score_calidad_precio: 8,
+        score_autonomia: 6,
+        score_potencia: 7,
+        ideal_para: "Espacios pequeños y trasteros",
+        pros: "Modular y ampliable|Montaje sin herramientas|Resistente|Varios acabados",
+        contras: "Estantes altos poco estables|Instrucciones justas",
+        destacado_editorial: "Flexible y resistente. Ideal para exprimir cada rincón de casas y apartamentos pequeños.",
+        valoracion_media: 4.2,
+        resenas_cantidad: 760,
+        resenas_resumen: "Valorado por su versatilidad y montaje rápido. Se recomienda anclar los módulos altos a la pared para mayor estabilidad."
+      }
+    ];
+
+    /* ---------- Helpers de presentación ---------- */
+    const CATEGORY_ICON = {
+      "Limpieza": "🤖", "Cocina": "☕", "Iluminación": "💡",
+      "Salud": "🌬️", "Descanso": "🛏️", "Organización": "📦"
+    };
+    const RANGE_LABEL = { bajo: "€", medio: "€€", alto: "€€€" };
+    const USO_LABEL = { casa: "Casa", apartamento: "Apartamento", "interior/exterior": "Interior / Exterior" };
+
+    const euro = n => (typeof n === "number" ? n.toLocaleString("es-ES") + " €" : "");
+    const splitList = s => (s ? s.split("|").map(x => x.trim()).filter(Boolean) : []);
+
+    function starsHTML(v) {
+      const pct = Math.max(0, Math.min(100, (Number(v) / 5) * 100));
+      return `<span class="stars">★★★★★<span class="fill" style="width:${pct}%">★★★★★</span></span>`;
+    }
+
+    // Imagen: si image_url está vacío -> placeholder (nunca imagen rota).
+    function imageHTML(p, cls, placeholderCls) {
+      const icon = CATEGORY_ICON[p.category] || "🏠";
+      const ph = `<div class="${placeholderCls}">${icon}</div>`;
+      if (!p.image_url) return ph;
+      // onerror: si la URL falla, se elimina la imagen y se muestra el placeholder.
+      return `<img src="${p.image_url}" alt="${p.name}" class="${cls}"
+                onerror="this.outerHTML='${ph.replace(/'/g, "\\'")}'">`;
+    }
+
+    // Gráfico radar (3 ejes) a partir de los scores 0-10.
+    function radarSVG(p, size = 220) {
+      const vals = [
+        Number(p.score_calidad_precio) || 0,
+        Number(p.score_autonomia) || 0,
+        Number(p.score_potencia) || 0
+      ];
+      const labels = ["Calidad-precio", "Autonomía", "Potencia"];
+      const cx = size / 2, cy = size / 2, R = size / 2 - 40;
+      const ang = [-90, 30, 150].map(d => d * Math.PI / 180);
+      const pt = (val, i) => [cx + Math.cos(ang[i]) * R * (val / 10), cy + Math.sin(ang[i]) * R * (val / 10)];
+
+      const grid = [0.33, 0.66, 1].map(f => {
+        const pts = ang.map(a => `${cx + Math.cos(a) * R * f},${cy + Math.sin(a) * R * f}`).join(" ");
+        return `<polygon points="${pts}" fill="none" stroke="rgba(22,25,44,.12)" />`;
+      }).join("");
+      const axes = ang.map(a => `<line x1="${cx}" y1="${cy}" x2="${cx + Math.cos(a) * R}" y2="${cy + Math.sin(a) * R}" stroke="rgba(22,25,44,.12)" />`).join("");
+      const dataPts = vals.map((v, i) => pt(v, i).join(",")).join(" ");
+      const dots = vals.map((v, i) => { const [x, y] = pt(v, i); return `<circle cx="${x}" cy="${y}" r="3.5" fill="#16192c" />`; }).join("");
+      const lbls = ang.map((a, i) => {
+        const x = cx + Math.cos(a) * (R + 22), y = cy + Math.sin(a) * (R + 16);
+        const anchor = i === 0 ? "middle" : (Math.cos(a) > 0 ? "start" : "end");
+        return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="11" font-weight="500">${labels[i]}</text>
+                <text x="${x}" y="${y + 14}" text-anchor="${anchor}" font-size="12" font-weight="600" fill="#16192c">${vals[i]}/10</text>`;
+      }).join("");
+
+      return `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        ${grid}${axes}
+        <polygon points="${dataPts}" fill="rgba(203,242,211,.55)" stroke="#3f8f5c" stroke-width="2" />
+        ${dots}${lbls}
+      </svg>`;
+    }
+
+    /* ---------- Render de tarjetas ---------- */
+    function cardHTML(p, index) {
+      const hasDiscount = typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice;
+      const now = hasDiscount ? p.discountedPrice : p.retailPrice;
+      const pct = hasDiscount ? Math.round((1 - p.discountedPrice / p.retailPrice) * 100) : 0;
+
+      return `<article class="product-card">
+        ${p.isFeatured ? '<span class="ribbon">★ Destacado</span>' : ''}
+        ${hasDiscount ? `<span class="discount-tag">-${pct}%</span>` : ''}
+        <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
+        <div class="product-content">
+          <div class="card-badges">
+            <span class="tag brand">${p.marca || p.category}</span>
+            <span class="tag">${p.category}</span>
+            ${p.rango_precio ? `<span class="tag price-range">${RANGE_LABEL[p.rango_precio] || ""}</span>` : ""}
+          </div>
+          <h3 class="product-title">${p.name}</h3>
+          ${p.ideal_para ? `<p class="ideal-para"><strong>Ideal para:</strong> ${p.ideal_para}</p>` : ""}
+          <div class="rating">
+            ${starsHTML(p.valoracion_media)}
+            <span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span>
+          </div>
+          <div class="price-row">
+            <span class="price-now">${euro(now)}</span>
+            ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
+          </div>
+          <div class="card-actions">
+            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver en Amazon <span class="arrow">→</span></a>
+            <button class="link-ficha" onclick="openModal(${index})">Ver ficha completa</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    /* ---------- Modal ficha completa ---------- */
+    function openModal(index) {
+      const p = products[index];
+      const hasDiscount = typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice;
+      const now = hasDiscount ? p.discountedPrice : p.retailPrice;
+      const pros = splitList(p.pros), contras = splitList(p.contras);
+
+      const specs = [
+        ["Marca", p.marca],
+        ["Categoría", p.category],
+        ["Tipo de uso", USO_LABEL[p.tipo_uso] || p.tipo_uso],
+        ["Rango de precio", p.rango_precio ? (RANGE_LABEL[p.rango_precio] + " (" + p.rango_precio + ")") : null],
+        ["Tiempo de carga", (p.tiempo_carga ? p.tiempo_carga + " h" : null)],
+        ["Garantía", (p["garantia_años"] ? p["garantia_años"] + " años" : null)]
+      ].filter(r => r[1]);
+
+      document.getElementById("modalContent").innerHTML = `
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+        <div class="modal-hero">
+          <div class="modal-img">${imageHTML(p, "", "placeholder")}</div>
+          <div class="modal-intro">
+            <div class="card-badges">
+              <span class="tag brand">${p.marca || p.category}</span>
+              <span class="tag">${p.category}</span>
+            </div>
+            <h3>${p.name}</h3>
+            <div class="rating">${starsHTML(p.valoracion_media)}<span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span></div>
+            ${p.destacado_editorial ? `<p class="modal-editorial">“${p.destacado_editorial}”</p>` : ""}
+            <div class="price-row">
+              <span class="price-now">${euro(now)}</span>
+              ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
+            </div>
+            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Comprar en Amazon <span class="arrow">→</span></a>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="grid-2">
+            <div>
+              <div class="block-title">Especificaciones</div>
+              <ul class="specs">
+                ${specs.map(r => `<li><span>${r[0]}</span><span>${r[1]}</span></li>`).join("")}
+              </ul>
+            </div>
+            <div>
+              <div class="block-title">Rendimiento</div>
+              <div class="radar-wrap">${radarSVG(p)}</div>
+            </div>
+          </div>
+
+          ${(pros.length || contras.length) ? `
+          <div class="proscons">
+            <div class="pros"><h5>✓ A favor</h5><ul>${pros.map(x => `<li>${x}</li>`).join("")}</ul></div>
+            <div class="cons"><h5>✕ En contra</h5><ul>${contras.map(x => `<li>${x}</li>`).join("")}</ul></div>
+          </div>` : ""}
+
+          ${p.resenas_resumen ? `
+          <div class="reviews-box">
+            <div class="reviews-head">
+              <span class="reviews-score">${p.valoracion_media}</span>
+              <div>${starsHTML(p.valoracion_media)}<div class="count" style="font-size:13px;color:var(--ink-50)">Basado en ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} opiniones</div></div>
+            </div>
+            <p class="reviews-summary">${p.resenas_resumen}</p>
+          </div>` : ""}
+
+          <div class="modal-footer">
+            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver oferta en Amazon <span class="arrow">→</span></a>
+          </div>
+        </div>`;
+
+      const ov = document.getElementById("modalOverlay");
+      ov.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal() {
+      document.getElementById("modalOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    document.getElementById("modalOverlay").addEventListener("click", e => {
+      if (e.target.id === "modalOverlay") closeModal();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+    /* ---------- Filtros por categoría + menú superior ---------- */
+    let activeCategory = "Todas";
+
+    function renderGrid() {
+      const grid = document.getElementById("productsGrid");
+      const list = products
+        .map((p, i) => ({ p, i }))
+        .filter(({ p }) => activeCategory === "Todas" || p.category === activeCategory)
+        .sort((a, b) => (b.p.isFeatured === true) - (a.p.isFeatured === true)); // destacados primero
+      grid.innerHTML = list.map(({ p, i }) => cardHTML(p, i)).join("");
+    }
+
+    function buildFilters() {
+      // Categorías del menú superior derivadas de showInTopMenu.
+      const menuCats = [...new Set(products.filter(p => p.showInTopMenu).map(p => p.category))];
+
+      const filters = document.getElementById("filters");
+      const all = ["Todas", ...menuCats];
+      filters.innerHTML = all.map(c =>
+        `<button class="chip ${c === activeCategory ? "active" : ""}" data-cat="${c}">${c}</button>`
+      ).join("");
+      filters.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          activeCategory = chip.dataset.cat;
+          buildFilters();
+          renderGrid();
+        });
+      });
+
+      // Menú superior (categorías destacadas)
+      const topMenu = document.getElementById("topMenu");
+      const extra = menuCats.map(c => `<a href="#tienda" data-cat="${c}">${c}</a>`).join("");
+      topMenu.innerHTML = `<a href="#tienda">Tienda</a>` + extra;
+      topMenu.querySelectorAll("a[data-cat]").forEach(a => {
+        a.addEventListener("click", () => {
+          activeCategory = a.dataset.cat;
+          buildFilters();
+          renderGrid();
+        });
+      });
+    }
+
+    /* ---------- Init ---------- */
+    buildFilters();
+    renderGrid();
+
+    // Navbar borde al hacer scroll
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", () => navbar.classList.toggle("scrolled", window.scrollY > 20));
+
+    // Newsletter
+    document.querySelector(".newsletter-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("¡Gracias por suscribirte! Revisa tu correo para confirmar.");
+      this.reset();
+    });
+    </script>
+</body>
+</html>
