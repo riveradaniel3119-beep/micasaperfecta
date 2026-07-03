@@ -552,6 +552,15 @@
     const euro = n => (typeof n === "number" ? n.toLocaleString("es-ES") + " €" : "");
     const splitList = s => (s ? s.split("|").map(x => x.trim()).filter(Boolean) : []);
 
+    // Enlace de compra: usa el enlace de afiliado real cuando existe.
+    // Mientras siga siendo un marcador (AQUI_...), cae en una búsqueda de
+    // Amazon del producto para que ningún botón quede roto en la revisión.
+    function buyLink(p) {
+      const l = p.affiliate_link || "";
+      if (/^https?:\/\//i.test(l)) return l;
+      return "https://www.amazon.com/s?k=" + encodeURIComponent(p.name);
+    }
+
     function starsHTML(v) {
       const pct = Math.max(0, Math.min(100, (Number(v) / 5) * 100));
       return `<span class="stars">★★★★★<span class="fill" style="width:${pct}%">★★★★★</span></span>`;
@@ -627,7 +636,7 @@
             ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
           </div>
           <div class="card-actions">
-            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver en Amazon <span class="arrow">→</span></a>
             <button class="link-ficha" onclick="openModal(${index})">Ver ficha completa</button>
           </div>
         </div>
@@ -666,7 +675,7 @@
               <span class="price-now">${euro(now)}</span>
               ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
             </div>
-            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Comprar en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Comprar en Amazon <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="modal-body">
@@ -699,7 +708,7 @@
           </div>` : ""}
 
           <div class="modal-footer">
-            <a href="${p.affiliate_link}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver oferta en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver oferta en Amazon <span class="arrow">→</span></a>
           </div>
         </div>`;
 
