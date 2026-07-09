@@ -145,12 +145,6 @@
             background: var(--ink); color: #fff; font-size: 12px; font-weight: 600;
             letter-spacing: .5px; padding: 6px 14px; border-radius: 40px;
         }
-        .discount-tag {
-            position: absolute; top: 16px; right: 16px; z-index: 2;
-            background: var(--mint-solid); color: #1f5c34; font-size: 13px; font-weight: 600;
-            padding: 6px 12px; border-radius: 40px;
-        }
-
         .product-image { height: 230px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; padding: 16px; }
         .product-image img { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease; }
         .product-card:hover .product-image img { transform: scale(1.06); }
@@ -176,9 +170,8 @@
         .rating .count { font-size: 13px; color: var(--ink-50); }
 
         /* price */
-        .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
-        .price-now { font-size: 26px; font-weight: 600; font-family: var(--sans); }
-        .price-old { font-size: 16px; color: var(--ink-50); text-decoration: line-through; }
+        /* Sin precios fijos: Amazon muestra el precio y el stock reales al pulsar. */
+        .price-note { font-size: 14px; color: var(--ink-50); margin-bottom: 18px; }
 
         .card-actions { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
         .link-ficha { background: none; border: none; color: var(--ink); font-family: var(--sans); font-size: 14px; cursor: pointer; opacity: .7; transition: opacity .2s; padding: 4px; }
@@ -358,8 +351,8 @@
             </div>
             <div class="trust-strip" data-reveal>
                 <span>🛍️ <strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
-                <span id="statDiscountWrap">🏷️ Ofertas de hasta <strong id="statDiscount">—</strong></span>
-                <span>🔒 Compra segura en Amazon</span>
+                <span>🗂️ <strong id="statCats">—</strong>&nbsp;categorías</span>
+                <span>🔒 Precio y compra seguros en Amazon</span>
             </div>
         </div>
     </section>
@@ -377,7 +370,7 @@
             <div class="products-grid" id="productsGrid"><!-- tarjetas por JS --></div>
 
             <div class="disclaimer" id="aviso-afiliados">
-                <strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. Los precios y la disponibilidad pueden variar.
+                <strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. No mostramos precios en esta web: el precio y la disponibilidad definitivos son siempre los que veas en Amazon en el momento de la compra.
             </div>
         </div>
     </section>
@@ -392,7 +385,7 @@
             </div>
             <div class="benefits-grid">
                 <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Ofertas de verdad</h3><p>Destacamos el descuento cuando existe, para que veas de un vistazo lo que te ahorras.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
                 <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
                 <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
                 <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
@@ -440,23 +433,27 @@
     /* =====================================================================
        COLECCIÓN "products" — FUENTE ÚNICA DE DATOS (schema)
        ---------------------------------------------------------------------
-       Este sitio es estático: no hay base de datos. Este array hace de
-       colección `products`. El MISMO schema aplica a los entornos
-       "Datos de prueba" y "Datos en tiempo real" (para producción basta
-       con sustituir los valores de ejemplo por los reales).
+       Sitio estático, sin base de datos: este array es la colección.
 
-       SCHEMA (todos los campos nuevos son opcionales):
-       Conservados : name, description, affiliate_link, isFeatured,
-                     retailPrice, discountedPrice, category, showInTopMenu
-       Eliminados  : image, range
-       Identificación      : image_url, marca, rango_precio (bajo|medio|alto)
-       Especificaciones    : tipo_uso (casa|apartamento|interior/exterior),
-                             tiempo_carga (nº), garantia_años (nº)
-       Scores 0-10 (radar) : score_calidad_precio, score_autonomia, score_potencia
-       Editorial           : ideal_para, pros ("a|b|c"), contras ("a|b"),
-                             destacado_editorial
-       Opiniones           : valoracion_media (decimal), resenas_cantidad (nº),
-                             resenas_resumen (texto largo)
+       NO SE GUARDAN PRECIOS. El Acuerdo Operativo de Amazon Associates
+       prohíbe mostrar precios estáticos (se desactualizan). El precio y el
+       stock los ve el usuario al pulsar el botón, ya en Amazon.
+       Para volver a mostrarlos hace falta la Product Advertising API, que
+       Amazon concede tras 3 ventas válidas (ver scripts/README.md).
+
+       SCHEMA (todo lo que no sea obligatorio es opcional):
+       Obligatorio    : name, affiliate_link, category
+       Automatización : asin (necesario para PA-API), disponible (false = agotado,
+                        el producto se oculta del catálogo)
+       Presentación   : description, image_url, marca, isFeatured,
+                        showInTopMenu, rango_precio (bajo|medio|alto)
+       Especificaciones: tipo_uso, tiempo_carga (nº), garantia_años (nº)
+       Scores 0-10    : score_calidad_precio, score_autonomia, score_potencia
+       Editorial      : ideal_para, pros ("a|b|c"), contras ("a|b"),
+                        destacado_editorial
+       Opiniones      : valoracion_media, resenas_cantidad, resenas_resumen
+
+       Si un campo falta, simplemente no se dibuja: nada de datos inventados.
        ===================================================================== */
 
     const products = [
@@ -465,8 +462,6 @@
         description: "Ventilador portátil recargable por USB con power bank y linterna integrados. Hasta 19 h de autonomía; perfecto para viajes, conciertos y días de calor.",
         affiliate_link: "https://amzn.to/4vDZkTA",
         isFeatured: true,
-        retailPrice: 19.99,
-        discountedPrice: 16.83,
         category: "Tecnología",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61MhrueTMIL._AC_SL1500_.jpg",
@@ -481,8 +476,6 @@
         description: "Set de 2 almohadas alternativas de plumón, de tacto suave tipo hotel. Aptas para dormir de espalda, de lado o boca abajo.",
         affiliate_link: "https://amzn.to/4azcQj1",
         isFeatured: true,
-        retailPrice: 79.99,
-        discountedPrice: 59.99,
         category: "Descanso",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/51MccBNXAAL._AC_SL1500_.jpg",
@@ -497,7 +490,6 @@
         description: "Vaporizador de mano de 1875W con vapor turbo extremo. Elimina las arrugas de la ropa en segundos, en casa o de viaje.",
         affiliate_link: "https://amzn.to/4wgLer2",
         isFeatured: false,
-        retailPrice: 69.99,
         category: "Limpieza",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61Edpa9EBiL._AC_SL1500_.jpg",
@@ -512,8 +504,6 @@
         description: "Cafetera de una sola dosis compatible con cápsulas K-Cup. Tres tamaños de preparación y depósito extraíble de 42 oz.",
         affiliate_link: "https://amzn.to/44HxnhN",
         isFeatured: true,
-        retailPrice: 109.99,
-        discountedPrice: 69.99,
         category: "Cocina",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61DPgCC4HML._AC_SL1500_.jpg",
@@ -528,8 +518,6 @@
         description: "Sistema de fregado con cubo y escurrido por pedal. Mopa de microfibra y cabezal giratorio para limpiar el suelo sin mojarte las manos.",
         affiliate_link: "https://amzn.to/44aoiOo",
         isFeatured: false,
-        retailPrice: 44.99,
-        discountedPrice: 34.96,
         category: "Limpieza",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/71+iJA0RGQL._AC_SL1500_.jpg",
@@ -544,8 +532,6 @@
         description: "Juego de 4 piezas de tacto suave y transpirable. Bolsillos profundos, fácil de ajustar y certificación Oeko-Tex.",
         affiliate_link: "https://amzn.to/4p55ARN",
         isFeatured: false,
-        retailPrice: 29.99,
-        discountedPrice: 24.99,
         category: "Descanso",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61o6SkL3DOL._AC_SL1500_.jpg",
@@ -560,7 +546,6 @@
         description: "Cartuchos oficiales de recambio compatibles con las trampas Zevo Trap y MAX. Atrapan moscas, mosquitos y mosca de la fruta.",
         affiliate_link: "https://amzn.to/44Ox4le",
         isFeatured: false,
-        retailPrice: 14.97,
         category: "Salud",
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/711Q2PR+tmL._AC_SL1500_.jpg",
@@ -580,7 +565,6 @@
     const RANGE_LABEL = { bajo: "$", medio: "$$", alto: "$$$" };
     const USO_LABEL = { casa: "Casa", apartamento: "Apartamento", "interior/exterior": "Interior / Exterior" };
 
-    const euro = n => (typeof n === "number" ? "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "");
     const splitList = s => (s ? s.split("|").map(x => x.trim()).filter(Boolean) : []);
 
     // Enlace de compra: usa el enlace de afiliado real cuando existe.
@@ -642,13 +626,8 @@
 
     /* ---------- Render de tarjetas ---------- */
     function cardHTML(p, index) {
-      const hasDiscount = typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice;
-      const now = hasDiscount ? p.discountedPrice : p.retailPrice;
-      const pct = hasDiscount ? Math.round((1 - p.discountedPrice / p.retailPrice) * 100) : 0;
-
       return `<article class="product-card">
         ${p.isFeatured ? '<span class="ribbon">★ Destacado</span>' : ''}
-        ${hasDiscount ? `<span class="discount-tag">-${pct}%</span>` : ''}
         <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
         <div class="product-content">
           <div class="card-badges">
@@ -662,12 +641,9 @@
             ${starsHTML(p.valoracion_media)}
             <span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span>
           </div>` : ""}
-          <div class="price-row">
-            <span class="price-now">${euro(now)}</span>
-            ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
-          </div>
+          <p class="price-note">Precio y disponibilidad actuales en Amazon</p>
           <div class="card-actions">
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
             <button class="link-ficha" onclick="openModal(${index})">Ver ficha completa</button>
           </div>
         </div>
@@ -677,8 +653,6 @@
     /* ---------- Modal ficha completa ---------- */
     function openModal(index) {
       const p = products[index];
-      const hasDiscount = typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice;
-      const now = hasDiscount ? p.discountedPrice : p.retailPrice;
       const pros = splitList(p.pros), contras = splitList(p.contras);
       const hasScores = p.score_calidad_precio || p.score_autonomia || p.score_potencia;
 
@@ -703,11 +677,8 @@
             <h3>${p.name}</h3>
             ${p.valoracion_media ? `<div class="rating">${starsHTML(p.valoracion_media)}<span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span></div>` : ""}
             ${p.destacado_editorial ? `<p class="modal-editorial">“${p.destacado_editorial}”</p>` : ""}
-            <div class="price-row">
-              <span class="price-now">${euro(now)}</span>
-              ${hasDiscount ? `<span class="price-old">${euro(p.retailPrice)}</span>` : ""}
-            </div>
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Comprar en Amazon <span class="arrow">→</span></a>
+            <p class="price-note">Precio y disponibilidad actuales en Amazon</p>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="modal-body">
@@ -740,7 +711,7 @@
           </div>` : ""}
 
           <div class="modal-footer">
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver oferta en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
           </div>
         </div>`;
 
@@ -764,6 +735,9 @@
       const grid = document.getElementById("productsGrid");
       const list = products
         .map((p, i) => ({ p, i }))
+        // `disponible: false` lo pone el script de PA-API cuando Amazon lo da
+        // por agotado. Sin ese campo, el producto se muestra con normalidad.
+        .filter(({ p }) => p.disponible !== false)
         .filter(({ p }) => activeCategory === "Todas" || p.category === activeCategory)
         .sort((a, b) => (b.p.isFeatured === true) - (a.p.isFeatured === true)); // destacados primero
       grid.innerHTML = list.map(({ p, i }) => cardHTML(p, i)).join("");
@@ -823,17 +797,7 @@
     /* ---------- Cifras del héroe (derivadas de los productos) ---------- */
     function renderStats() {
       document.getElementById("statCount").textContent = products.length;
-
-      const descuentos = products
-        .filter(p => typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice)
-        .map(p => Math.round((1 - p.discountedPrice / p.retailPrice) * 100));
-
-      const wrap = document.getElementById("statDiscountWrap");
-      if (descuentos.length) {
-        document.getElementById("statDiscount").textContent = "−" + Math.max(...descuentos) + " %";
-      } else {
-        wrap.remove(); // sin ofertas, no presumimos de ellas
-      }
+      document.getElementById("statCats").textContent = new Set(products.map(p => p.category)).size;
     }
 
     /* ---------- Aparición al hacer scroll ---------- */

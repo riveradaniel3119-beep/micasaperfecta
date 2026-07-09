@@ -1,0 +1,41 @@
+name: Actualizar productos (Amazon PA-API)
+
+# INACTIVO POR AHORA: solo se ejecuta si lo lanzas a mano desde la pestaña
+# "Actions" de GitHub. Cuando tengas las credenciales de PA-API y compruebes
+# que funciona, descomenta el bloque `schedule` para que corra solo cada día.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 6 * * *"   # cada día a las 06:00 UTC
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20" # fetch nativo; el script no tiene dependencias
+
+      - name: Consultar PA-API y actualizar index.html
+        env:
+          PAAPI_ACCESS_KEY: ${{ secrets.PAAPI_ACCESS_KEY }}
+          PAAPI_SECRET_KEY: ${{ secrets.PAAPI_SECRET_KEY }}
+          PAAPI_PARTNER_TAG: ${{ secrets.PAAPI_PARTNER_TAG }}
+        run: node scripts/update-products.js
+
+      - name: Publicar cambios si los hay
+        run: |
+          if [ -z "$(git status --porcelain index.html)" ]; then
+            echo "Sin cambios: el catálogo ya estaba al día."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: actualizar catálogo desde Amazon PA-API"
+          git push

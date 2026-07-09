@@ -3,3 +3,5 @@
 !.gitignore
 !index.html
 !.nojekyll
+!.github
+!scripts
