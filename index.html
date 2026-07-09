@@ -52,6 +52,36 @@
         .nav-links a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400; opacity: .75; transition: opacity .25s; }
         .nav-links a:hover { opacity: 1; }
 
+        /* Botón hamburguesa (solo móvil) */
+        .nav-toggle {
+            display: none; width: 46px; height: 46px; padding: 0; cursor: pointer;
+            border: 1px solid var(--line); background: #fff; border-radius: 50%;
+            align-items: center; justify-content: center;
+        }
+        .nav-toggle span { display: block; width: 18px; height: 2px; background: var(--ink); position: relative; transition: background .2s; }
+        .nav-toggle span::before, .nav-toggle span::after {
+            content: ''; position: absolute; left: 0; width: 18px; height: 2px; background: var(--ink); transition: transform .25s;
+        }
+        .nav-toggle span::before { top: -6px; }
+        .nav-toggle span::after { top: 6px; }
+        .nav-toggle[aria-expanded="true"] span { background: transparent; }
+        .nav-toggle[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+        .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+
+        .mobile-menu {
+            position: fixed; top: 84px; left: 0; right: 0; z-index: 999;
+            background: rgba(255, 255, 255, .97); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+            display: none; flex-direction: column; padding: 8px 22px 20px;
+            max-height: calc(100vh - 84px); overflow-y: auto;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            padding: 15px 4px; color: var(--ink); text-decoration: none; font-size: 17px;
+            border-bottom: 1px solid var(--line);
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
             min-height: 54px; padding: 0 30px; border-radius: 40px;
@@ -121,8 +151,9 @@
             padding: 6px 12px; border-radius: 40px;
         }
 
-        .product-image { height: 210px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--cream); }
-        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        .product-image { height: 230px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; padding: 16px; }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease; }
+        .product-card:hover .product-image img { transform: scale(1.06); }
         .product-image .placeholder {
             width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 74px;
             background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream);
@@ -153,7 +184,7 @@
         .link-ficha { background: none; border: none; color: var(--ink); font-family: var(--sans); font-size: 14px; cursor: pointer; opacity: .7; transition: opacity .2s; padding: 4px; }
         .link-ficha:hover { opacity: 1; }
         .arrow { transition: transform .25s; display: inline-block; }
-        .product-cta:hover .arrow { transform: translateX(4px); }
+        .product-cta:hover .arrow, .btn:hover .arrow { transform: translateX(4px); }
 
         /* ---------- Modal (ficha completa) ---------- */
         .modal-overlay {
@@ -172,8 +203,8 @@
         }
         .modal-close:hover { background: #fff; }
         .modal-hero { display: grid; grid-template-columns: 1fr 1fr; }
-        .modal-img { min-height: 260px; background: var(--cream); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-img { min-height: 260px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; }
+        .modal-img img { width: 100%; height: 100%; object-fit: contain; }
         .modal-img .placeholder { font-size: 90px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
         .modal-intro { padding: 40px 38px; }
         .modal-intro h3 { font-size: 32px; line-height: 1.1; margin: 12px 0; }
@@ -219,20 +250,39 @@
         .benefit-item h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 12px; }
         .benefit-item p { color: var(--ink-70); font-size: 16px; line-height: 1.55; }
 
-        /* ---------- Newsletter ---------- */
-        .newsletter {
+        /* ---------- Franja de confianza (héroe) ---------- */
+        .trust-strip {
+            display: flex; flex-wrap: wrap; gap: 12px 30px; justify-content: center;
+            margin-top: 44px; color: var(--ink-70); font-size: 15px;
+        }
+        .trust-strip span { display: inline-flex; align-items: center; gap: 8px; }
+        .trust-strip strong { color: var(--ink); font-weight: 600; }
+
+        /* ---------- Llamada final ---------- */
+        .final-cta {
             text-align: center; padding: 130px 0; background-color: #fff;
             background-image: radial-gradient(circle at 20% 20%, var(--lime), transparent 45%), radial-gradient(circle at 80% 80%, var(--mint), transparent 45%);
         }
-        .newsletter h2 { font-size: clamp(38px, 5.5vw, 64px); line-height: 1.05; max-width: 720px; margin: 0 auto 20px; }
-        .newsletter > .container > p { max-width: 460px; margin: 0 auto 40px; color: var(--ink-70); font-size: 18px; }
-        .newsletter-form { display: flex; gap: 12px; max-width: 520px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
-        .newsletter-form input { flex: 1; min-width: 240px; padding: 0 24px; height: 54px; border: 1px solid var(--line); border-radius: 40px; font-family: var(--sans); font-size: 16px; background: #fff; outline: none; transition: border-color .25s; }
-        .newsletter-form input:focus { border-color: var(--ink); }
+        .final-cta h2 { font-size: clamp(38px, 5.5vw, 64px); line-height: 1.05; max-width: 760px; margin: 0 auto 20px; }
+        .final-cta > .container > p { max-width: 500px; margin: 0 auto 38px; color: var(--ink-70); font-size: 18px; }
+        .final-cta > .container > p.fineprint { margin: 28px auto 0; font-size: 14px; color: var(--ink-50); }
+
+        /* ---------- Aparición al hacer scroll ---------- */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        /* Evita que la navbar fija tape los títulos al saltar a una sección */
+        section[id], .disclaimer { scroll-margin-top: 104px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
+            .reveal { opacity: 1; transform: none; }
+        }
 
         /* ---------- Footer ---------- */
         footer { background: var(--ink); color: #fff; padding: 90px 0 40px; }
-        .footer-content { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { color: #fff; margin-bottom: 18px; display: inline-block; }
         .footer-brand p { color: rgba(255, 255, 255, .6); font-size: 15px; max-width: 300px; line-height: 1.6; }
         .footer-section h4 { font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: rgba(255, 255, 255, .5); margin-bottom: 18px; }
@@ -241,6 +291,11 @@
         .footer-bottom { border-top: 1px solid rgba(255, 255, 255, .12); padding-top: 28px; font-size: 14px; color: rgba(255, 255, 255, .5); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
         /* ---------- Responsive ---------- */
+        /* Monitores grandes: más ancho y 4 columnas */
+        @media (min-width: 1500px) {
+            .container { max-width: 1320px; }
+            .products-grid { grid-template-columns: repeat(4, 1fr); }
+        }
         @media (max-width: 900px) {
             .products-grid { grid-template-columns: repeat(2, 1fr); }
             .benefits-grid { grid-template-columns: repeat(2, 1fr); }
@@ -248,16 +303,30 @@
             .modal-hero { grid-template-columns: 1fr; }
             .grid-2 { grid-template-columns: 1fr; gap: 28px; }
         }
-        @media (max-width: 768px) {
+        /* Tablet y móvil: navegación por menú hamburguesa */
+        @media (max-width: 860px) {
             .nav-links { display: none; }
+            .nav-cta { display: none; }
+            .nav-toggle { display: inline-flex; }
+        }
+        @media (max-width: 768px) {
             .section { padding: 80px 0; }
             .container { padding: 0 22px; }
+            .hero { min-height: auto; padding: 124px 0 80px; }
+            .final-cta { padding: 100px 0; }
+            /* Modal a pantalla completa en móvil */
+            .modal-overlay { padding: 0; }
+            .modal { border-radius: 0; min-height: 100vh; }
+            .modal-intro, .modal-body { padding-left: 22px; padding-right: 22px; }
         }
         @media (max-width: 560px) {
             .products-grid, .benefits-grid { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr 1fr; }
-            .footer-brand { grid-column: 1 / -1; }
+            .footer-content { grid-template-columns: 1fr; gap: 34px; }
             .proscons { grid-template-columns: 1fr; }
+            .hero h1 { font-size: clamp(38px, 11vw, 56px); }
+            .trust-strip { flex-direction: column; align-items: center; gap: 12px; font-size: 14px; margin-top: 34px; }
+            .hero-actions .btn { width: 100%; }
+            .final-cta { padding: 84px 0; }
         }
     </style>
 </head>
@@ -267,22 +336,30 @@
         <div class="container nav-inner">
             <a href="#inicio" class="logo">MiCasaPerfecta</a>
             <div class="nav-links" id="topMenu">
-                <a href="#tienda">Tienda</a>
-                <!-- categorías (showInTopMenu) inyectadas por JS -->
+                <!-- enlaces de categoría inyectados por JS -->
             </div>
             <a href="#tienda" class="btn btn-dark nav-cta">Ver tienda</a>
+            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+                <span></span>
+            </button>
         </div>
     </nav>
+    <div class="mobile-menu" id="mobileMenu"><!-- mismos enlaces, inyectados por JS --></div>
 
     <!-- Hero -->
     <section class="hero" id="inicio">
         <div class="container">
-            <span class="pill-badge">✦ Tienda de productos para el hogar</span>
-            <h1>Tu hogar, <em>inteligente</em> y hermoso</h1>
-            <p>Comparamos, probamos y seleccionamos los mejores productos para tu casa. Fichas técnicas completas, reseñas honestas y las mejores ofertas.</p>
-            <div class="hero-actions">
-                <a href="#tienda" class="btn btn-dark">Explorar la tienda</a>
-                <a href="#beneficios" class="btn btn-light">Por qué confiar en nosotros</a>
+            <span class="pill-badge" data-reveal>✦ Selección honesta para tu hogar</span>
+            <h1 data-reveal>Lo mejor para tu casa, <em>sin perder horas buscando</em></h1>
+            <p data-reveal>Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.</p>
+            <div class="hero-actions" data-reveal>
+                <a href="#tienda" class="btn btn-dark">Ver los productos <span class="arrow">→</span></a>
+                <a href="#beneficios" class="btn btn-light">Cómo los elegimos</a>
+            </div>
+            <div class="trust-strip" data-reveal>
+                <span>🛍️ <strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
+                <span id="statDiscountWrap">🏷️ Ofertas de hasta <strong id="statDiscount">—</strong></span>
+                <span>🔒 Compra segura en Amazon</span>
             </div>
         </div>
     </section>
@@ -290,16 +367,16 @@
     <!-- Tienda -->
     <section class="section" id="tienda">
         <div class="container">
-            <div class="section-head">
+            <div class="section-head" data-reveal>
                 <span class="eyebrow">Catálogo</span>
                 <h2>Nuestra selección</h2>
-                <p>Filtra por categoría y abre la ficha completa de cada producto: especificaciones, gráfico de rendimiento, pros y contras, y opiniones reales.</p>
+                <p>Filtra por categoría y abre la ficha de cada producto para ver sus características y puntos fuertes. Cuando lo tengas claro, compras en Amazon.</p>
             </div>
 
             <div class="filters" id="filters"><!-- chips por JS --></div>
             <div class="products-grid" id="productsGrid"><!-- tarjetas por JS --></div>
 
-            <div class="disclaimer">
+            <div class="disclaimer" id="aviso-afiliados">
                 <strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. Los precios y la disponibilidad pueden variar.
             </div>
         </div>
@@ -308,30 +385,31 @@
     <!-- Beneficios -->
     <section class="section benefits" id="beneficios">
         <div class="container">
-            <div class="section-head">
+            <div class="section-head" data-reveal>
                 <span class="eyebrow">Nuestra promesa</span>
-                <h2>¿Por qué comprar con nosotros?</h2>
+                <h2>Cómo elegimos lo que ves aquí</h2>
+                <p>Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.</p>
             </div>
             <div class="benefits-grid">
-                <div class="benefit-item"><span class="benefit-icon">✅</span><h3>Fichas honestas</h3><p>Analizamos cada producto con datos técnicos reales antes de recomendarlo.</p></div>
-                <div class="benefit-item"><span class="benefit-icon">⭐</span><h3>Mejores precios</h3><p>Comparamos ofertas para darte la mejor relación calidad-precio del mercado.</p></div>
-                <div class="benefit-item"><span class="benefit-icon">🚚</span><h3>Envío rápido</h3><p>A través de Amazon Prime, recibe tus compras en 24-48 h en zonas disponibles.</p></div>
-                <div class="benefit-item"><span class="benefit-icon">📊</span><h3>Comparativas claras</h3><p>Gráficos de rendimiento y pros/contras para decidir en segundos.</p></div>
-                <div class="benefit-item"><span class="benefit-icon">🔒</span><h3>Compra segura</h3><p>Todos los productos cuentan con la garantía de Amazon. Compra con confianza.</p></div>
-                <div class="benefit-item"><span class="benefit-icon">💬</span><h3>Opiniones reales</h3><p>Resumimos miles de reseñas de clientes para ahorrarte tiempo.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Ofertas de verdad</h3><p>Destacamos el descuento cuando existe, para que veas de un vistazo lo que te ahorras.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">💚</span><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter -->
-    <section class="newsletter" id="newsletter">
+    <!-- Llamada final -->
+    <section class="final-cta" id="empezar">
         <div class="container">
-            <h2>Recibe las mejores ofertas</h2>
-            <p>Suscríbete para recibir análisis exclusivos, guías de compra y descuentos especiales en tu correo.</p>
-            <form class="newsletter-form">
-                <input type="email" placeholder="Tu correo electrónico" required>
-                <button type="submit" class="btn btn-dark">Suscribirse</button>
-            </form>
+            <h2 data-reveal>Tu casa te lo va a agradecer</h2>
+            <p data-reveal>Abre la ficha del producto que te interese, mira sus características y compra en Amazon con la garantía de siempre.</p>
+            <div class="hero-actions" data-reveal>
+                <a href="#tienda" class="btn btn-dark">Explorar el catálogo <span class="arrow">→</span></a>
+            </div>
+            <p class="fineprint" data-reveal>Los precios y la disponibilidad los fija Amazon en el momento de la compra.</p>
         </div>
     </section>
 
@@ -341,15 +419,14 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="#inicio" class="logo">MiCasaPerfecta</a>
-                    <p>Tu tienda de referencia en productos para el hogar. Te ayudamos a crear espacios hermosos, cómodos y funcionales.</p>
+                    <p>Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
                 </div>
-                <div class="footer-section"><h4>Tienda</h4><a href="#tienda">Catálogo</a><a href="#beneficios">Nosotros</a><a href="#newsletter">Novedades</a><a href="#contacto">Contacto</a></div>
-                <div class="footer-section"><h4>Legal</h4><a href="#">Privacidad</a><a href="#">Términos</a><a href="#">Divulgación de afiliados</a><a href="#">Cookies</a></div>
-                <div class="footer-section"><h4>Síguenos</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">TikTok</a></div>
+                <div class="footer-section"><h4>Tienda</h4><a href="#tienda">Catálogo</a><a href="#beneficios">Cómo elegimos</a><a href="#empezar">Empezar</a></div>
+                <div class="footer-section"><h4>Legal</h4><a href="#aviso-afiliados">Divulgación de afiliados</a></div>
             </div>
             <div class="footer-bottom">
                 <span>© 2026 MiCasaPerfecta. Todos los derechos reservados.</span>
-                <span>Sitio de afiliación con Amazon Associates</span>
+                <span>Participante en el programa Amazon Associates</span>
             </div>
         </div>
     </footer>
@@ -709,33 +786,81 @@
         });
       });
 
-      // Menú superior (categorías destacadas)
-      const topMenu = document.getElementById("topMenu");
-      const extra = menuCats.map(c => `<a href="#tienda" data-cat="${c}">${c}</a>`).join("");
-      topMenu.innerHTML = `<a href="#tienda">Tienda</a>` + extra;
-      topMenu.querySelectorAll("a[data-cat]").forEach(a => {
+      // Los mismos enlaces alimentan el menú de escritorio y el de móvil.
+      const linksHTML = ["Todas", ...menuCats]
+        .map(c => `<a href="#tienda" data-cat="${c}">${c === "Todas" ? "Tienda" : c}</a>`)
+        .join("");
+      document.getElementById("topMenu").innerHTML = linksHTML;
+      document.getElementById("mobileMenu").innerHTML = linksHTML;
+
+      document.querySelectorAll("#topMenu a[data-cat], #mobileMenu a[data-cat]").forEach(a => {
         a.addEventListener("click", () => {
           activeCategory = a.dataset.cat;
           buildFilters();
           renderGrid();
+          closeMobileMenu();
         });
       });
+    }
+
+    /* ---------- Menú móvil ---------- */
+    const navToggle = document.getElementById("navToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Abrir menú");
+    }
+    navToggle.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+    });
+    // Al volver a escritorio, el menú móvil no debe quedarse abierto.
+    window.addEventListener("resize", () => { if (window.innerWidth > 860) closeMobileMenu(); });
+
+    /* ---------- Cifras del héroe (derivadas de los productos) ---------- */
+    function renderStats() {
+      document.getElementById("statCount").textContent = products.length;
+
+      const descuentos = products
+        .filter(p => typeof p.discountedPrice === "number" && p.discountedPrice < p.retailPrice)
+        .map(p => Math.round((1 - p.discountedPrice / p.retailPrice) * 100));
+
+      const wrap = document.getElementById("statDiscountWrap");
+      if (descuentos.length) {
+        document.getElementById("statDiscount").textContent = "−" + Math.max(...descuentos) + " %";
+      } else {
+        wrap.remove(); // sin ofertas, no presumimos de ellas
+      }
+    }
+
+    /* ---------- Aparición al hacer scroll ---------- */
+    function setupReveal() {
+      const els = document.querySelectorAll("[data-reveal]");
+      const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Si no hay soporte, el contenido se queda visible tal cual (nunca se oculta).
+      if (sinMovimiento || !("IntersectionObserver" in window)) return;
+
+      els.forEach(el => el.classList.add("reveal"));
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      els.forEach(el => io.observe(el));
     }
 
     /* ---------- Init ---------- */
     buildFilters();
     renderGrid();
+    renderStats();
+    setupReveal();
 
     // Navbar borde al hacer scroll
     const navbar = document.getElementById("navbar");
     window.addEventListener("scroll", () => navbar.classList.toggle("scrolled", window.scrollY > 20));
-
-    // Newsletter
-    document.querySelector(".newsletter-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      alert("¡Gracias por suscribirte! Revisa tu correo para confirmar.");
-      this.reset();
-    });
     </script>
 </body>
 </html>
