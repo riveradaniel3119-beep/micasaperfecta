@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiCasaPerfecta | Tienda de productos para el hogar</title>
-    <meta name="description" content="Tienda especializada en productos para el hogar. Fichas técnicas, comparativas, reseñas honestas y las mejores ofertas de Amazon.">
+    <title>MiCasaPerfecta_Hogar y Cocina</title>
+    <meta name="description" content="MiCasaPerfecta_Hogar y Cocina: selección de productos para el hogar y la cocina más vendidos en Amazon, con fichas claras y sin datos inventados.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -47,7 +47,8 @@
         }
         .navbar.scrolled { border-bottom: 1px solid var(--line); }
         .nav-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .logo { font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -.5px; color: var(--ink); text-decoration: none; }
+        .logo { font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -.5px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+        .logo-suffix { font-family: var(--sans); font-size: .5em; font-weight: 400; letter-spacing: 0; opacity: .6; }
         .nav-links { display: flex; align-items: center; gap: 30px; }
         .nav-links a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400; opacity: .75; transition: opacity .25s; }
         .nav-links a:hover { opacity: 1; }
@@ -149,7 +150,8 @@
         .product-image img { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease; }
         .product-card:hover .product-image img { transform: scale(1.06); }
         .product-image .placeholder {
-            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 74px;
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            font-family: var(--serif); font-size: 26px; color: var(--ink-50);
             background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream);
         }
 
@@ -157,7 +159,11 @@
         .card-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
         .tag { font-size: 12px; font-weight: 500; padding: 4px 11px; border-radius: 40px; background: rgba(22,25,44,.06); color: var(--ink-70); }
         .tag.brand { background: rgba(203, 242, 211, .5); color: #2f6b45; }
-        .tag.price-range { letter-spacing: 1px; }
+        /* Descripción en la tarjeta, recortada a 3 líneas para no descuadrar la rejilla. */
+        .card-desc {
+            font-size: 14.5px; color: var(--ink-70); line-height: 1.5; margin-bottom: 16px;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
 
         .product-title { font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.25; letter-spacing: -.3px; margin-bottom: 8px; }
         .ideal-para { font-size: 14px; color: var(--ink-50); margin-bottom: 14px; }
@@ -198,7 +204,7 @@
         .modal-hero { display: grid; grid-template-columns: 1fr 1fr; }
         .modal-img { min-height: 260px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; }
         .modal-img img { width: 100%; height: 100%; object-fit: contain; }
-        .modal-img .placeholder { font-size: 90px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
+        .modal-img .placeholder { font-family: var(--serif); font-size: 30px; color: var(--ink-50); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
         .modal-intro { padding: 40px 38px; }
         .modal-intro h3 { font-size: 32px; line-height: 1.1; margin: 12px 0; }
         .modal-editorial { font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--ink-70); margin: 16px 0 22px; }
@@ -211,12 +217,13 @@
         .specs li span:first-child { color: var(--ink-70); }
         .specs li span:last-child { font-weight: 500; text-align: right; }
 
-        .proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
-        .proscons ul { list-style: none; }
-        .proscons li { font-size: 15px; padding: 7px 0 7px 26px; position: relative; color: var(--ink-70); }
-        .pros li::before { content: '✓'; position: absolute; left: 0; color: #2f9e57; font-weight: 700; }
-        .cons li::before { content: '✕'; position: absolute; left: 0; color: #d15b5b; font-weight: 700; }
-        .proscons h5 { font-family: var(--sans); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+        /* ---------- Sobre este artículo ---------- */
+        .about { margin-bottom: 34px; }
+        .about-text { font-size: 16px; line-height: 1.65; color: var(--ink-70); margin-bottom: 18px; }
+        .about-list { list-style: none; }
+        .about-list li { font-size: 15px; line-height: 1.5; padding: 8px 0 8px 22px; position: relative; color: var(--ink-70); }
+        .about-list li::before { content: ''; position: absolute; left: 4px; top: 17px; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-50); }
+        .cons-list li::before { background: #d15b5b; }
 
         .radar-wrap { display: flex; flex-direction: column; align-items: center; }
         .radar-wrap svg { max-width: 240px; width: 100%; }
@@ -239,7 +246,6 @@
         .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .benefit-item { background: rgba(255, 255, 255, .7); border-radius: 18px; padding: 40px 32px; transition: transform .3s ease; }
         .benefit-item:hover { transform: translateY(-5px); }
-        .benefit-icon { font-size: 38px; margin-bottom: 20px; display: block; }
         .benefit-item h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 12px; }
         .benefit-item p { color: var(--ink-70); font-size: 16px; line-height: 1.55; }
 
@@ -313,9 +319,11 @@
             .modal-intro, .modal-body { padding-left: 22px; padding-right: 22px; }
         }
         @media (max-width: 560px) {
+            /* En la barra no cabe el nombre completo; en el pie sí. */
+            .navbar .logo { font-size: 22px; }
+            .navbar .logo-suffix { display: none; }
             .products-grid, .benefits-grid { grid-template-columns: 1fr; }
             .footer-content { grid-template-columns: 1fr; gap: 34px; }
-            .proscons { grid-template-columns: 1fr; }
             .hero h1 { font-size: clamp(38px, 11vw, 56px); }
             .trust-strip { flex-direction: column; align-items: center; gap: 12px; font-size: 14px; margin-top: 34px; }
             .hero-actions .btn { width: 100%; }
@@ -327,7 +335,7 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="container nav-inner">
-            <a href="#inicio" class="logo">MiCasaPerfecta</a>
+            <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix">_Hogar y Cocina</span></a>
             <div class="nav-links" id="topMenu">
                 <!-- enlaces de categoría inyectados por JS -->
             </div>
@@ -342,7 +350,7 @@
     <!-- Hero -->
     <section class="hero" id="inicio">
         <div class="container">
-            <span class="pill-badge" data-reveal>✦ Selección honesta para tu hogar</span>
+            <span class="pill-badge" data-reveal>Selección honesta para tu hogar</span>
             <h1 data-reveal>Lo mejor para tu casa, <em>sin perder horas buscando</em></h1>
             <p data-reveal>Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.</p>
             <div class="hero-actions" data-reveal>
@@ -350,9 +358,9 @@
                 <a href="#beneficios" class="btn btn-light">Cómo los elegimos</a>
             </div>
             <div class="trust-strip" data-reveal>
-                <span>🛍️ <strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
-                <span>🗂️ <strong id="statCats">—</strong>&nbsp;categorías</span>
-                <span>🔒 Precio y compra seguros en Amazon</span>
+                <span><strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
+                <span><strong id="statCats">—</strong>&nbsp;categorías</span>
+                <span>Precio y compra seguros en Amazon</span>
             </div>
         </div>
     </section>
@@ -384,12 +392,12 @@
                 <p>Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.</p>
             </div>
             <div class="benefits-grid">
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">💚</span><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
+                <div class="benefit-item" data-reveal><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
+                <div class="benefit-item" data-reveal><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
+                <div class="benefit-item" data-reveal><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
+                <div class="benefit-item" data-reveal><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
+                <div class="benefit-item" data-reveal><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
+                <div class="benefit-item" data-reveal><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
             </div>
         </div>
     </section>
@@ -411,7 +419,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <a href="#inicio" class="logo">MiCasaPerfecta</a>
+                    <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix">_Hogar y Cocina</span></a>
                     <p>Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
                 </div>
                 <div class="footer-section"><h4>Tienda</h4><a href="#tienda">Catálogo</a><a href="#beneficios">Cómo elegimos</a><a href="#empezar">Empezar</a></div>
@@ -446,7 +454,7 @@
        Automatización : asin (necesario para PA-API), disponible (false = agotado,
                         el producto se oculta del catálogo)
        Presentación   : description, image_url, marca, isFeatured,
-                        showInTopMenu, rango_precio (bajo|medio|alto)
+                        showInTopMenu
        Especificaciones: tipo_uso, tiempo_carga (nº), garantia_años (nº)
        Scores 0-10    : score_calidad_precio, score_autonomia, score_potencia
        Editorial      : ideal_para, pros ("a|b|c"), contras ("a|b"),
@@ -466,7 +474,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61MhrueTMIL._AC_SL1500_.jpg",
         marca: "JISULIFE",
-        rango_precio: "bajo",
         ideal_para: "Viajes, conciertos y días de calor",
         pros: "3 en 1: ventilador, power bank y linterna|Hasta 19 h de autonomía|Recargable por USB|Tamaño de bolsillo",
         destacado_editorial: "Un superventas de verano: refresca, carga tu móvil e ilumina, todo en un aparato de bolsillo."
@@ -480,7 +487,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/51MccBNXAAL._AC_SL1500_.jpg",
         marca: "Beckham Hotel Collection",
-        rango_precio: "medio",
         ideal_para: "Quienes buscan almohadas suaves estilo hotel",
         pros: "Pack de 2 almohadas|Relleno alternativo de plumón, tacto suave|Válidas para cualquier postura al dormir|Funda transpirable",
         destacado_editorial: "Las almohadas estilo hotel más vendidas de Amazon: suavidad tipo plumón, en cómodo pack de dos."
@@ -494,7 +500,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61Edpa9EBiL._AC_SL1500_.jpg",
         marca: "Conair",
-        rango_precio: "medio",
         ideal_para: "Quitar arrugas de la ropa al instante",
         pros: "Potencia de 1875W|Vapor turbo extremo|De mano y portátil|Listo para usar en pocos segundos",
         destacado_editorial: "Ropa lista sin tabla de planchar: vapor potente de mano, ideal para casa y viajes."
@@ -508,7 +513,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61DPgCC4HML._AC_SL1500_.jpg",
         marca: "Keurig",
-        rango_precio: "medio",
         ideal_para: "Café rápido de una sola dosis",
         pros: "Compatible con cápsulas K-Cup|3 tamaños de preparación|Depósito extraíble de 42 oz|Botón de preparación potente",
         destacado_editorial: "Café de cápsula en un minuto: práctica, compacta y con depósito grande de 42 oz."
@@ -522,7 +526,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/71+iJA0RGQL._AC_SL1500_.jpg",
         marca: "O-Cedar",
-        rango_precio: "bajo",
         ideal_para: "Limpiar suelos sin mojarte las manos",
         pros: "Escurrido con pedal, sin tocar el agua|Mopa de microfibra|Incluye cubo escurridor|Cabezal giratorio para esquinas",
         destacado_editorial: "La fregona giratoria más vendida: escurres con el pie y dejas el suelo casi seco."
@@ -536,7 +539,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/61o6SkL3DOL._AC_SL1500_.jpg",
         marca: "Sábanas de hotel",
-        rango_precio: "bajo",
         ideal_para: "Renovar la cama con tacto suave y fresco",
         pros: "Juego de 4 piezas (queen)|Tejido transpirable y refrescante|Bolsillos profundos, fácil de ajustar|Certificación Oeko-Tex",
         destacado_editorial: "Sábanas suaves tipo hotel a precio de entrada: frescas, sin arrugas y con certificación Oeko-Tex."
@@ -550,7 +552,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/711Q2PR+tmL._AC_SL1500_.jpg",
         marca: "Zevo",
-        rango_precio: "bajo",
         ideal_para: "Eliminar moscas y mosquitos en casa",
         pros: "Recambios oficiales Zevo|Compatibles con Zevo Trap y MAX|Atrapan moscas, mosquitos y mosca de la fruta|Pack de 4 cartuchos",
         destacado_editorial: "Recargas oficiales para tu trampa Zevo: mantén la casa libre de insectos voladores."
@@ -564,7 +565,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/81R9sA3IyBL._AC_SL1500_.jpg",
         marca: "COSORI",
-        rango_precio: "medio",
         valoracion_media: 4.8,
         resenas_cantidad: 20600,
         ideal_para: "Cocinar más rápido y con mucho menos aceite",
@@ -580,7 +580,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/510+fa1wg7L._AC_SL1500_.jpg",
         marca: "LEVOIT",
-        rango_precio: "medio",
         valoracion_media: 4.6,
         resenas_cantidad: 11150,
         ideal_para: "Dormir fresco sin que el ruido te despierte",
@@ -596,7 +595,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/914ufIDbM1L._AC_SL1500_.jpg",
         marca: "OLANLY",
-        rango_precio: "bajo",
         valoracion_media: 4.4,
         resenas_cantidad: 48858,
         ideal_para: "Salir de la ducha sin resbalar ni mojar el suelo",
@@ -612,7 +610,6 @@
         showInTopMenu: true,
         image_url: "https://m.media-amazon.com/images/I/71wc3h6XUrL._AC_SL1500_.jpg",
         marca: "Shark",
-        rango_precio: "alto",
         valoracion_media: 4.1,
         resenas_cantidad: 17808,
         ideal_para: "Casas con mascotas y poco tiempo para limpiar",
@@ -622,12 +619,6 @@
     ];
 
     /* ---------- Helpers de presentación ---------- */
-    const CATEGORY_ICON = {
-      "Limpieza": "🤖", "Cocina": "☕", "Iluminación": "💡",
-      "Salud": "🌬️", "Descanso": "🛏️", "Organización": "📦", "Tecnología": "🌀",
-      "Baño": "🛁"
-    };
-    const RANGE_LABEL = { bajo: "$", medio: "$$", alto: "$$$" };
     const USO_LABEL = { casa: "Casa", apartamento: "Apartamento", "interior/exterior": "Interior / Exterior" };
 
     const splitList = s => (s ? s.split("|").map(x => x.trim()).filter(Boolean) : []);
@@ -648,8 +639,7 @@
 
     // Imagen: si image_url está vacío -> placeholder (nunca imagen rota).
     function imageHTML(p, cls, placeholderCls) {
-      const icon = CATEGORY_ICON[p.category] || "🏠";
-      const ph = `<div class="${placeholderCls}">${icon}</div>`;
+      const ph = `<div class="${placeholderCls}">${p.category}</div>`;
       if (!p.image_url) return ph;
       // onerror: si la URL falla, se elimina la imagen y se muestra el placeholder.
       return `<img src="${p.image_url}" alt="${p.name}" class="${cls}"
@@ -692,13 +682,12 @@
     /* ---------- Render de tarjetas ---------- */
     function cardHTML(p, index) {
       return `<article class="product-card">
-        ${p.isFeatured ? '<span class="ribbon">★ Destacado</span>' : ''}
+        ${p.isFeatured ? '<span class="ribbon">Destacado</span>' : ''}
         <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
         <div class="product-content">
           <div class="card-badges">
             <span class="tag brand">${p.marca || p.category}</span>
             <span class="tag">${p.category}</span>
-            ${p.rango_precio ? `<span class="tag price-range">${RANGE_LABEL[p.rango_precio] || ""}</span>` : ""}
           </div>
           <h3 class="product-title">${p.name}</h3>
           ${p.ideal_para ? `<p class="ideal-para"><strong>Ideal para:</strong> ${p.ideal_para}</p>` : ""}
@@ -706,6 +695,7 @@
             ${starsHTML(p.valoracion_media)}
             <span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span>
           </div>` : ""}
+          ${p.description ? `<p class="card-desc">${p.description}</p>` : ""}
           <p class="price-note">Precio y disponibilidad actuales en Amazon</p>
           <div class="card-actions">
             <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
@@ -721,11 +711,11 @@
       const pros = splitList(p.pros), contras = splitList(p.contras);
       const hasScores = p.score_calidad_precio || p.score_autonomia || p.score_potencia;
 
+      // Ficha técnica: solo las filas que el producto tenga de verdad.
       const specs = [
         ["Marca", p.marca],
         ["Categoría", p.category],
         ["Tipo de uso", USO_LABEL[p.tipo_uso] || p.tipo_uso],
-        ["Rango de precio", p.rango_precio ? (RANGE_LABEL[p.rango_precio] + " (" + p.rango_precio + ")") : null],
         ["Tiempo de carga", (p.tiempo_carga ? p.tiempo_carga + " h" : null)],
         ["Garantía", (p["garantia_años"] ? p["garantia_años"] + " años" : null)]
       ].filter(r => r[1]);
@@ -747,9 +737,22 @@
           </div>
         </div>
         <div class="modal-body">
+          ${(p.description || pros.length) ? `
+          <div class="about">
+            <div class="block-title">Sobre este artículo</div>
+            ${p.description ? `<p class="about-text">${p.description}</p>` : ""}
+            ${pros.length ? `<ul class="about-list">${pros.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          </div>` : ""}
+
+          ${contras.length ? `
+          <div class="about">
+            <div class="block-title">Ten en cuenta</div>
+            <ul class="about-list cons-list">${contras.map(x => `<li>${x}</li>`).join("")}</ul>
+          </div>` : ""}
+
           <div class="${hasScores ? "grid-2" : ""}">
             <div>
-              <div class="block-title">Especificaciones</div>
+              <div class="block-title">Ficha técnica</div>
               <ul class="specs">
                 ${specs.map(r => `<li><span>${r[0]}</span><span>${r[1]}</span></li>`).join("")}
               </ul>
@@ -759,12 +762,6 @@
               <div class="radar-wrap">${radarSVG(p)}</div>
             </div>` : ""}
           </div>
-
-          ${(pros.length || contras.length) ? `
-          <div class="proscons">
-            ${pros.length ? `<div class="pros"><h5>✓ A favor</h5><ul>${pros.map(x => `<li>${x}</li>`).join("")}</ul></div>` : ""}
-            ${contras.length ? `<div class="cons"><h5>✕ En contra</h5><ul>${contras.map(x => `<li>${x}</li>`).join("")}</ul></div>` : ""}
-          </div>` : ""}
 
           ${p.resenas_resumen ? `
           <div class="reviews-box">
