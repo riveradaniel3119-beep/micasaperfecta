@@ -53,6 +53,17 @@
         .nav-links a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400; opacity: .75; transition: opacity .25s; }
         .nav-links a:hover { opacity: 1; }
 
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+
+        /* Selector de idioma ES / EN */
+        .lang-switch {
+            height: 46px; padding: 0 16px; border-radius: 40px; cursor: pointer;
+            border: 1px solid var(--line); background: #fff; color: var(--ink);
+            font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: .5px;
+            transition: border-color .2s, background .2s;
+        }
+        .lang-switch:hover { border-color: var(--ink); background: #f7f9fb; }
+
         /* Botón hamburguesa (solo móvil) */
         .nav-toggle {
             display: none; width: 46px; height: 46px; padding: 0; cursor: pointer;
@@ -335,14 +346,17 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="container nav-inner">
-            <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix">_Hogar y Cocina</span></a>
+            <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix" data-i18n="logo.suffix">_Hogar y Cocina</span></a>
             <div class="nav-links" id="topMenu">
                 <!-- enlaces de categoría inyectados por JS -->
             </div>
-            <a href="#tienda" class="btn btn-dark nav-cta">Ver tienda</a>
-            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
-                <span></span>
-            </button>
+            <div class="nav-right">
+                <button class="lang-switch" id="langSwitch" type="button"></button>
+                <a href="#tienda" class="btn btn-dark nav-cta" data-i18n="nav.cta">Ver tienda</a>
+                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu">
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
     <div class="mobile-menu" id="mobileMenu"><!-- mismos enlaces, inyectados por JS --></div>
@@ -350,17 +364,17 @@
     <!-- Hero -->
     <section class="hero" id="inicio">
         <div class="container">
-            <span class="pill-badge" data-reveal>✦ Selección honesta para tu hogar</span>
-            <h1 data-reveal>Lo mejor para tu casa, <em>sin perder horas buscando</em></h1>
-            <p data-reveal>Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.</p>
+            <span class="pill-badge" data-reveal data-i18n="hero.badge">✦ Selección honesta para tu hogar</span>
+            <h1 data-reveal data-i18n-html="hero.title">Lo mejor para tu casa, <em>sin perder horas buscando</em></h1>
+            <p data-reveal data-i18n="hero.sub">Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.</p>
             <div class="hero-actions" data-reveal>
-                <a href="#tienda" class="btn btn-dark">Ver los productos <span class="arrow">→</span></a>
-                <a href="#beneficios" class="btn btn-light">Cómo los elegimos</a>
+                <a href="#tienda" class="btn btn-dark"><span data-i18n="hero.cta1">Ver los productos</span> <span class="arrow">→</span></a>
+                <a href="#beneficios" class="btn btn-light" data-i18n="hero.cta2">Cómo los elegimos</a>
             </div>
             <div class="trust-strip" data-reveal>
-                <span>🛍️ <strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
-                <span>🗂️ <strong id="statCats">—</strong>&nbsp;categorías</span>
-                <span>🔒 Precio y compra seguros en Amazon</span>
+                <span>🛍️ <strong id="statCount">—</strong>&nbsp;<span data-i18n="trust.products">productos seleccionados</span></span>
+                <span>🗂️ <strong id="statCats">—</strong>&nbsp;<span data-i18n="trust.categories">categorías</span></span>
+                <span>🔒 <span data-i18n="trust.secure">Precio y compra seguros en Amazon</span></span>
             </div>
         </div>
     </section>
@@ -369,15 +383,15 @@
     <section class="section" id="tienda">
         <div class="container">
             <div class="section-head" data-reveal>
-                <span class="eyebrow">Catálogo</span>
-                <h2>Nuestra selección</h2>
-                <p>Filtra por categoría y abre la ficha de cada producto para ver sus características y puntos fuertes. Cuando lo tengas claro, compras en Amazon.</p>
+                <span class="eyebrow" data-i18n="shop.eyebrow">Catálogo</span>
+                <h2 data-i18n="shop.title">Nuestra selección</h2>
+                <p data-i18n="shop.sub">Filtra por categoría y abre la ficha de cada producto para ver sus características y puntos fuertes. Cuando lo tengas claro, compras en Amazon.</p>
             </div>
 
             <div class="filters" id="filters"><!-- chips por JS --></div>
             <div class="products-grid" id="productsGrid"><!-- tarjetas por JS --></div>
 
-            <div class="disclaimer" id="aviso-afiliados">
+            <div class="disclaimer" id="aviso-afiliados" data-i18n-html="shop.disclaimer">
                 <strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. No mostramos precios en esta web: el precio y la disponibilidad definitivos son siempre los que veas en Amazon en el momento de la compra.
             </div>
         </div>
@@ -387,17 +401,17 @@
     <section class="section benefits" id="beneficios">
         <div class="container">
             <div class="section-head" data-reveal>
-                <span class="eyebrow">Nuestra promesa</span>
-                <h2>Cómo elegimos lo que ves aquí</h2>
-                <p>Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.</p>
+                <span class="eyebrow" data-i18n="ben.eyebrow">Nuestra promesa</span>
+                <h2 data-i18n="ben.title">Cómo elegimos lo que ves aquí</h2>
+                <p data-i18n="ben.sub">Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.</p>
             </div>
             <div class="benefits-grid">
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
-                <div class="benefit-item" data-reveal><span class="benefit-icon">💚</span><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3 data-i18n="ben.1t">Solo superventas</h3><p data-i18n="ben.1p">Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3 data-i18n="ben.2t">Precio siempre real</h3><p data-i18n="ben.2p">No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3 data-i18n="ben.3t">Fichas claras</h3><p data-i18n="ben.3p">Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3 data-i18n="ben.4t">Envío de Amazon</h3><p data-i18n="ben.4p">Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3 data-i18n="ben.5t">Compra protegida</h3><p data-i18n="ben.5p">La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">💚</span><h3 data-i18n="ben.6t">Sin coste extra</h3><p data-i18n="ben.6p">Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
             </div>
         </div>
     </section>
@@ -405,12 +419,12 @@
     <!-- Llamada final -->
     <section class="final-cta" id="empezar">
         <div class="container">
-            <h2 data-reveal>Tu casa te lo va a agradecer</h2>
-            <p data-reveal>Abre la ficha del producto que te interese, mira sus características y compra en Amazon con la garantía de siempre.</p>
+            <h2 data-reveal data-i18n="cta.title">Tu casa te lo va a agradecer</h2>
+            <p data-reveal data-i18n="cta.sub">Abre la ficha del producto que te interese, mira sus características y compra en Amazon con la garantía de siempre.</p>
             <div class="hero-actions" data-reveal>
-                <a href="#tienda" class="btn btn-dark">Explorar el catálogo <span class="arrow">→</span></a>
+                <a href="#tienda" class="btn btn-dark"><span data-i18n="cta.btn">Explorar el catálogo</span> <span class="arrow">→</span></a>
             </div>
-            <p class="fineprint" data-reveal>Los precios y la disponibilidad los fija Amazon en el momento de la compra.</p>
+            <p class="fineprint" data-reveal data-i18n="cta.fine">Los precios y la disponibilidad los fija Amazon en el momento de la compra.</p>
         </div>
     </section>
 
@@ -419,15 +433,15 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix">_Hogar y Cocina</span></a>
-                    <p>Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
+                    <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix" data-i18n="logo.suffix">_Hogar y Cocina</span></a>
+                    <p data-i18n="foot.brand">Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
                 </div>
-                <div class="footer-section"><h4>Tienda</h4><a href="#tienda">Catálogo</a><a href="#beneficios">Cómo elegimos</a><a href="#empezar">Empezar</a></div>
-                <div class="footer-section"><h4>Legal</h4><a href="#aviso-afiliados">Divulgación de afiliados</a></div>
+                <div class="footer-section"><h4 data-i18n="foot.shop">Tienda</h4><a href="#tienda" data-i18n="foot.catalog">Catálogo</a><a href="#beneficios" data-i18n="foot.how">Cómo elegimos</a><a href="#empezar" data-i18n="foot.start">Empezar</a></div>
+                <div class="footer-section"><h4 data-i18n="foot.legal">Legal</h4><a href="#aviso-afiliados" data-i18n="foot.disclosure">Divulgación de afiliados</a></div>
             </div>
             <div class="footer-bottom">
-                <span>© 2026 MiCasaPerfecta. Todos los derechos reservados.</span>
-                <span>Participante en el programa Amazon Associates</span>
+                <span data-i18n="foot.rights">© 2026 MiCasaPerfecta. Todos los derechos reservados.</span>
+                <span data-i18n="foot.assoc">Participante en el programa Amazon Associates</span>
             </div>
         </div>
     </footer>
@@ -479,7 +493,14 @@
         resenas_cantidad: 77406,
         ideal_para: "Viajes, conciertos y días de calor",
         pros: "3 en 1: ventilador, power bank y linterna|Hasta 19 h de autonomía|Recargable por USB|Tamaño de bolsillo",
-        destacado_editorial: "Un superventas de verano: refresca, carga tu móvil e ilumina, todo en un aparato de bolsillo."
+        destacado_editorial: "Un superventas de verano: refresca, carga tu móvil e ilumina, todo en un aparato de bolsillo.",
+        en: {
+          name: "JISULIFE 3-in-1 Handheld Mini Fan (Blue)",
+          description: "Portable USB-rechargeable fan with a built-in power bank and flashlight. Up to 19 h of battery; perfect for travel, concerts and hot days.",
+          ideal_para: "Travel, concerts and hot days",
+          pros: "3 in 1: fan, power bank and flashlight|Up to 19 h of battery|USB rechargeable|Pocket-sized",
+          destacado_editorial: "A summer best seller: it cools you down, charges your phone and lights your way, all from your pocket."
+        }
       },
       {
         name: "Beckham Hotel Collection Almohadas (Pack de 2)",
@@ -495,7 +516,14 @@
         resenas_cantidad: 261347,
         ideal_para: "Quienes buscan almohadas suaves estilo hotel",
         pros: "Pack de 2 almohadas|Relleno alternativo de plumón, tacto suave|Válidas para cualquier postura al dormir|Funda transpirable",
-        destacado_editorial: "Las almohadas estilo hotel más vendidas de Amazon: suavidad tipo plumón, en cómodo pack de dos."
+        destacado_editorial: "Las almohadas estilo hotel más vendidas de Amazon: suavidad tipo plumón, en cómodo pack de dos.",
+        en: {
+          name: "Beckham Hotel Collection Pillows (Pack of 2)",
+          description: "Set of 2 down-alternative pillows with a soft, hotel-style feel. Suitable for back, side and stomach sleepers.",
+          ideal_para: "Anyone who wants soft, hotel-style pillows",
+          pros: "Pack of 2 pillows|Down-alternative fill, soft to the touch|Works for any sleeping position|Breathable cover",
+          destacado_editorial: "Amazon's best-selling hotel-style pillows: down-soft, in a handy two-pack."
+        }
       },
       {
         name: "Conair Turbo ExtremeSteam Vaporizador de Ropa de Mano 1875W (Azul)",
@@ -511,7 +539,14 @@
         resenas_cantidad: 24802,
         ideal_para: "Quitar arrugas de la ropa al instante",
         pros: "Potencia de 1875W|Vapor turbo extremo|De mano y portátil|Listo para usar en pocos segundos",
-        destacado_editorial: "Ropa lista sin tabla de planchar: vapor potente de mano, ideal para casa y viajes."
+        destacado_editorial: "Ropa lista sin tabla de planchar: vapor potente de mano, ideal para casa y viajes.",
+        en: {
+          name: "Conair Turbo ExtremeSteam Handheld Garment Steamer 1875W (Blue)",
+          description: "1875W handheld steamer with extreme turbo steam. Removes wrinkles from clothes in seconds, at home or on the road.",
+          ideal_para: "Getting wrinkles out of clothes instantly",
+          pros: "1875W of power|Extreme turbo steam|Handheld and portable|Ready to use in seconds",
+          destacado_editorial: "Wrinkle-free clothes without an ironing board: powerful handheld steam for home and travel."
+        }
       },
       {
         name: "Cafetera Keurig K-Express (cápsulas K-Cup)",
@@ -527,7 +562,14 @@
         resenas_cantidad: 49413,
         ideal_para: "Café rápido de una sola dosis",
         pros: "Compatible con cápsulas K-Cup|3 tamaños de preparación|Depósito extraíble de 42 oz|Botón de preparación potente",
-        destacado_editorial: "Café de cápsula en un minuto: práctica, compacta y con depósito grande de 42 oz."
+        destacado_editorial: "Café de cápsula en un minuto: práctica, compacta y con depósito grande de 42 oz.",
+        en: {
+          name: "Keurig K-Express Coffee Maker (K-Cup pods)",
+          description: "Single-serve coffee maker compatible with K-Cup pods. Three brew sizes and a removable 42 oz reservoir.",
+          ideal_para: "Fast single-serve coffee",
+          pros: "Works with K-Cup pods|3 brew sizes|Removable 42 oz reservoir|Strong brew button",
+          destacado_editorial: "Pod coffee in a minute: practical, compact and with a generous 42 oz reservoir."
+        }
       },
       {
         name: "Fregona Giratoria O-Cedar EasyWring con Cubo Escurridor",
@@ -543,7 +585,14 @@
         resenas_cantidad: 194331,
         ideal_para: "Limpiar suelos sin mojarte las manos",
         pros: "Escurrido con pedal, sin tocar el agua|Mopa de microfibra|Incluye cubo escurridor|Cabezal giratorio para esquinas",
-        destacado_editorial: "La fregona giratoria más vendida: escurres con el pie y dejas el suelo casi seco."
+        destacado_editorial: "La fregona giratoria más vendida: escurres con el pie y dejas el suelo casi seco.",
+        en: {
+          name: "O-Cedar EasyWring Spin Mop with Bucket",
+          description: "Mopping system with bucket and foot-pedal wringing. Microfiber mop head and spin action to clean floors without wetting your hands.",
+          ideal_para: "Cleaning floors without wetting your hands",
+          pros: "Pedal wringing, never touch the water|Microfiber mop head|Wringer bucket included|Spinning head reaches corners",
+          destacado_editorial: "The best-selling spin mop: wring it with your foot and leave the floor almost dry."
+        }
       },
       {
         name: "Juego de Sábanas Queen 4 Piezas (Blanco, Oeko-Tex)",
@@ -559,7 +608,15 @@
         resenas_cantidad: 445121,
         ideal_para: "Renovar la cama con tacto suave y fresco",
         pros: "Juego de 4 piezas (queen)|Tejido transpirable y refrescante|Bolsillos profundos, fácil de ajustar|Certificación Oeko-Tex",
-        destacado_editorial: "Sábanas suaves tipo hotel a precio de entrada: frescas, sin arrugas y con certificación Oeko-Tex."
+        destacado_editorial: "Sábanas suaves tipo hotel a precio de entrada: frescas, sin arrugas y con certificación Oeko-Tex.",
+        en: {
+          name: "Queen Sheet Set, 4 Pieces (White, Oeko-Tex)",
+          marca: "Hotel-style sheets",
+          description: "Four-piece set with a soft, breathable feel. Deep pockets, easy to fit and Oeko-Tex certified.",
+          ideal_para: "Refreshing your bed with a soft, cool feel",
+          pros: "4-piece set (queen)|Breathable, cooling fabric|Deep pockets, easy to fit|Oeko-Tex certified",
+          destacado_editorial: "Soft hotel-style sheets at an entry price: cool, wrinkle-free and Oeko-Tex certified."
+        }
       },
       {
         name: "Zevo Recambios para Trampa de Insectos (4 cartuchos)",
@@ -575,7 +632,14 @@
         resenas_cantidad: 33038,
         ideal_para: "Eliminar moscas y mosquitos en casa",
         pros: "Recambios oficiales Zevo|Compatibles con Zevo Trap y MAX|Atrapan moscas, mosquitos y mosca de la fruta|Pack de 4 cartuchos",
-        destacado_editorial: "Recargas oficiales para tu trampa Zevo: mantén la casa libre de insectos voladores."
+        destacado_editorial: "Recargas oficiales para tu trampa Zevo: mantén la casa libre de insectos voladores.",
+        en: {
+          name: "Zevo Flying Insect Trap Refill Cartridges (4-pack)",
+          description: "Official refill cartridges compatible with the Zevo Trap and MAX. They catch flies, mosquitoes and fruit flies.",
+          ideal_para: "Getting rid of flies and mosquitoes at home",
+          pros: "Official Zevo refills|Fit the Zevo Trap and MAX|Catch flies, mosquitoes and fruit flies|Pack of 4 cartridges",
+          destacado_editorial: "Official refills for your Zevo trap: keep the house free of flying insects."
+        }
       },
       {
         name: "COSORI TurboBlaze Freidora de Aire 9 en 1 (6 Qt)",
@@ -591,7 +655,14 @@
         resenas_cantidad: 20600,
         ideal_para: "Cocinar más rápido y con mucho menos aceite",
         pros: "9 funciones en un solo aparato|Capacidad amplia de 6 cuartos|Revestimiento cerámico premium|Rango preciso de 90 °F a 450 °F",
-        destacado_editorial: "Una sola máquina que sustituye a media cocina: fríe sin aceite, hornea, asa y deshidrata."
+        destacado_editorial: "Una sola máquina que sustituye a media cocina: fríe sin aceite, hornea, asa y deshidrata.",
+        en: {
+          name: "COSORI TurboBlaze 9-in-1 Air Fryer (6 Qt)",
+          description: "Six-quart air fryer with nine functions: air fry, roast, bake, grill, dehydrate and more. Premium ceramic coating and a 90 °F to 450 °F range for even cooking.",
+          ideal_para: "Cooking faster with far less oil",
+          pros: "9 functions in a single appliance|Roomy 6-quart capacity|Premium ceramic coating|Precise 90 °F to 450 °F range",
+          destacado_editorial: "One machine that replaces half your kitchen: it air-fries, bakes, roasts and dehydrates."
+        }
       },
       {
         name: "LEVOIT Ventilador de Torre Silencioso 36\" (sin aspas)",
@@ -607,7 +678,14 @@
         resenas_cantidad: 11150,
         ideal_para: "Dormir fresco sin que el ruido te despierte",
         pros: "Modo silencioso de 28 dB|Oscilación de 90°|5 velocidades y 4 modos|Temporizador de 12 h y mando a distancia",
-        destacado_editorial: "Refresca el dormitorio sin ruido: a 28 dB es más silencioso que un susurro."
+        destacado_editorial: "Refresca el dormitorio sin ruido: a 28 dB es más silencioso que un susurro.",
+        en: {
+          name: "LEVOIT 36\" Quiet Bladeless Tower Fan",
+          description: "36-inch bladeless tower fan with 90° oscillation and a 28 dB quiet mode made for sleeping. Five speeds, four modes, a 12-hour timer and a remote control.",
+          ideal_para: "Sleeping cool without the noise waking you",
+          pros: "28 dB quiet mode|90° oscillation|5 speeds and 4 modes|12-hour timer and remote control",
+          destacado_editorial: "Cools the bedroom silently: at 28 dB it is quieter than a whisper."
+        }
       },
       {
         name: "OLANLY Alfombra de Baño de Chenilla (30 x 20 pulgadas)",
@@ -623,7 +701,14 @@
         resenas_cantidad: 48858,
         ideal_para: "Salir de la ducha sin resbalar ni mojar el suelo",
         pros: "Chenilla extra suave y absorbente|Base de goma antideslizante|Se seca rápido|Lavable a máquina",
-        destacado_editorial: "Suave al pisar y seca en un momento: el detalle barato que cambia un baño."
+        destacado_editorial: "Suave al pisar y seca en un momento: el detalle barato que cambia un baño.",
+        en: {
+          name: "OLANLY Chenille Bath Mat (30 x 20 inches)",
+          description: "Extra-soft, highly absorbent chenille bath mat. Non-slip rubber backing, quick drying and machine washable.",
+          ideal_para: "Stepping out of the shower without slipping",
+          pros: "Extra-soft, absorbent chenille|Non-slip rubber backing|Dries quickly|Machine washable",
+          destacado_editorial: "Soft underfoot and dry in no time: the cheap detail that transforms a bathroom."
+        }
       },
       {
         name: "Shark AV2501AE Robot Aspirador con Base Autovaciante",
@@ -639,9 +724,194 @@
         resenas_cantidad: 17808,
         ideal_para: "Casas con mascotas y poco tiempo para limpiar",
         pros: "Base autovaciante XL para hasta 60 días|Filtro HEPA sin bolsa|Navegación LIDAR|Compatible con Alexa y Wi-Fi",
-        destacado_editorial: "Se vacía solo durante dos meses: lo enciendes, se olvida de ti y tú de él."
+        destacado_editorial: "Se vacía solo durante dos meses: lo enciendes, se olvida de ti y tú de él.",
+        en: {
+          name: "Shark AV2501AE Robot Vacuum with Self-Empty Base",
+          description: "Robot vacuum with LIDAR navigation and a bagless XL self-empty base with a HEPA filter, holding up to 60 days of debris. Built for pet hair; works over Wi-Fi and with Alexa.",
+          ideal_para: "Homes with pets and little time to clean",
+          pros: "XL self-empty base for up to 60 days|Bagless HEPA filter|LIDAR navigation|Works with Alexa and Wi-Fi",
+          destacado_editorial: "It empties itself for two months: switch it on, and you both forget about each other."
+        }
       }
     ];
+
+    /* =====================================================================
+       IDIOMAS (es / en)
+       ---------------------------------------------------------------------
+       Traducción propia, sin servicios externos. Se elige por el idioma del
+       navegador y el visitante puede cambiarla con el botón ES/EN.
+       Las claves de `category` siguen siendo las españolas (son el ID de la
+       colección); solo se traduce lo que se muestra.
+       ===================================================================== */
+    const T = {
+      es: {
+        "title": "MiCasaPerfecta_Hogar y Cocina",
+        "metaDesc": "MiCasaPerfecta_Hogar y Cocina: selección de productos para el hogar y la cocina más vendidos en Amazon, con fichas claras y sin datos inventados.",
+        "logo.suffix": "_Hogar y Cocina",
+        "nav.cta": "Ver tienda",
+        "nav.shop": "Tienda",
+        "nav.open": "Abrir menú",
+        "nav.close": "Cerrar menú",
+        "hero.badge": "✦ Selección honesta para tu hogar",
+        "hero.title": "Lo mejor para tu casa, <em>sin perder horas buscando</em>",
+        "hero.sub": "Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.",
+        "hero.cta1": "Ver los productos",
+        "hero.cta2": "Cómo los elegimos",
+        "trust.products": "productos seleccionados",
+        "trust.categories": "categorías",
+        "trust.secure": "Precio y compra seguros en Amazon",
+        "shop.eyebrow": "Catálogo",
+        "shop.title": "Nuestra selección",
+        "shop.sub": "Filtra por categoría y abre la ficha de cada producto para ver sus características y puntos fuertes. Cuando lo tengas claro, compras en Amazon.",
+        "shop.disclaimer": "<strong>Aviso de afiliados:</strong> MiCasaPerfecta participa en el programa de Amazon Associates. Los enlaces a productos son enlaces de afiliado; si compras a través de ellos, recibimos una pequeña comisión sin coste adicional para ti. No mostramos precios en esta web: el precio y la disponibilidad definitivos son siempre los que veas en Amazon en el momento de la compra.",
+        "ben.eyebrow": "Nuestra promesa",
+        "ben.title": "Cómo elegimos lo que ves aquí",
+        "ben.sub": "Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.",
+        "ben.1t": "Solo superventas",
+        "ben.1p": "Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.",
+        "ben.2t": "Precio siempre real",
+        "ben.2p": "No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.",
+        "ben.3t": "Fichas claras",
+        "ben.3p": "Características y puntos a favor resumidos, sin relleno ni datos inventados.",
+        "ben.4t": "Envío de Amazon",
+        "ben.4p": "Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.",
+        "ben.5t": "Compra protegida",
+        "ben.5p": "La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.",
+        "ben.6t": "Sin coste extra",
+        "ben.6p": "Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.",
+        "cta.title": "Tu casa te lo va a agradecer",
+        "cta.sub": "Abre la ficha del producto que te interese, mira sus características y compra en Amazon con la garantía de siempre.",
+        "cta.btn": "Explorar el catálogo",
+        "cta.fine": "Los precios y la disponibilidad los fija Amazon en el momento de la compra.",
+        "foot.brand": "Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.",
+        "foot.shop": "Tienda",
+        "foot.catalog": "Catálogo",
+        "foot.how": "Cómo elegimos",
+        "foot.start": "Empezar",
+        "foot.legal": "Legal",
+        "foot.disclosure": "Divulgación de afiliados",
+        "foot.rights": "© 2026 MiCasaPerfecta. Todos los derechos reservados.",
+        "foot.assoc": "Participante en el programa Amazon Associates",
+        "all": "Todas",
+        "featured": "★ Destacado",
+        "idealFor": "Ideal para:",
+        "reviews": "reseñas",
+        "priceNote": "Precio y disponibilidad actuales en Amazon",
+        "seePrice": "Ver precio en Amazon",
+        "seeDetails": "Ver ficha completa",
+        "about": "Sobre este artículo",
+        "keepInMind": "Ten en cuenta",
+        "specs": "Ficha técnica",
+        "performance": "Rendimiento",
+        "spec.brand": "Marca",
+        "spec.category": "Categoría",
+        "spec.use": "Tipo de uso",
+        "spec.charge": "Tiempo de carga",
+        "spec.warranty": "Garantía",
+        "hours": "h",
+        "years": "años",
+        "basedOn": "Basado en",
+        "opinions": "opiniones",
+        "close": "Cerrar",
+        "radar": ["Calidad-precio", "Autonomía", "Potencia"],
+        "switchTo": "Switch to English"
+      },
+      en: {
+        "title": "MiCasaPerfecta_Home & Kitchen",
+        "metaDesc": "MiCasaPerfecta_Home & Kitchen: a hand-picked selection of Amazon's best-selling home and kitchen products, with clear details and no made-up data.",
+        "logo.suffix": "_Home & Kitchen",
+        "nav.cta": "Shop now",
+        "nav.shop": "Shop",
+        "nav.open": "Open menu",
+        "nav.close": "Close menu",
+        "hero.badge": "✦ Honest picks for your home",
+        "hero.title": "The best for your home, <em>without hours of searching</em>",
+        "hero.sub": "We track Amazon's best sellers in home and kitchen, and keep only the ones worth your money. You choose, you buy on Amazon, and that's it.",
+        "hero.cta1": "See the products",
+        "hero.cta2": "How we choose them",
+        "trust.products": "products selected",
+        "trust.categories": "categories",
+        "trust.secure": "Secure price and checkout on Amazon",
+        "shop.eyebrow": "Catalog",
+        "shop.title": "Our selection",
+        "shop.sub": "Filter by category and open any product to see its features and strengths. Once you've decided, you buy on Amazon.",
+        "shop.disclaimer": "<strong>Affiliate disclosure:</strong> MiCasaPerfecta is a participant in the Amazon Associates Program. Product links are affiliate links; if you buy through them we earn a small commission at no extra cost to you. We do not display prices on this site: the final price and availability are always the ones you see on Amazon at the time of purchase.",
+        "ben.eyebrow": "Our promise",
+        "ben.title": "How we choose what you see here",
+        "ben.sub": "A few products, carefully chosen. We would rather recommend six good things than six hundred mediocre ones.",
+        "ben.1t": "Best sellers only",
+        "ben.1p": "We start from Amazon's best-selling home and kitchen products, not from random names.",
+        "ben.2t": "Always the real price",
+        "ben.2p": "We don't freeze prices that go stale. You see the amount and the stock on Amazon, updated to the second.",
+        "ben.3t": "Clear details",
+        "ben.3p": "Features and strengths, summarised, with no filler and no invented data.",
+        "ben.4t": "Amazon shipping",
+        "ben.4p": "You buy on Amazon, with their delivery times and Prime benefits if you're a member.",
+        "ben.5t": "Protected purchase",
+        "ben.5p": "The transaction happens on Amazon: their guarantee, their customer service and their returns.",
+        "ben.6t": "No extra cost",
+        "ben.6p": "We earn a small commission from Amazon. It doesn't cost you a single cent more.",
+        "cta.title": "Your home will thank you",
+        "cta.sub": "Open the product you're interested in, look at its features and buy on Amazon with the guarantee you already trust.",
+        "cta.btn": "Browse the catalog",
+        "cta.fine": "Prices and availability are set by Amazon at the time of purchase.",
+        "foot.brand": "We pick home products that are genuinely worth it, so you can build spaces that are comfortable, beautiful and practical.",
+        "foot.shop": "Shop",
+        "foot.catalog": "Catalog",
+        "foot.how": "How we choose",
+        "foot.start": "Get started",
+        "foot.legal": "Legal",
+        "foot.disclosure": "Affiliate disclosure",
+        "foot.rights": "© 2026 MiCasaPerfecta. All rights reserved.",
+        "foot.assoc": "Participant in the Amazon Associates Program",
+        "all": "All",
+        "featured": "★ Featured",
+        "idealFor": "Great for:",
+        "reviews": "reviews",
+        "priceNote": "Current price and availability on Amazon",
+        "seePrice": "See price on Amazon",
+        "seeDetails": "See full details",
+        "about": "About this item",
+        "keepInMind": "Keep in mind",
+        "specs": "Specs",
+        "performance": "Performance",
+        "spec.brand": "Brand",
+        "spec.category": "Category",
+        "spec.use": "Type of use",
+        "spec.charge": "Charging time",
+        "spec.warranty": "Warranty",
+        "hours": "h",
+        "years": "years",
+        "basedOn": "Based on",
+        "opinions": "reviews",
+        "close": "Close",
+        "radar": ["Value", "Battery life", "Power"],
+        "switchTo": "Cambiar a español"
+      }
+    };
+
+    // Etiquetas visibles de las categorías. La clave interna sigue en español.
+    const CAT_EN = {
+      "Limpieza": "Cleaning", "Cocina": "Kitchen", "Iluminación": "Lighting",
+      "Salud": "Health", "Descanso": "Sleep", "Organización": "Storage",
+      "Tecnología": "Tech", "Baño": "Bath"
+    };
+
+    function detectLang() {
+      try {
+        const guardado = localStorage.getItem("lang");
+        if (guardado === "es" || guardado === "en") return guardado;
+      } catch (e) { /* modo privado: seguimos con el idioma del navegador */ }
+      const nav = (navigator.languages && navigator.languages[0]) || navigator.language || "es";
+      return nav.toLowerCase().startsWith("es") ? "es" : "en";
+    }
+
+    let lang = detectLang();
+
+    const S = k => (T[lang] && T[lang][k] !== undefined ? T[lang][k] : T.es[k]);
+    const tp = (p, campo) => (lang === "en" && p.en && p.en[campo]) ? p.en[campo] : p[campo];
+    const catLabel = c => (lang === "en" ? (CAT_EN[c] || c) : c);
+    const nf = n => Number(n || 0).toLocaleString(lang === "en" ? "en-US" : "es-ES");
 
     /* ---------- Helpers de presentación ---------- */
     // Solo se ve si la imagen de Amazon no carga; nunca sobre la foto real.
@@ -689,7 +959,7 @@
     function imageHTML(p, cls, placeholderCls) {
       const icon = CATEGORY_ICON[p.category] || "🏠";
       if (!p.image_url) return `<div class="${placeholderCls}">${icon}</div>`;
-      return `<img src="${escAttr(p.image_url)}" alt="${escAttr(p.name)}" class="${cls}"
+      return `<img src="${escAttr(p.image_url)}" alt="${escAttr(tp(p, "name"))}" class="${cls}"
                 data-icon="${escAttr(icon)}" data-ph="${escAttr(placeholderCls)}"
                 onerror="imgFallback(this)">`;
     }
@@ -701,7 +971,7 @@
         Number(p.score_autonomia) || 0,
         Number(p.score_potencia) || 0
       ];
-      const labels = ["Calidad-precio", "Autonomía", "Potencia"];
+      const labels = S("radar");
       const cx = size / 2, cy = size / 2, R = size / 2 - 40;
       const ang = [-90, 30, 150].map(d => d * Math.PI / 180);
       const pt = (val, i) => [cx + Math.cos(ang[i]) * R * (val / 10), cy + Math.sin(ang[i]) * R * (val / 10)];
@@ -730,24 +1000,24 @@
     /* ---------- Render de tarjetas ---------- */
     function cardHTML(p, index) {
       return `<article class="product-card">
-        ${p.isFeatured ? '<span class="ribbon">★ Destacado</span>' : ''}
+        ${p.isFeatured ? `<span class="ribbon">${S("featured")}</span>` : ''}
         <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
         <div class="product-content">
           <div class="card-badges">
-            <span class="tag brand">${p.marca || p.category}</span>
-            <span class="tag">${p.category}</span>
+            <span class="tag brand">${tp(p, "marca") || catLabel(p.category)}</span>
+            <span class="tag">${catLabel(p.category)}</span>
           </div>
-          <h3 class="product-title">${p.name}</h3>
-          ${p.ideal_para ? `<p class="ideal-para"><strong>Ideal para:</strong> ${p.ideal_para}</p>` : ""}
+          <h3 class="product-title">${tp(p, "name")}</h3>
+          ${tp(p, "ideal_para") ? `<p class="ideal-para"><strong>${S("idealFor")}</strong> ${tp(p, "ideal_para")}</p>` : ""}
           ${p.valoracion_media ? `<div class="rating">
             ${starsHTML(p.valoracion_media)}
-            <span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span>
+            <span class="count">${p.valoracion_media} · ${nf(p.resenas_cantidad)} ${S("reviews")}</span>
           </div>` : ""}
-          ${p.description ? `<p class="card-desc">${p.description}</p>` : ""}
-          <p class="price-note">Precio y disponibilidad actuales en Amazon</p>
+          ${tp(p, "description") ? `<p class="card-desc">${tp(p, "description")}</p>` : ""}
+          <p class="price-note">${S("priceNote")}</p>
           <div class="card-actions">
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
-            <button class="link-ficha" onclick="openModal(${index})">Ver ficha completa</button>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
+            <button class="link-ficha" onclick="openModal(${index})">${S("seeDetails")}</button>
           </div>
         </div>
       </article>`;
@@ -756,72 +1026,73 @@
     /* ---------- Modal ficha completa ---------- */
     function openModal(index) {
       const p = products[index];
-      const pros = splitList(p.pros), contras = splitList(p.contras);
+      const pros = splitList(tp(p, "pros")), contras = splitList(tp(p, "contras"));
       const hasScores = p.score_calidad_precio || p.score_autonomia || p.score_potencia;
+      const descripcion = tp(p, "description");
 
       // Ficha técnica: solo las filas que el producto tenga de verdad.
       const specs = [
-        ["Marca", p.marca],
-        ["Categoría", p.category],
-        ["Tipo de uso", USO_LABEL[p.tipo_uso] || p.tipo_uso],
-        ["Tiempo de carga", (p.tiempo_carga ? p.tiempo_carga + " h" : null)],
-        ["Garantía", (p["garantia_años"] ? p["garantia_años"] + " años" : null)]
+        [S("spec.brand"), tp(p, "marca")],
+        [S("spec.category"), catLabel(p.category)],
+        [S("spec.use"), USO_LABEL[p.tipo_uso] || p.tipo_uso],
+        [S("spec.charge"), (p.tiempo_carga ? p.tiempo_carga + " " + S("hours") : null)],
+        [S("spec.warranty"), (p["garantia_años"] ? p["garantia_años"] + " " + S("years") : null)]
       ].filter(r => r[1]);
 
       document.getElementById("modalContent").innerHTML = `
-        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+        <button class="modal-close" onclick="closeModal()" aria-label="${escAttr(S("close"))}">✕</button>
         <div class="modal-hero">
           <div class="modal-img">${imageHTML(p, "", "placeholder")}</div>
           <div class="modal-intro">
             <div class="card-badges">
-              <span class="tag brand">${p.marca || p.category}</span>
-              <span class="tag">${p.category}</span>
+              <span class="tag brand">${tp(p, "marca") || catLabel(p.category)}</span>
+              <span class="tag">${catLabel(p.category)}</span>
             </div>
-            <h3>${p.name}</h3>
-            ${p.valoracion_media ? `<div class="rating">${starsHTML(p.valoracion_media)}<span class="count">${p.valoracion_media} · ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} reseñas</span></div>` : ""}
-            ${p.destacado_editorial ? `<p class="modal-editorial">“${p.destacado_editorial}”</p>` : ""}
-            <p class="price-note">Precio y disponibilidad actuales en Amazon</p>
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
+            <h3>${tp(p, "name")}</h3>
+            ${p.valoracion_media ? `<div class="rating">${starsHTML(p.valoracion_media)}<span class="count">${p.valoracion_media} · ${nf(p.resenas_cantidad)} ${S("reviews")}</span></div>` : ""}
+            ${tp(p, "destacado_editorial") ? `<p class="modal-editorial">“${tp(p, "destacado_editorial")}”</p>` : ""}
+            <p class="price-note">${S("priceNote")}</p>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="modal-body">
-          ${(p.description || pros.length) ? `
+          ${(descripcion || pros.length) ? `
           <div class="about">
-            <div class="block-title">Sobre este artículo</div>
-            ${p.description ? `<p class="about-text">${p.description}</p>` : ""}
+            <div class="block-title">${S("about")}</div>
+            ${descripcion ? `<p class="about-text">${descripcion}</p>` : ""}
             ${pros.length ? `<ul class="about-list">${pros.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
           </div>` : ""}
 
           ${contras.length ? `
           <div class="about">
-            <div class="block-title">Ten en cuenta</div>
+            <div class="block-title">${S("keepInMind")}</div>
             <ul class="about-list cons-list">${contras.map(x => `<li>${x}</li>`).join("")}</ul>
           </div>` : ""}
 
           <div class="${hasScores ? "grid-2" : ""}">
             <div>
-              <div class="block-title">Ficha técnica</div>
+              <div class="block-title">${S("specs")}</div>
               <ul class="specs">
                 ${specs.map(r => `<li><span>${r[0]}</span><span>${r[1]}</span></li>`).join("")}
               </ul>
             </div>
             ${hasScores ? `<div>
-              <div class="block-title">Rendimiento</div>
+              <div class="block-title">${S("performance")}</div>
               <div class="radar-wrap">${radarSVG(p)}</div>
             </div>` : ""}
           </div>
 
-          ${p.resenas_resumen ? `
+          ${tp(p, "resenas_resumen") ? `
           <div class="reviews-box">
             <div class="reviews-head">
               <span class="reviews-score">${p.valoracion_media}</span>
-              <div>${starsHTML(p.valoracion_media)}<div class="count" style="font-size:13px;color:var(--ink-50)">Basado en ${(p.resenas_cantidad || 0).toLocaleString("es-ES")} opiniones</div></div>
+              <div>${starsHTML(p.valoracion_media)}<div class="count" style="font-size:13px;color:var(--ink-50)">${S("basedOn")} ${nf(p.resenas_cantidad)} ${S("opinions")}</div></div>
             </div>
-            <p class="reviews-summary">${p.resenas_resumen}</p>
+            <p class="reviews-summary">${tp(p, "resenas_resumen")}</p>
           </div>` : ""}
 
           <div class="modal-footer">
-            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">Ver precio en Amazon <span class="arrow">→</span></a>
+            <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
           </div>
         </div>`;
 
@@ -859,8 +1130,9 @@
 
       const filters = document.getElementById("filters");
       const all = ["Todas", ...menuCats];
+      // data-cat guarda siempre la clave española; solo la etiqueta se traduce.
       filters.innerHTML = all.map(c =>
-        `<button class="chip ${c === activeCategory ? "active" : ""}" data-cat="${c}">${c}</button>`
+        `<button class="chip ${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${c === "Todas" ? S("all") : catLabel(c)}</button>`
       ).join("");
       filters.querySelectorAll(".chip").forEach(chip => {
         chip.addEventListener("click", () => {
@@ -871,8 +1143,8 @@
       });
 
       // Los mismos enlaces alimentan el menú de escritorio y el de móvil.
-      const linksHTML = ["Todas", ...menuCats]
-        .map(c => `<a href="#tienda" data-cat="${c}">${c === "Todas" ? "Tienda" : c}</a>`)
+      const linksHTML = all
+        .map(c => `<a href="#tienda" data-cat="${escAttr(c)}">${c === "Todas" ? S("nav.shop") : catLabel(c)}</a>`)
         .join("");
       document.getElementById("topMenu").innerHTML = linksHTML;
       document.getElementById("mobileMenu").innerHTML = linksHTML;
@@ -894,15 +1166,45 @@
     function closeMobileMenu() {
       mobileMenu.classList.remove("open");
       navToggle.setAttribute("aria-expanded", "false");
-      navToggle.setAttribute("aria-label", "Abrir menú");
+      navToggle.setAttribute("aria-label", S("nav.open"));
     }
     navToggle.addEventListener("click", () => {
       const isOpen = mobileMenu.classList.toggle("open");
       navToggle.setAttribute("aria-expanded", String(isOpen));
-      navToggle.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+      navToggle.setAttribute("aria-label", isOpen ? S("nav.close") : S("nav.open"));
     });
     // Al volver a escritorio, el menú móvil no debe quedarse abierto.
     window.addEventListener("resize", () => { if (window.innerWidth > 860) closeMobileMenu(); });
+
+    /* ---------- Cambio de idioma ---------- */
+    const langSwitch = document.getElementById("langSwitch");
+
+    // Textos estáticos: los marcados con data-i18n (texto) y data-i18n-html (con marcado).
+    function applyStaticText() {
+      document.documentElement.lang = lang;
+      document.title = S("title");
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", S("metaDesc"));
+
+      document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = S(el.dataset.i18n); });
+      document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = S(el.dataset.i18nHtml); });
+
+      navToggle.setAttribute("aria-label", mobileMenu.classList.contains("open") ? S("nav.close") : S("nav.open"));
+      langSwitch.textContent = (lang === "es") ? "EN" : "ES";
+      langSwitch.setAttribute("aria-label", S("switchTo"));
+    }
+
+    function setLang(nuevo) {
+      lang = nuevo;
+      try { localStorage.setItem("lang", lang); } catch (e) { /* modo privado */ }
+      closeModal();
+      applyStaticText();
+      buildFilters();
+      renderGrid();
+      renderStats();
+    }
+
+    langSwitch.addEventListener("click", () => setLang(lang === "es" ? "en" : "es"));
 
     /* ---------- Cifras del héroe (derivadas de los productos) ---------- */
     function renderStats() {
@@ -927,6 +1229,7 @@
     }
 
     /* ---------- Init ---------- */
+    applyStaticText(); // primero el idioma: el resto del render depende de él
     buildFilters();
     renderGrid();
     renderStats();
