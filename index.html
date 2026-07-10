@@ -150,8 +150,7 @@
         .product-image img { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease; }
         .product-card:hover .product-image img { transform: scale(1.06); }
         .product-image .placeholder {
-            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-            font-family: var(--serif); font-size: 26px; color: var(--ink-50);
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 74px;
             background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream);
         }
 
@@ -204,7 +203,7 @@
         .modal-hero { display: grid; grid-template-columns: 1fr 1fr; }
         .modal-img { min-height: 260px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; }
         .modal-img img { width: 100%; height: 100%; object-fit: contain; }
-        .modal-img .placeholder { font-family: var(--serif); font-size: 30px; color: var(--ink-50); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
+        .modal-img .placeholder { font-size: 90px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, var(--lime), transparent 55%), var(--cream); }
         .modal-intro { padding: 40px 38px; }
         .modal-intro h3 { font-size: 32px; line-height: 1.1; margin: 12px 0; }
         .modal-editorial { font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--ink-70); margin: 16px 0 22px; }
@@ -246,6 +245,7 @@
         .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .benefit-item { background: rgba(255, 255, 255, .7); border-radius: 18px; padding: 40px 32px; transition: transform .3s ease; }
         .benefit-item:hover { transform: translateY(-5px); }
+        .benefit-icon { font-size: 38px; margin-bottom: 20px; display: block; }
         .benefit-item h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 12px; }
         .benefit-item p { color: var(--ink-70); font-size: 16px; line-height: 1.55; }
 
@@ -350,7 +350,7 @@
     <!-- Hero -->
     <section class="hero" id="inicio">
         <div class="container">
-            <span class="pill-badge" data-reveal>Selección honesta para tu hogar</span>
+            <span class="pill-badge" data-reveal>✦ Selección honesta para tu hogar</span>
             <h1 data-reveal>Lo mejor para tu casa, <em>sin perder horas buscando</em></h1>
             <p data-reveal>Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.</p>
             <div class="hero-actions" data-reveal>
@@ -358,9 +358,9 @@
                 <a href="#beneficios" class="btn btn-light">Cómo los elegimos</a>
             </div>
             <div class="trust-strip" data-reveal>
-                <span><strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
-                <span><strong id="statCats">—</strong>&nbsp;categorías</span>
-                <span>Precio y compra seguros en Amazon</span>
+                <span>🛍️ <strong id="statCount">—</strong>&nbsp;productos seleccionados</span>
+                <span>🗂️ <strong id="statCats">—</strong>&nbsp;categorías</span>
+                <span>🔒 Precio y compra seguros en Amazon</span>
             </div>
         </div>
     </section>
@@ -392,12 +392,12 @@
                 <p>Pocos productos, bien escogidos. Preferimos recomendarte seis cosas buenas antes que seiscientas mediocres.</p>
             </div>
             <div class="benefits-grid">
-                <div class="benefit-item" data-reveal><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
-                <div class="benefit-item" data-reveal><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
-                <div class="benefit-item" data-reveal><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
-                <div class="benefit-item" data-reveal><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
-                <div class="benefit-item" data-reveal><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
-                <div class="benefit-item" data-reveal><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔎</span><h3>Solo superventas</h3><p>Partimos de los productos más vendidos de Amazon en hogar y cocina, no de nombres al azar.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🏷️</span><h3>Precio siempre real</h3><p>No congelamos precios que envejecen. El importe y el stock los ves en Amazon, actualizados al segundo.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">📋</span><h3>Fichas claras</h3><p>Características y puntos a favor resumidos, sin relleno ni datos inventados.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🚚</span><h3>Envío de Amazon</h3><p>Compras en Amazon, con sus tiempos de entrega y ventajas de Prime si eres miembro.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">🔒</span><h3>Compra protegida</h3><p>La transacción ocurre en Amazon: su garantía, su atención al cliente y sus devoluciones.</p></div>
+                <div class="benefit-item" data-reveal><span class="benefit-icon">💚</span><h3>Sin coste extra</h3><p>Ganamos una pequeña comisión de Amazon. A ti no te cuesta ni un céntimo más.</p></div>
             </div>
         </div>
     </section>
@@ -644,6 +644,12 @@
     ];
 
     /* ---------- Helpers de presentación ---------- */
+    // Solo se ve si la imagen de Amazon no carga; nunca sobre la foto real.
+    const CATEGORY_ICON = {
+      "Limpieza": "🤖", "Cocina": "☕", "Iluminación": "💡",
+      "Salud": "🌬️", "Descanso": "🛏️", "Organización": "📦", "Tecnología": "🌀",
+      "Baño": "🛁"
+    };
     const USO_LABEL = { casa: "Casa", apartamento: "Apartamento", "interior/exterior": "Interior / Exterior" };
 
     const splitList = s => (s ? s.split("|").map(x => x.trim()).filter(Boolean) : []);
@@ -662,13 +668,30 @@
       return `<span class="stars">★★★★★<span class="fill" style="width:${pct}%">★★★★★</span></span>`;
     }
 
+    // Escapa un texto para poder meterlo dentro de un atributo HTML.
+    // Imprescindible: hay nombres con comillas dobles, p. ej. el LEVOIT de 36".
+    const escAttr = s => String(s ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // Se llama desde onerror. Construye el placeholder con el DOM, no con
+    // cadenas de HTML dentro de un atributo (eso rompía el marcado).
+    function imgFallback(img) {
+      const div = document.createElement("div");
+      div.className = img.dataset.ph || "placeholder";
+      div.textContent = img.dataset.icon || "";
+      img.replaceWith(div);
+    }
+
     // Imagen: si image_url está vacío -> placeholder (nunca imagen rota).
     function imageHTML(p, cls, placeholderCls) {
-      const ph = `<div class="${placeholderCls}">${p.category}</div>`;
-      if (!p.image_url) return ph;
-      // onerror: si la URL falla, se elimina la imagen y se muestra el placeholder.
-      return `<img src="${p.image_url}" alt="${p.name}" class="${cls}"
-                onerror="this.outerHTML='${ph.replace(/'/g, "\\'")}'">`;
+      const icon = CATEGORY_ICON[p.category] || "🏠";
+      if (!p.image_url) return `<div class="${placeholderCls}">${icon}</div>`;
+      return `<img src="${escAttr(p.image_url)}" alt="${escAttr(p.name)}" class="${cls}"
+                data-icon="${escAttr(icon)}" data-ph="${escAttr(placeholderCls)}"
+                onerror="imgFallback(this)">`;
     }
 
     // Gráfico radar (3 ejes) a partir de los scores 0-10.
@@ -707,7 +730,7 @@
     /* ---------- Render de tarjetas ---------- */
     function cardHTML(p, index) {
       return `<article class="product-card">
-        ${p.isFeatured ? '<span class="ribbon">Destacado</span>' : ''}
+        ${p.isFeatured ? '<span class="ribbon">★ Destacado</span>' : ''}
         <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
         <div class="product-content">
           <div class="card-badges">
