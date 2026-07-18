@@ -1051,6 +1051,88 @@
           pros: "XL self-empty base for up to 60 days|Bagless HEPA filter|LIDAR navigation|Works with Alexa and Wi-Fi",
           destacado_editorial: "It empties itself for two months: switch it on, and you both forget about each other."
         }
+      },
+      {
+        name: "CAROTE Juego de Sartenes Antiadherentes (apto inducción)",
+        description: "Juego de sartenes con revestimiento antiadherente, compatibles con cocinas de inducción. Incluye utensilios de cocina.",
+        affiliate_link: "https://amzn.to/44CrC5a",
+        isFeatured: false,
+        category: "Cocina",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/71ZhyN5XrTL._AC_SL1500_.jpg",
+        marca: "CAROTE",
+        asin: "B0DGLVW188",
+        ideal_para: "Renovar la batería de cocina, también en inducción",
+        pros: "Revestimiento antiadherente|Compatible con inducción|Incluye utensilios",
+        destacado_editorial: "Renovar las sartenes es de las mejoras más baratas que se notan cada día en la cocina.",
+        en: {
+          name: "CAROTE Nonstick Cookware Set (induction compatible)",
+          description: "Set of nonstick pans compatible with induction cooktops. Kitchen utensils included.",
+          ideal_para: "Refreshing your cookware, induction included",
+          pros: "Nonstick coating|Induction compatible|Utensils included",
+          destacado_editorial: "New pans are one of the cheapest upgrades you notice every single day in the kitchen."
+        }
+      },
+      {
+        name: "Limpiador a Vapor de Mano con Accesorios Ajustables",
+        description: "Limpiador a vapor con varios accesorios ajustables para limpiar suelos, azulejos, juntas y tapicería usando solo agua.",
+        affiliate_link: "https://amzn.to/4wbjB31",
+        isFeatured: false,
+        category: "Limpieza",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/710EPs-7hML._AC_SX679_.jpg",
+        asin: "B0FR4NZN55",
+        ideal_para: "Limpiar a fondo sin productos químicos",
+        pros: "Limpia con vapor, sin químicos|Accesorios ajustables|Sirve para varias superficies",
+        destacado_editorial: "El vapor llega donde la bayeta no: juntas, azulejos y rincones, solo con agua.",
+        en: {
+          name: "Handheld Steam Cleaner with Adjustable Accessories",
+          description: "Steam cleaner with several adjustable attachments for floors, tiles, grout and upholstery, using only water.",
+          ideal_para: "Deep cleaning without chemicals",
+          pros: "Cleans with steam, no chemicals|Adjustable attachments|Works on several surfaces",
+          destacado_editorial: "Steam reaches where a cloth can't: grout, tiles and corners, with nothing but water."
+        }
+      },
+      {
+        name: "DREO Ventilador con Temporizador y Varias Velocidades",
+        description: "Ventilador con varias velocidades y temporizador programable, para ajustar la ventilación y que se apague solo.",
+        affiliate_link: "https://amzn.to/4b2xKXV",
+        isFeatured: false,
+        category: "Tecnología",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/71aFnr3iJXL._AC_SY879_.jpg",
+        marca: "DREO",
+        asin: "B0DQDQVTT3",
+        ideal_para: "Refrescar una habitación y que se apague solo",
+        pros: "Varias velocidades|Temporizador programable",
+        destacado_editorial: "Con temporizador te duermes fresco y no amaneces con el ventilador encendido.",
+        en: {
+          name: "DREO Fan with Timer and Multiple Speeds",
+          description: "Fan with multiple speeds and a programmable timer, so you can fine-tune the airflow and let it switch off on its own.",
+          ideal_para: "Cooling a room and letting it switch itself off",
+          pros: "Multiple speeds|Programmable timer",
+          destacado_editorial: "With a timer you fall asleep cool and don't wake up to a fan still running."
+        }
+      },
+      {
+        name: "Juego de Cubiertos de Acero Inoxidable",
+        description: "Juego de cubiertos de acero inoxidable, resistente y apto para lavavajillas.",
+        affiliate_link: "https://amzn.to/4fpOY2I",
+        isFeatured: false,
+        category: "Cocina",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/715zK8PNSHL._AC_SX679_.jpg",
+        asin: "B08B39ZH5M",
+        ideal_para: "Equipar la mesa o regalar en una inauguración",
+        pros: "Acero inoxidable resistente|Apto para lavavajillas",
+        destacado_editorial: "Unos cubiertos que aguantan el lavavajillas a diario y no se manchan con el tiempo.",
+        en: {
+          name: "Stainless Steel Flatware Set",
+          description: "Stainless steel flatware set, durable and dishwasher safe.",
+          ideal_para: "Setting the table or as a housewarming gift",
+          pros: "Durable stainless steel|Dishwasher safe",
+          destacado_editorial: "Flatware that survives the dishwasher daily and doesn't stain over time."
+        }
       }
     ];
 
@@ -1444,7 +1526,7 @@
         <div class="product-image">${imageHTML(p, "", "placeholder")}</div>
         <div class="product-content">
           <div class="card-badges">
-            <span class="tag brand">${tp(p, "marca") || catLabel(p.category)}</span>
+            ${tp(p, "marca") ? `<span class="tag brand">${tp(p, "marca")}</span>` : ""}
             <span class="tag">${catLabel(p.category)}</span>
           </div>
           <h3 class="product-title">${tp(p, "name")}</h3>
@@ -1485,7 +1567,7 @@
           <div class="modal-img">${imageHTML(p, "", "placeholder")}</div>
           <div class="modal-intro">
             <div class="card-badges">
-              <span class="tag brand">${tp(p, "marca") || catLabel(p.category)}</span>
+              ${tp(p, "marca") ? `<span class="tag brand">${tp(p, "marca")}</span>` : ""}
               <span class="tag">${catLabel(p.category)}</span>
             </div>
             <h3>${tp(p, "name")}</h3>
