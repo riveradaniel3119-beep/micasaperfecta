@@ -304,6 +304,35 @@
         .specs li span:first-child { color: var(--ink-70); }
         .specs li span:last-child { font-weight: 500; text-align: right; }
 
+        /* ---------- Guías de compra (acordeón) ---------- */
+        .guides { display: grid; gap: 16px; max-width: 880px; margin: 0 auto; }
+        .guide { border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow: hidden; }
+        .guide summary {
+            cursor: pointer; padding: 26px 30px; list-style: none;
+            font-family: var(--serif); font-size: 21px; font-weight: 500; line-height: 1.3;
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+            transition: color .2s;
+        }
+        .guide summary::-webkit-details-marker { display: none; }
+        .guide summary::after {
+            content: '+'; flex: none; font-family: var(--sans); font-size: 28px;
+            font-weight: 300; line-height: 1; color: var(--tan);
+        }
+        .guide[open] summary::after { content: '−'; }
+        .guide summary:hover { color: var(--tan-dark); }
+        .guide[open] { box-shadow: 0 20px 44px -34px rgba(28, 31, 38, .5); }
+
+        .guide-body { padding: 0 30px 30px; }
+        .guide-body p { color: var(--ink-70); font-size: 16px; margin-bottom: 16px; }
+        .guide-body h4 { font-family: var(--sans); font-size: 15px; font-weight: 600; margin: 26px 0 10px; }
+        .guide-body ul { list-style: none; margin-bottom: 16px; }
+        .guide-body li { position: relative; padding: 6px 0 6px 20px; color: var(--ink-70); font-size: 15.5px; line-height: 1.55; }
+        .guide-body li::before {
+            content: ''; position: absolute; left: 2px; top: 15px;
+            width: 5px; height: 5px; border-radius: 50%; background: var(--tan);
+        }
+        .guide-body strong { color: var(--ink); font-weight: 600; }
+
         /* ---------- Sobre este artículo ---------- */
         .about { margin-bottom: 34px; }
         .about-text { font-size: 16px; line-height: 1.65; color: var(--ink-70); margin-bottom: 18px; }
@@ -596,6 +625,116 @@
         </div>
     </section>
 
+    <!-- Guías de compra.
+         El texto en español vive aquí (para que Google lo lea directamente);
+         la versión en inglés está en el diccionario, bajo data-i18n-en. -->
+    <section class="section alt" id="guias">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <span class="eyebrow" data-i18n="guides.eyebrow">Guías de compra</span>
+                <h2 data-i18n="guides.title">Antes de comprar, léete esto</h2>
+                <hr class="rule center">
+                <p data-i18n="guides.sub">Guías breves y sin humo para acertar a la primera, escritas para que decidas tú.</p>
+            </div>
+
+            <div class="guides">
+                <details class="guide" data-reveal>
+                    <summary data-i18n="g1.title">Cómo elegir una freidora de aire sin arrepentirte</summary>
+                    <div class="guide-body" data-i18n-en="g1.body">
+                        <p>Una freidora de aire no fríe de verdad: hace circular aire muy caliente a gran velocidad alrededor de la comida. El resultado se parece al del horno, pero mucho más rápido y con una fracción del aceite. Antes de comprar una, estos son los puntos que de verdad importan.</p>
+
+                        <h4>1. La capacidad es lo que más se nota</h4>
+                        <p>Es el error más común: comprar pequeño para «ahorrar espacio» y acabar cocinando en dos tandas cada noche.</p>
+                        <ul>
+                            <li><strong>Hasta 3 cuartos (unos 3 litros):</strong> para una o dos personas, y para guarniciones.</li>
+                            <li><strong>De 5 a 6 cuartos:</strong> el punto dulce para una familia de tres o cuatro.</li>
+                            <li><strong>Más de 7 cuartos:</strong> solo si cocinas para cinco o más, o piezas grandes como un pollo entero.</li>
+                        </ul>
+                        <p>Ojo: la capacidad anunciada es la de la cesta, no la de comida aprovechable. Los alimentos deben quedar en una sola capa para que el aire circule y se doren bien.</p>
+
+                        <h4>2. Muchas funciones, pocas imprescindibles</h4>
+                        <p>Verás modelos «9 en 1» o «12 en 1». En la práctica se usan tres o cuatro: freír al aire, hornear, asar y recalentar. Deshidratar o fermentar solo valen la pena si ya sabes que las vas a usar. No pagues de más por una lista larga; mira que las funciones básicas estén bien resueltas.</p>
+
+                        <h4>3. El revestimiento decide cuánto te dura</h4>
+                        <p>La cesta sufre mucho: calor alto, roces y lavados constantes. Un revestimiento cerámico de calidad aguanta mejor el tiempo que los antiadherentes más baratos. Comprueba también si la cesta va al lavavajillas: es la diferencia entre usarla a diario o dejarla arrinconada.</p>
+
+                        <h4>4. El rango de temperatura</h4>
+                        <p>Un rango amplio (aproximadamente de 90 °F a 450 °F, unos 30 °C a 230 °C) te permite tanto deshidratar a baja temperatura como dorar de verdad. Si el máximo se queda corto, la comida sale hecha pero pálida.</p>
+
+                        <h4>5. Ruido y sitio en la encimera</h4>
+                        <p>Todas hacen ruido de ventilador, así que no es un factor diferencial. Lo que sí molesta a largo plazo es el tamaño: mide tu encimera antes de comprar y recuerda que necesita unos centímetros libres por detrás para expulsar el aire caliente.</p>
+
+                        <p><strong>En resumen:</strong> prioriza capacidad y revestimiento por encima del número de funciones. En nuestra selección tienes la COSORI TurboBlaze de 6 cuartos, que cubre el tamaño más versátil y monta revestimiento cerámico.</p>
+                    </div>
+                </details>
+
+                <details class="guide" data-reveal>
+                    <summary data-i18n="g2.title">Robot aspirador: ¿merece la pena la base autovaciante?</summary>
+                    <div class="guide-body" data-i18n-en="g2.body">
+                        <p>Un robot aspirador no sustituye a una limpieza a fondo, pero evita que el polvo y el pelo se acumulen entre limpiezas. La diferencia de precio entre modelos se explica casi siempre por tres cosas: cómo navega, si se vacía solo y qué filtro monta.</p>
+
+                        <h4>1. La navegación es la diferencia real</h4>
+                        <ul>
+                            <li><strong>Aleatoria (por rebote):</strong> los modelos más baratos van chocando y cambiando de rumbo. Acaban limpiando, pero tardan mucho y dejan zonas sin pasar.</li>
+                            <li><strong>LIDAR o mapeo láser:</strong> el robot construye un mapa de la casa y limpia en líneas ordenadas. Es más rápido, más completo y te deja marcar zonas prohibidas desde la aplicación.</li>
+                        </ul>
+                        <p>Si solo vas a comprar uno, el mapeo es la mejora que más se nota en el día a día.</p>
+
+                        <h4>2. La base autovaciante: qué resuelve y qué no</h4>
+                        <p>El depósito de un robot es pequeño; sin base hay que vaciarlo casi cada día, y ahí es donde mucha gente deja de usarlo. Una base autovaciante aspira ese contenido a un depósito grande y te permite olvidarte durante semanas.</p>
+                        <p>Lo que <em>no</em> resuelve: sigue habiendo mantenimiento. Hay que limpiar los cepillos, sobre todo si hay pelo largo en casa. Las bases sin bolsa te ahorran el gasto en recambios, pero hay que lavarlas de vez en cuando.</p>
+
+                        <h4>3. Con mascotas: filtro y cepillos</h4>
+                        <p>Si tienes perro o gato, fíjate en dos cosas. Un filtro <strong>HEPA</strong>, que retiene partículas finas y ayuda si hay alergias en casa. Y unos cepillos diseñados para no enredarse: el pelo largo enrollado en el cepillo es la avería más habitual de estos aparatos.</p>
+
+                        <h4>4. Alfombras, umbrales y escaleras</h4>
+                        <p>Prácticamente ningún robot sube escalones, así que si tu casa tiene varias plantas tendrás que subirlo tú. Comprueba también la altura que es capaz de salvar: los umbrales altos y las alfombras gruesas son la causa más común de que se quede atascado.</p>
+
+                        <h4>5. Lo que nadie te cuenta</h4>
+                        <p>Un robot funciona mucho mejor con el suelo despejado. Cables, calcetines y juguetes son sus enemigos. Si tienes que recoger media casa antes de encenderlo, acabarás usándolo poco.</p>
+
+                        <p><strong>En resumen:</strong> si el presupuesto llega, prioriza mapeo láser y base autovaciante; son las dos cosas que hacen que de verdad lo dejes trabajando solo. En nuestra selección está el Shark AV2501AE, que combina ambas.</p>
+                    </div>
+                </details>
+
+                <details class="guide" data-reveal>
+                    <summary data-i18n="g3.title">Dormir mejor: cómo acertar con la almohada y las sábanas</summary>
+                    <div class="guide-body" data-i18n-en="g3.body">
+                        <p>Se puede gastar mucho en un colchón y seguir durmiendo mal por culpa de una almohada equivocada o unas sábanas que dan calor. Son las dos compras más baratas cuyo efecto se nota más rápido.</p>
+
+                        <h4>1. Tu postura al dormir manda</h4>
+                        <ul>
+                            <li><strong>De lado:</strong> necesitas una almohada alta y firme, que rellene el hueco entre el hombro y la cabeza y mantenga el cuello alineado.</li>
+                            <li><strong>Boca arriba:</strong> altura media. Si es demasiado alta, empuja la barbilla contra el pecho.</li>
+                            <li><strong>Boca abajo:</strong> almohada muy baja y blanda, o directamente ninguna. Es la postura que más carga el cuello.</li>
+                        </ul>
+                        <p>Si compartes cama y dormís en posturas distintas, no compréis «la misma almohada para los dos»: es la receta del dolor cervical.</p>
+
+                        <h4>2. El relleno: cada uno sirve para algo</h4>
+                        <ul>
+                            <li><strong>Plumón alternativo (fibra):</strong> blando, mullido y normalmente lavable. Se adapta bien y es la opción cómoda para la mayoría. Hay que ahuecarlo de vez en cuando.</li>
+                            <li><strong>Viscoelástica:</strong> sujeta más y no se hunde. Buena si tienes molestias cervicales, pero da algo más de calor y suele oler los primeros días.</li>
+                        </ul>
+
+                        <h4>3. Sábanas: el tejido importa más que el número de hilos</h4>
+                        <p>El «número de hilos» está muy inflado por el marketing y no es un buen indicador por sí solo. Fíjate mejor en el tipo de tejido y en si se describe como transpirable. Si sueles pasar calor por la noche, prioriza eso antes que un número alto.</p>
+
+                        <h4>4. Bolsillo profundo: mide tu colchón</h4>
+                        <p>Es el fallo más frecuente al comprar sábanas. Mide el grosor de tu colchón, incluido el topper si lo tienes, y comprueba que la sábana bajera lo cubre. Si te quedas corto, se saldrá cada noche.</p>
+
+                        <h4>5. La certificación Oeko-Tex</h4>
+                        <p>Es un sello que indica que el textil se ha analizado para descartar ciertas sustancias nocivas. No mide la comodidad, pero es una garantía razonable, sobre todo si tienes la piel sensible o las sábanas van a una cama infantil.</p>
+
+                        <h4>6. La temperatura de la habitación</h4>
+                        <p>Se duerme mejor con la habitación fresca. Antes de plantearte cambiar de colchón, prueba a bajar la temperatura: un ventilador silencioso arregla más noches malas que un edredón caro. Mira el nivel de ruido en decibelios; por debajo de 30 dB se considera apto para dormir.</p>
+
+                        <p><strong>En resumen:</strong> elige la almohada según tu postura, las sábanas por transpirabilidad y bolsillo, y controla la temperatura del cuarto. En nuestra selección tienes almohadas de plumón alternativo, un juego de sábanas con certificación Oeko-Tex y un ventilador de torre de 28 dB.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <!-- Llamada final -->
     <section class="final-cta" id="empezar">
         <div class="container">
@@ -616,7 +755,7 @@
                     <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix" data-i18n="logo.suffix">_Hogar y Cocina</span></a>
                     <p data-i18n="foot.brand">Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
                 </div>
-                <div class="footer-section"><h4 data-i18n="foot.shop">Tienda</h4><a href="#tienda" data-i18n="foot.catalog">Catálogo</a><a href="#beneficios" data-i18n="foot.how">Cómo elegimos</a><a href="#empezar" data-i18n="foot.start">Empezar</a></div>
+                <div class="footer-section"><h4 data-i18n="foot.shop">Tienda</h4><a href="#tienda" data-i18n="foot.catalog">Catálogo</a><a href="#guias" data-i18n="nav.guides">Guías</a><a href="#beneficios" data-i18n="foot.how">Cómo elegimos</a><a href="#empezar" data-i18n="foot.start">Empezar</a></div>
                 <div class="footer-section"><h4 data-i18n="foot.legal">Legal</h4><a href="#aviso-afiliados" data-i18n="foot.disclosure">Divulgación de afiliados</a></div>
             </div>
             <div class="footer-bottom">
@@ -947,6 +1086,13 @@
         "cats.sub": "Cada categoría reúne solo lo que de verdad merece la pena para esa parte de tu casa.",
         "cats.one": "producto",
         "cats.many": "productos",
+        "nav.guides": "Guías",
+        "guides.eyebrow": "Guías de compra",
+        "guides.title": "Antes de comprar, léete esto",
+        "guides.sub": "Guías breves y sin humo para acertar a la primera, escritas para que decidas tú.",
+        "g1.title": "Cómo elegir una freidora de aire sin arrepentirte",
+        "g2.title": "Robot aspirador: ¿merece la pena la base autovaciante?",
+        "g3.title": "Dormir mejor: cómo acertar con la almohada y las sábanas",
         "hero.badge": "Selección honesta para tu hogar",
         "hero.title": "Lo mejor para tu casa, <em>sin perder horas buscando</em>",
         "hero.sub": "Rastreamos los superventas de Amazon en hogar y cocina, y nos quedamos solo con los que valen la pena. Tú eliges, compras en Amazon, y listo.",
@@ -1033,6 +1179,92 @@
         "cats.sub": "Each category holds only what is genuinely worth it for that part of your home.",
         "cats.one": "product",
         "cats.many": "products",
+        "nav.guides": "Guides",
+        "guides.eyebrow": "Buying guides",
+        "guides.title": "Read this before you buy",
+        "guides.sub": "Short, no-nonsense guides to get it right the first time, written so you can decide for yourself.",
+        "g1.title": "How to choose an air fryer without regretting it",
+        "g2.title": "Robot vacuums: is a self-empty base worth it?",
+        "g3.title": "Sleep better: choosing the right pillow and sheets",
+        "g1.body": `
+          <p>An air fryer doesn't really fry: it circulates very hot air around the food at high speed. The result is closer to an oven, but much faster and with a fraction of the oil. Before you buy one, these are the points that actually matter.</p>
+
+          <h4>1. Capacity is what you'll notice most</h4>
+          <p>This is the most common mistake: buying small to "save space" and ending up cooking in two batches every night.</p>
+          <ul>
+            <li><strong>Up to 3 quarts:</strong> for one or two people, and for side dishes.</li>
+            <li><strong>5 to 6 quarts:</strong> the sweet spot for a family of three or four.</li>
+            <li><strong>Over 7 quarts:</strong> only if you cook for five or more, or for large cuts like a whole chicken.</li>
+          </ul>
+          <p>Careful: the advertised capacity is the basket's, not the amount of usable food. Ingredients need to sit in a single layer so the air can circulate and brown them properly.</p>
+
+          <h4>2. Many functions, few essential ones</h4>
+          <p>You'll see "9-in-1" or "12-in-1" models. In practice you'll use three or four: air fry, bake, roast and reheat. Dehydrating or proofing only pay off if you already know you'll use them. Don't overpay for a long list; check that the basics are done well.</p>
+
+          <h4>3. The coating decides how long it lasts</h4>
+          <p>The basket takes a beating: high heat, scraping and constant washing. A quality ceramic coating holds up over time better than cheaper non-stick surfaces. Also check whether the basket is dishwasher safe — that's the difference between using it daily and leaving it in a cupboard.</p>
+
+          <h4>4. Temperature range</h4>
+          <p>A wide range (roughly 90 °F to 450 °F) lets you both dehydrate at low temperatures and properly brown food. If the maximum falls short, food comes out cooked but pale.</p>
+
+          <h4>5. Noise and counter space</h4>
+          <p>They all make fan noise, so it isn't a deciding factor. What does bother you long term is the size: measure your counter first, and remember it needs a few inches of clearance behind it to vent hot air.</p>
+
+          <p><strong>In short:</strong> prioritise capacity and coating over the number of functions. In our selection you'll find the 6-quart COSORI TurboBlaze, which covers the most versatile size and uses a ceramic coating.</p>`,
+        "g2.body": `
+          <p>A robot vacuum won't replace a deep clean, but it stops dust and hair from piling up between cleans. The price gap between models almost always comes down to three things: how it navigates, whether it empties itself, and what filter it uses.</p>
+
+          <h4>1. Navigation is the real difference</h4>
+          <ul>
+            <li><strong>Random (bump and turn):</strong> cheaper models bounce around changing direction. They do clean eventually, but they take a long time and miss areas.</li>
+            <li><strong>LIDAR or laser mapping:</strong> the robot builds a map of your home and cleans in orderly lines. It's faster, more thorough, and lets you set no-go zones from the app.</li>
+          </ul>
+          <p>If you're only going to buy one, mapping is the upgrade you'll notice most day to day.</p>
+
+          <h4>2. The self-empty base: what it solves and what it doesn't</h4>
+          <p>A robot's onboard bin is small; without a base you have to empty it almost daily, and that's where most people stop using it. A self-empty base pulls that debris into a large container so you can forget about it for weeks.</p>
+          <p>What it does <em>not</em> solve: there's still maintenance. You have to clean the brushes, especially with long hair in the house. Bagless bases save you money on refills, but they need washing now and then.</p>
+
+          <h4>3. With pets: filter and brushes</h4>
+          <p>If you have a dog or a cat, look at two things. A <strong>HEPA</strong> filter, which traps fine particles and helps if anyone has allergies. And brushes designed not to tangle: long hair wrapped around the brush is the most common failure with these machines.</p>
+
+          <h4>4. Rugs, thresholds and stairs</h4>
+          <p>Almost no robot climbs steps, so if your home has several floors you'll be carrying it. Also check the height it can clear: high thresholds and thick rugs are the most common reason one gets stuck.</p>
+
+          <h4>5. What nobody tells you</h4>
+          <p>A robot works far better on a clear floor. Cables, socks and toys are its enemies. If you have to tidy half the house before switching it on, you'll end up barely using it.</p>
+
+          <p><strong>In short:</strong> if the budget allows, prioritise laser mapping and a self-empty base; those are the two things that let you genuinely leave it to work alone. Our selection includes the Shark AV2501AE, which combines both.</p>`,
+        "g3.body": `
+          <p>You can spend a fortune on a mattress and still sleep badly because of the wrong pillow or sheets that trap heat. These are the two cheapest purchases whose effect you notice fastest.</p>
+
+          <h4>1. Your sleeping position rules</h4>
+          <ul>
+            <li><strong>Side sleeper:</strong> you need a tall, firm pillow that fills the gap between shoulder and head and keeps your neck aligned.</li>
+            <li><strong>Back sleeper:</strong> medium height. Too tall and it pushes your chin towards your chest.</li>
+            <li><strong>Stomach sleeper:</strong> a very low, soft pillow, or none at all. It's the position that strains the neck most.</li>
+          </ul>
+          <p>If you share a bed and sleep in different positions, don't buy "the same pillow for both of us": that's a recipe for neck pain.</p>
+
+          <h4>2. Fill: each one has its job</h4>
+          <ul>
+            <li><strong>Down alternative (fibre):</strong> soft, fluffy and usually washable. It adapts well and is the comfortable choice for most people. Needs fluffing now and then.</li>
+            <li><strong>Memory foam:</strong> more support and it doesn't collapse. Good if you get neck aches, but it runs warmer and often smells for the first few days.</li>
+          </ul>
+
+          <h4>3. Sheets: the fabric matters more than the thread count</h4>
+          <p>"Thread count" is heavily inflated by marketing and isn't a good indicator on its own. Look instead at the type of fabric and whether it's described as breathable. If you tend to run hot at night, prioritise that over a big number.</p>
+
+          <h4>4. Deep pockets: measure your mattress</h4>
+          <p>This is the most common mistake when buying sheets. Measure your mattress depth, including the topper if you use one, and check the fitted sheet covers it. If it falls short, it'll pop off every night.</p>
+
+          <h4>5. Oeko-Tex certification</h4>
+          <p>It's a label indicating the textile has been tested for certain harmful substances. It doesn't measure comfort, but it's a reasonable assurance, especially if you have sensitive skin or the sheets are for a child's bed.</p>
+
+          <h4>6. Room temperature</h4>
+          <p>You sleep better in a cool room. Before you consider replacing your mattress, try lowering the temperature: a quiet fan fixes more bad nights than an expensive duvet. Check the noise level in decibels; under 30 dB is considered suitable for sleeping.</p>
+
+          <p><strong>In short:</strong> pick the pillow for your position, the sheets for breathability and depth, and control the room temperature. Our selection includes down-alternative pillows, an Oeko-Tex certified sheet set and a 28 dB tower fan.</p>`,
         "hero.badge": "Honest picks for your home",
         "hero.title": "The best for your home, <em>without hours of searching</em>",
         "hero.sub": "We track Amazon's best sellers in home and kitchen, and keep only the ones worth your money. You choose, you buy on Amazon, and that's it.",
@@ -1351,9 +1583,10 @@
       });
 
       // Los mismos enlaces alimentan el menú de escritorio y el de móvil.
+      // Al final, un enlace fijo a las guías (no filtra categorías).
       const linksHTML = all
         .map(c => `<a href="#tienda" class="${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${c === "Todas" ? S("nav.shop") : catLabel(c)}</a>`)
-        .join("");
+        .join("") + `<a href="#guias">${S("nav.guides")}</a>`;
       document.getElementById("topMenu").innerHTML = linksHTML;
       document.getElementById("mobileMenu").innerHTML = linksHTML;
 
@@ -1365,6 +1598,10 @@
           closeMobileMenu();
         });
       });
+
+      // El enlace a guías solo navega; en móvil además cierra el menú.
+      document.querySelectorAll("#mobileMenu a:not([data-cat])")
+        .forEach(a => a.addEventListener("click", closeMobileMenu));
     }
 
     /* ---------- Tarjetas de categoría ---------- */
@@ -1412,6 +1649,9 @@
     /* ---------- Cambio de idioma ---------- */
     const langSwitch = document.getElementById("langSwitch");
 
+    // Guarda el HTML español original de los bloques largos (ver data-i18n-en).
+    const ES_ORIGINAL = new Map();
+
     // Textos estáticos: los marcados con data-i18n (texto) y data-i18n-html (con marcado).
     function applyStaticText() {
       document.documentElement.lang = lang;
@@ -1421,6 +1661,14 @@
 
       document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = S(el.dataset.i18n); });
       document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = S(el.dataset.i18nHtml); });
+
+      // Textos largos (las guías): el español es el que ya está en el HTML, para
+      // que Google lo lea sin ejecutar JavaScript. Solo se sustituye si se pide
+      // inglés, y se guarda el original para poder volver.
+      document.querySelectorAll("[data-i18n-en]").forEach(el => {
+        if (!ES_ORIGINAL.has(el)) ES_ORIGINAL.set(el, el.innerHTML);
+        el.innerHTML = (lang === "en") ? S(el.dataset.i18nEn) : ES_ORIGINAL.get(el);
+      });
 
       navToggle.setAttribute("aria-label", mobileMenu.classList.contains("open") ? S("nav.close") : S("nav.open"));
       langSwitch.textContent = (lang === "es") ? "EN" : "ES";
