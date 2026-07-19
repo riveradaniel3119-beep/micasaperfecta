@@ -304,6 +304,37 @@
         .specs li span:first-child { color: var(--ink-70); }
         .specs li span:last-child { font-weight: 500; text-align: right; }
 
+        /* ---------- Comparativas ---------- */
+        .compare-group {
+            background: #fff; border: 1px solid var(--line); border-radius: 6px;
+            padding: 34px; margin-bottom: 22px;
+        }
+        .compare-group > h3 { font-size: 25px; margin-bottom: 8px; }
+        .compare-intro { color: var(--ink-70); font-size: 15.5px; margin-bottom: 26px; max-width: 720px; }
+
+        .compare-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+        .compare-item {
+            border: 1px solid var(--line); border-radius: 6px; padding: 20px;
+            display: flex; flex-direction: column; background: var(--cream);
+            transition: border-color .25s, transform .25s;
+        }
+        .compare-item:hover { border-color: var(--tan); transform: translateY(-3px); }
+        .compare-thumb { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .compare-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .compare-thumb .placeholder { font-size: 42px; background: none; }
+        .compare-name { font-family: var(--serif); font-size: 17px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
+        .compare-rating { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-50); margin-bottom: 14px; }
+        .compare-rating .stars { font-size: 13px; }
+
+        /* "Mejor si" es la clave de la comparativa: va destacado. */
+        .compare-best {
+            font-size: 14.5px; line-height: 1.5; color: var(--ink); margin-bottom: 10px;
+            padding-left: 12px; border-left: 2px solid var(--tan);
+        }
+        .compare-best b { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--tan-dark); margin-bottom: 3px; }
+        .compare-note { font-size: 13.5px; line-height: 1.5; color: var(--ink-50); margin-bottom: 18px; }
+        .compare-item .btn { margin-top: auto; }
+
         /* ---------- Guías de compra (acordeón) ---------- */
         .guides { display: grid; gap: 16px; max-width: 880px; margin: 0 auto; }
         .guide { border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow: hidden; }
@@ -625,10 +656,24 @@
         </div>
     </section>
 
+    <!-- Comparativas: se generan desde COMPARISONS, que referencia
+         los productos por ASIN para no duplicar datos. -->
+    <section class="section alt" id="comparativas">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <span class="eyebrow" data-i18n="comp.eyebrow">Comparativas</span>
+                <h2 data-i18n="comp.title">¿Cuál me conviene a mí?</h2>
+                <hr class="rule center">
+                <p data-i18n="comp.sub">Cuando dos productos se parecen, lo difícil no es el precio: es saber cuál encaja con tu caso. Aquí los ponemos cara a cara.</p>
+            </div>
+            <div id="compareGrid"><!-- generado por JS --></div>
+        </div>
+    </section>
+
     <!-- Guías de compra.
          El texto en español vive aquí (para que Google lo lea directamente);
          la versión en inglés está en el diccionario, bajo data-i18n-en. -->
-    <section class="section alt" id="guias">
+    <section class="section" id="guias">
         <div class="container">
             <div class="section-head" data-reveal>
                 <span class="eyebrow" data-i18n="guides.eyebrow">Guías de compra</span>
@@ -767,7 +812,7 @@
                     <a href="#inicio" class="logo">MiCasaPerfecta<span class="logo-suffix" data-i18n="logo.suffix">_Hogar y Cocina</span></a>
                     <p data-i18n="foot.brand">Seleccionamos productos para el hogar que de verdad merecen la pena, para que crees espacios cómodos, bonitos y funcionales.</p>
                 </div>
-                <div class="footer-section"><h4 data-i18n="foot.shop">Tienda</h4><a href="#tienda" data-i18n="foot.catalog">Catálogo</a><a href="#guias" data-i18n="nav.guides">Guías</a><a href="#beneficios" data-i18n="foot.how">Cómo elegimos</a><a href="#empezar" data-i18n="foot.start">Empezar</a></div>
+                <div class="footer-section"><h4 data-i18n="foot.shop">Tienda</h4><a href="#tienda" data-i18n="foot.catalog">Catálogo</a><a href="#comparativas" data-i18n="nav.compare">Comparativas</a><a href="#guias" data-i18n="nav.guides">Guías</a><a href="#beneficios" data-i18n="foot.how">Cómo elegimos</a><a href="#empezar" data-i18n="foot.start">Empezar</a></div>
                 <div class="footer-section"><h4 data-i18n="foot.legal">Legal</h4><a href="#aviso-afiliados" data-i18n="foot.disclosure">Divulgación de afiliados</a></div>
             </div>
             <div class="footer-bottom">
@@ -1403,6 +1448,105 @@
     ];
 
     /* =====================================================================
+       COMPARATIVAS
+       ---------------------------------------------------------------------
+       Cada grupo enfrenta productos que resuelven lo mismo de forma distinta.
+       Los productos se referencian por `asin`: así el nombre, la imagen, la
+       valoración y el enlace salen siempre del catálogo y no se duplican.
+       Solo se escribe aquí lo que la comparativa aporta: cuándo elegir cada
+       uno (`best`) y qué tener en cuenta (`note`).
+       ===================================================================== */
+    const COMPARISONS = [
+      {
+        title: { es: "Almohadas: ¿mullida o firme?", en: "Pillows: soft or supportive?" },
+        intro: {
+          es: "Las dos son buenas almohadas; sirven para personas distintas. La diferencia real está en cómo duermes y en si pasas calor por la noche.",
+          en: "Both are good pillows; they suit different people. The real difference is how you sleep and whether you get hot at night."
+        },
+        items: [
+          { asin: "B01LYNW421",
+            best: { es: "Duermes boca arriba o boca abajo, buscas algo mullido, o necesitas dos almohadas de golpe.", en: "You sleep on your back or front, want something soft, or need two pillows at once." },
+            note: { es: "Hay que ahuecarla de vez en cuando y sujeta menos que la viscoelástica.", en: "Needs fluffing now and then and gives less support than memory foam." } },
+          { asin: "B0BQRF9LS1",
+            best: { es: "Duermes de lado, tienes molestias cervicales y además pasas calor por la noche.", en: "You sleep on your side, get neck aches and also sleep hot." },
+            note: { es: "Más firme y algo más cara; la espuma suele oler los primeros días.", en: "Firmer and pricier; the foam usually smells for the first few days." } }
+        ]
+      },
+      {
+        title: { es: "Ventiladores: ¿dormitorio, salón o calle?", en: "Fans: bedroom, living room or on the go?" },
+        intro: {
+          es: "Tres formatos para tres situaciones distintas. Aquí lo que decide no es la potencia, sino dónde lo vas a usar.",
+          en: "Three formats for three different situations. What decides here isn't power, it's where you'll use it."
+        },
+        items: [
+          { asin: "B0BVZFQ4DF",
+            best: { es: "Es para el dormitorio y el ruido te desvela: declara 28 dB en modo silencioso, con mando y temporizador de 12 h.", en: "It's for the bedroom and noise wakes you: it states 28 dB in quiet mode, with a remote and a 12-hour timer." },
+            note: { es: "Es el más grande de los tres; ocupa sitio en el suelo.", en: "It's the biggest of the three; it takes up floor space." } },
+          { asin: "B0DQDQVTT3",
+            best: { es: "Quieres varias velocidades y que se apague solo de madrugada con el temporizador.", en: "You want several speeds and a timer to switch it off in the small hours." },
+            note: { es: "No declara un nivel de ruido tan bajo como el LEVOIT.", en: "It doesn't state a noise level as low as the LEVOIT." } },
+          { asin: "B097BJKSHM",
+            best: { es: "Lo necesitas fuera de casa: viajes, conciertos, transporte. Además hace de power bank y linterna.", en: "You need it out of the house: travel, concerts, commuting. It also works as a power bank and flashlight." },
+            note: { es: "Refresca a una persona, no una habitación.", en: "It cools one person, not a room." } }
+        ]
+      },
+      {
+        title: { es: "Insectos: ¿dentro o fuera de casa?", en: "Insects: indoors or outdoors?" },
+        intro: {
+          es: "El criterio no es cuál mata más, sino dónde está el problema. Uno está pensado para el interior y otro para el exterior.",
+          en: "The question isn't which kills more, it's where the problem is. One is made for indoors, the other for outdoors."
+        },
+        items: [
+          { asin: "B07T869RNY",
+            best: { es: "El problema está dentro: cocina o salón. Es silenciosa, sin vapores, y se queda enchufada sin llamar la atención.", en: "The problem is indoors: kitchen or living room. It's silent, fume-free, and stays plugged in without drawing attention." },
+            note: { es: "Consume cartuchos, así que tiene un gasto recurrente.", en: "It uses cartridges, so there's a recurring cost." } },
+          { asin: "B0C3FTCYZL",
+            best: { es: "Ya tienes la trampa Zevo y solo necesitas reponer. No es una alternativa: es su recambio.", en: "You already own the Zevo trap and just need refills. It isn't an alternative: it's the refill." },
+            note: { es: "Por sí solos no sirven de nada sin la trampa.", en: "On their own they're useless without the trap." } },
+          { asin: "B09PQF39PG",
+            best: { es: "El problema está fuera: patio, terraza, porche o garaje, donde una trampa de interior no llega.", en: "The problem is outdoors: patio, porch or garage, where an indoor trap won't do." },
+            note: { es: "Hace ruido al atrapar insectos; no es para un dormitorio.", en: "It makes noise when it catches insects; not for a bedroom." } }
+        ]
+      },
+      {
+        title: { es: "Limpieza: no compiten, se completan", en: "Cleaning: they don't compete, they complete each other" },
+        intro: {
+          es: "Es el grupo que más se malinterpreta. Ninguno sustituye a los otros: cada uno cubre una fase distinta de la limpieza.",
+          en: "This is the most misunderstood group. None replaces the others: each covers a different stage of cleaning."
+        },
+        items: [
+          { asin: "B08QZVSC8D",
+            best: { es: "Quieres mantenimiento diario sin esfuerzo, sobre todo si hay mascotas y pelo por el suelo.", en: "You want effortless daily upkeep, especially with pets and hair on the floor." },
+            note: { es: "Aspira, pero no friega ni desincrusta. Necesita el suelo despejado.", en: "It vacuums, but doesn't mop or scrub. It needs a clear floor." } },
+          { asin: "B00WSWGVZQ",
+            best: { es: "Necesitas fregar de verdad el suelo, sin acabar con las manos metidas en el cubo.", en: "You need to actually mop the floor, without ending up with your hands in the bucket." },
+            note: { es: "Es trabajo manual: no se hace solo como el robot.", en: "It's manual work: it doesn't happen on its own like the robot." } },
+          { asin: "B0FR4NZN55",
+            best: { es: "Vas a por juntas, azulejos, baño y tapicería, y prefieres no usar productos químicos.", en: "You're going after grout, tiles, the bathroom and upholstery, and prefer to skip chemicals." },
+            note: { es: "Para el suelo del día a día es más lento que una fregona.", en: "For everyday floors it's slower than a mop." } }
+        ]
+      },
+      {
+        title: { es: "Organización: depende de qué guardas", en: "Storage: it depends what you're storing" },
+        intro: {
+          es: "Elegir mal aquí es lo que hace que el orden dure dos semanas. La clave es el tipo de cosa y el sitio donde va.",
+          en: "Getting this wrong is why tidiness lasts two weeks. What matters is the type of thing and where it goes."
+        },
+        items: [
+          { asin: "B09VC2TWQ8",
+            best: { es: "Guardas volumen: ropa de temporada, mantas o edredones que van al altillo o al fondo del armario.", en: "You're storing bulk: seasonal clothes, blankets or comforters going up on a shelf or to the back of the closet." },
+            note: { es: "Son bolsas: no aguantan peso apilado encima como una caja rígida.", en: "They're bags: they won't take stacked weight like a rigid box." } },
+          { asin: "B0BZCTXKPZ",
+            best: { es: "Ordenas cosas pequeñas de uso frecuente: despensa, cajones o armarios de cocina.", en: "You're tidying small things you use often: pantry, drawers or kitchen cabinets." },
+            note: { es: "Hay que medir el hueco antes: si no encajan, no sirven de nada.", en: "Measure the space first: if they don't fit, they're useless." } },
+          { asin: "B0CGJJJC4M",
+            best: { es: "El desorden está en el cuarto de lavado o con los productos de limpieza, y quieres aprovechar altura.", en: "The clutter is in the laundry room or with cleaning supplies, and you want to use vertical space." },
+            note: { es: "Apilar mucho lo vuelve inestable; conviene no abusar de la altura.", en: "Stacking too high makes it unstable; don't overdo the height." } }
+        ]
+      }
+    ];
+
+    /* =====================================================================
        IDIOMAS (es / en)
        ---------------------------------------------------------------------
        Traducción propia, sin servicios externos. Se elige por el idioma del
@@ -1435,6 +1579,12 @@
         "cats.one": "producto",
         "cats.many": "productos",
         "nav.guides": "Guías",
+        "nav.compare": "Comparativas",
+        "comp.eyebrow": "Comparativas",
+        "comp.title": "¿Cuál me conviene a mí?",
+        "comp.sub": "Cuando dos productos se parecen, lo difícil no es el precio: es saber cuál encaja con tu caso. Aquí los ponemos cara a cara.",
+        "comp.bestIf": "Elige este si…",
+        "comp.note": "Ten en cuenta:",
         "guides.eyebrow": "Guías de compra",
         "guides.title": "Antes de comprar, léete esto",
         "guides.sub": "Guías breves y sin humo para acertar a la primera, escritas para que decidas tú.",
@@ -1528,6 +1678,12 @@
         "cats.one": "product",
         "cats.many": "products",
         "nav.guides": "Guides",
+        "nav.compare": "Compare",
+        "comp.eyebrow": "Head to head",
+        "comp.title": "Which one is right for me?",
+        "comp.sub": "When two products look alike, the hard part isn't the price: it's knowing which one fits your case. Here we put them side by side.",
+        "comp.bestIf": "Choose this one if…",
+        "comp.note": "Keep in mind:",
         "guides.eyebrow": "Buying guides",
         "guides.title": "Read this before you buy",
         "guides.sub": "Short, no-nonsense guides to get it right the first time, written so you can decide for yourself.",
@@ -1946,7 +2102,7 @@
       // Al final, un enlace fijo a las guías (no filtra categorías).
       const linksHTML = all
         .map(c => `<a href="#tienda" class="${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${c === "Todas" ? S("nav.shop") : catLabel(c)}</a>`)
-        .join("") + `<a href="#guias">${S("nav.guides")}</a>`;
+        .join("") + `<a href="#comparativas">${S("nav.compare")}</a><a href="#guias">${S("nav.guides")}</a>`;
       document.getElementById("topMenu").innerHTML = linksHTML;
       document.getElementById("mobileMenu").innerHTML = linksHTML;
 
@@ -1962,6 +2118,38 @@
       // El enlace a guías solo navega; en móvil además cierra el menú.
       document.querySelectorAll("#mobileMenu a:not([data-cat])")
         .forEach(a => a.addEventListener("click", closeMobileMenu));
+    }
+
+    /* ---------- Comparativas ---------- */
+    function renderComparisons() {
+      const cont = document.getElementById("compareGrid");
+      const byAsin = a => products.find(p => p.asin === a);
+
+      cont.innerHTML = COMPARISONS.map(grupo => {
+        // Solo se comparan productos que existan y no estén agotados.
+        const items = grupo.items
+          .map(it => ({ it, p: byAsin(it.asin) }))
+          .filter(({ p }) => p && p.disponible !== false);
+
+        // Un grupo con menos de dos productos ya no es una comparativa.
+        if (items.length < 2) return "";
+
+        return `<div class="compare-group" data-reveal>
+          <h3>${grupo.title[lang]}</h3>
+          <p class="compare-intro">${grupo.intro[lang]}</p>
+          <div class="compare-items">
+            ${items.map(({ it, p }) => `
+              <div class="compare-item">
+                <div class="compare-thumb">${imageHTML(p, "", "placeholder")}</div>
+                <div class="compare-name">${tp(p, "name")}</div>
+                ${p.valoracion_media ? `<div class="compare-rating">${starsHTML(p.valoracion_media)}<span>${p.valoracion_media} · ${nf(p.resenas_cantidad)}</span></div>` : ""}
+                <p class="compare-best"><b>${S("comp.bestIf")}</b>${it.best[lang]}</p>
+                <p class="compare-note">${S("comp.note")} ${it.note[lang]}</p>
+                <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
+              </div>`).join("")}
+          </div>
+        </div>`;
+      }).join("");
     }
 
     /* ---------- Tarjetas de categoría ---------- */
@@ -2043,6 +2231,7 @@
       buildFilters();
       renderGrid();
       renderCategories();
+      renderComparisons();
       renderStats();
     }
 
@@ -2075,6 +2264,7 @@
     buildFilters();
     renderGrid();
     renderCategories();
+    renderComparisons();
     renderStats();
     setupReveal();
 
