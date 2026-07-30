@@ -3,6 +3,35 @@
 Este directorio contiene la integración **preparada pero todavía inactiva** con la
 Product Advertising API (PA-API v5) de Amazon.
 
+| Script | Para qué sirve |
+|---|---|
+| `update-products.js` | Refresca los productos **que ya están** en la web y oculta los agotados. |
+| `discover-products.js` | **Busca productos nuevos** de hogar y cocina y genera un borrador para revisar. |
+
+## Buscar productos nuevos (`discover-products.js`)
+
+Es lo más parecido a "que se añadan solos". Busca en la categoría de Amazon que
+le indiques, descarta los ASIN que ya tienes y escribe `scripts/candidatos.js`
+con las fichas en borrador.
+
+```bash
+node scripts/discover-products.js                  # Home & Kitchen, 2 páginas
+node scripts/discover-products.js --paginas 4      # más resultados
+node scripts/discover-products.js --buscar "air fryer"
+node scripts/discover-products.js --nodo 284507    # otra categoría
+```
+
+**No toca `index.html` a propósito.** Los textos que devuelve Amazon son
+genéricos y en varios idiomas mezclados; el criterio editorial ("ideal para…",
+"elige este si…") es justo lo que distingue esta web de un catálogo automático.
+El flujo es: generar borrador → revisar y reescribir → pegar en `index.html`.
+
+**Dos campos siguen siendo manuales:** `valoracion_media` y `resenas_cantidad`.
+Amazon retiró las valoraciones de la PA-API, así que no hay forma de obtenerlas
+por API; hay que copiarlas de la página del producto.
+
+## Refrescar lo que ya está (`update-products.js`)
+
 Cuando se active, cada día automáticamente:
 
 - Refresca el **enlace de afiliado** de cada producto (con tu tag ya incluido).
@@ -83,7 +112,12 @@ node scripts/update-products.js
 
 ## Estado del código
 
-El script implementa la firma **AWS Signature V4** que exige la PA-API, sin
-librerías externas. **Todavía no se ha podido ejecutar contra la API real**
-porque no existen credenciales. Al activarlo por primera vez, revisa la salida
-del paso 4 antes de programar el `cron`.
+Los dos scripts implementan la firma **AWS Signature V4** que exige la PA-API,
+sin librerías externas. **Ninguno se ha podido ejecutar todavía contra la API
+real** porque no existen credenciales, ni siquiera en local (esta máquina no
+tiene Node instalado). Cuando los pruebes por primera vez, espera tener que
+ajustar algún detalle: revisa la salida antes de fiarte de ella, y en el caso
+de `update-products.js`, antes de programar el `cron`.
+
+Si `discover-products.js` no devuelve nada, lo primero que hay que revisar es
+el id de categoría (`--nodo`): Amazon los cambia y varían por marketplace.
