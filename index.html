@@ -182,6 +182,71 @@
         .trust-item h4 { font-family: var(--sans); font-size: 15px; font-weight: 600; margin-bottom: 5px; }
         .trust-item p { font-size: 13.5px; color: var(--ink-50); line-height: 1.5; }
 
+        /* ---------- Casa interactiva ---------- */
+        .house-stage {
+            position: relative; background: var(--cream);
+            border: 1px solid var(--line); border-radius: 6px;
+            padding: 18px 18px 10px; overflow: hidden;
+        }
+        .house-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+
+        /* Cada habitación es un grupo pulsable. */
+        .zone { cursor: pointer; transition: transform .28s cubic-bezier(.2,.8,.3,1), opacity .25s; }
+        .zone:hover, .zone:focus-visible { transform: translateY(-9px); }
+        .zone:focus-visible { outline: none; }
+        .zone:focus-visible .zone-floor { stroke: var(--ink); stroke-width: 2; }
+        /* Trazo fino: sin él, caras del mismo tono se funden entre sí. */
+        .zone-floor, .zone-wall, .zone-prop, .plinto {
+            stroke: rgba(28, 31, 38, .14); stroke-width: .6;
+            stroke-linejoin: round; transition: fill .25s;
+        }
+        .zone-prop { stroke: rgba(28, 31, 38, .2); }
+        .zone:hover .zone-floor { fill: var(--tan-soft); }
+        .zone.active .zone-floor { fill: var(--tan-soft); }
+        .zone.active .zone-wall-a { fill: #d3b78e; }
+
+        /* Etiqueta flotante sobre cada zona */
+        .zone-tag { pointer-events: none; }
+        .zone-tag rect { fill: #fff; stroke: var(--line); }
+        .zone-tag text { font-family: var(--sans); fill: var(--ink); }
+        .zone-tag .zt-name { font-size: 11px; font-weight: 600; }
+        .zone-tag .zt-count { font-size: 9.5px; fill: var(--ink-50); }
+
+        .house-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; flex-wrap: wrap; margin-top: 14px;
+        }
+        .house-hint { font-size: 13.5px; color: var(--ink-50); }
+        .house-hint b { color: var(--tan-dark); font-weight: 600; }
+        .house-btn {
+            display: inline-flex; align-items: center; gap: 9px;
+            height: 42px; padding: 0 18px; border-radius: 4px; cursor: pointer;
+            border: 1px solid var(--line); background: #fff; color: var(--ink);
+            font-family: var(--sans); font-size: 13.5px; font-weight: 500;
+            transition: border-color .2s, color .2s, background .2s;
+        }
+        .house-btn:hover { border-color: var(--tan); color: var(--tan-dark); }
+        .house-btn[disabled] { opacity: .55; cursor: progress; }
+        .house-btn .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tan); }
+
+        /* Lienzo 3D: solo se muestra cuando se carga bajo demanda. */
+        #house3d { display: none; width: 100%; aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden; }
+        #house3d canvas { display: block; width: 100% !important; height: 100% !important; }
+        .house-stage.mode3d .house-svg { display: none; }
+        .house-stage.mode3d #house3d { display: block; }
+        .house-err { font-size: 13px; color: #a4553f; margin-top: 10px; }
+
+        /* En móvil la casa entera no cabe legible: se deja desplazar en
+           horizontal en vez de encogerla hasta que no se lean las etiquetas. */
+        @media (max-width: 720px) {
+            .house-stage { overflow-x: auto; }
+            .house-svg { min-width: 600px; }
+        }
+        @media (max-width: 560px) {
+            .house-stage { padding: 10px 10px 6px; }
+            .house-bar { justify-content: center; text-align: center; }
+        }
+
         /* ---------- Categorías ---------- */
         .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         .cat-card {
@@ -601,6 +666,32 @@
                     <svg class="icon"><use href="#i-heart"/></svg>
                     <div><h4 data-i18n="tc.4t">Sin coste extra</h4><p data-i18n="tc.4p">La comisión la paga Amazon</p></div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Casa interactiva.
+         La vista isométrica (SVG) la genera renderHouse() y pesa unos KB.
+         El modo 3D carga Three.js bajo demanda: nadie lo descarga si no pulsa. -->
+    <section class="section" id="casa">
+        <div class="container">
+            <div class="section-head" data-reveal>
+                <span class="eyebrow" data-i18n="house.eyebrow">Recorre la casa</span>
+                <h2 data-i18n="house.title">Entra y mira habitación por habitación</h2>
+                <hr class="rule center">
+                <p data-i18n="house.sub">Pulsa cualquier zona de la casa y te llevamos a los productos pensados para ella.</p>
+            </div>
+
+            <div class="house-stage" id="houseStage" data-reveal>
+                <svg class="house-svg" id="houseSvg" role="img" aria-label="Plano isométrico de la casa"></svg>
+                <div id="house3d"></div>
+                <div class="house-bar">
+                    <p class="house-hint" id="houseHint"></p>
+                    <button class="house-btn" id="house3dBtn" type="button">
+                        <span class="dot"></span><span data-i18n="house.view3d">Ver en 3D</span>
+                    </button>
+                </div>
+                <p class="house-err" id="houseErr" hidden></p>
             </div>
         </div>
     </section>
@@ -1626,6 +1717,17 @@
         "cats.many": "productos",
         "nav.guides": "Guías",
         "nav.compare": "Comparativas",
+        "nav.house": "La casa",
+        "house.eyebrow": "Recorre la casa",
+        "house.title": "Entra y mira habitación por habitación",
+        "house.sub": "Pulsa cualquier zona de la casa y te llevamos a los productos pensados para ella.",
+        "house.hint": "Pulsa una habitación para ver sus productos.",
+        "house.showing": "Mostrando:",
+        "house.view3d": "Ver en 3D",
+        "house.view2d": "Ver en plano",
+        "house.loading3d": "Cargando 3D…",
+        "house.drag": "Arrastra para girar la casa. Pulsa una zona para ver sus productos.",
+        "house.err3d": "No se pudo cargar la vista 3D. Sigue disponible el plano de arriba.",
         "comp.eyebrow": "Comparativas",
         "comp.title": "¿Cuál me conviene a mí?",
         "comp.sub": "Cuando dos productos se parecen, lo difícil no es el precio: es saber cuál encaja con tu caso. Aquí los ponemos cara a cara.",
@@ -1725,6 +1827,17 @@
         "cats.many": "products",
         "nav.guides": "Guides",
         "nav.compare": "Compare",
+        "nav.house": "The house",
+        "house.eyebrow": "Walk through the house",
+        "house.title": "Step in and look room by room",
+        "house.sub": "Tap any part of the house and we'll take you to the products made for it.",
+        "house.hint": "Tap a room to see its products.",
+        "house.showing": "Showing:",
+        "house.view3d": "View in 3D",
+        "house.view2d": "View the floor plan",
+        "house.loading3d": "Loading 3D…",
+        "house.drag": "Drag to spin the house. Tap a room to see its products.",
+        "house.err3d": "The 3D view couldn't load. The floor plan above still works.",
         "comp.eyebrow": "Head to head",
         "comp.title": "Which one is right for me?",
         "comp.sub": "When two products look alike, the hard part isn't the price: it's knowing which one fits your case. Here we put them side by side.",
@@ -2114,6 +2227,8 @@
 
     /* ---------- Filtros por categoría + menú superior ---------- */
     let activeCategory = "Todas";
+    // Zona de la casa seleccionada (id) o null. Manda sobre activeCategory.
+    let activeZone = null;
 
     function renderGrid() {
       const grid = document.getElementById("productsGrid");
@@ -2122,7 +2237,14 @@
         // `disponible: false` lo pone el script de PA-API cuando Amazon lo da
         // por agotado. Sin ese campo, el producto se muestra con normalidad.
         .filter(({ p }) => p.disponible !== false)
-        .filter(({ p }) => activeCategory === "Todas" || p.category === activeCategory)
+        .filter(({ p }) => {
+          // Si hay una zona de la casa activa, manda su lista de categorías.
+          if (activeZone) {
+            const z = ZONAS.find(x => x.id === activeZone);
+            return z ? z.cats.includes(p.category) : true;
+          }
+          return activeCategory === "Todas" || p.category === activeCategory;
+        })
         .sort((a, b) => (b.p.isFeatured === true) - (a.p.isFeatured === true)); // destacados primero
       grid.innerHTML = list.map(({ p, i }) => cardHTML(p, i)).join("");
     }
@@ -2140,6 +2262,7 @@
       filters.querySelectorAll(".chip").forEach(chip => {
         chip.addEventListener("click", () => {
           activeCategory = chip.dataset.cat;
+          limpiarZona();
           buildFilters();
           renderGrid();
         });
@@ -2149,13 +2272,14 @@
       // Al final, un enlace fijo a las guías (no filtra categorías).
       const linksHTML = all
         .map(c => `<a href="#tienda" class="${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${c === "Todas" ? S("nav.shop") : catLabel(c)}</a>`)
-        .join("") + `<a href="#comparativas">${S("nav.compare")}</a><a href="#guias">${S("nav.guides")}</a>`;
+        .join("") + `<a href="#casa">${S("nav.house")}</a><a href="#comparativas">${S("nav.compare")}</a><a href="#guias">${S("nav.guides")}</a>`;
       document.getElementById("topMenu").innerHTML = linksHTML;
       document.getElementById("mobileMenu").innerHTML = linksHTML;
 
       document.querySelectorAll("#topMenu a[data-cat], #mobileMenu a[data-cat]").forEach(a => {
         a.addEventListener("click", () => {
           activeCategory = a.dataset.cat;
+          limpiarZona();
           buildFilters();
           renderGrid();
           closeMobileMenu();
@@ -2199,6 +2323,370 @@
       }).join("");
     }
 
+    /* =====================================================================
+       CASA INTERACTIVA
+       ---------------------------------------------------------------------
+       Cada zona de la casa apunta a una o varias categorías del catálogo.
+       Las coordenadas son de un plano en planta (x hacia la derecha,
+       y hacia el frente, z hacia arriba) y se proyectan en isométrico.
+       El mismo array alimenta la vista SVG y la 3D, así que la casa solo
+       se describe una vez.
+       ===================================================================== */
+    const MAT = {
+      madera: { top: "#cda87e", a: "#b8926a", b: "#9f7c58" },
+      claro:  { top: "#ece5da", a: "#dbd2c4", b: "#c7bdac" },
+      oscuro: { top: "#7d7469", a: "#6a6258", b: "#565049" },
+      agua:   { top: "#9ec9c6", a: "#89b5b2", b: "#74a19e" },
+      verde:  { top: "#bcc9a6", a: "#a8b592", b: "#95a27e" }
+    };
+
+    // Muro bajo, a media altura: deja ver los muebles de cada estancia.
+    const ALTO_MURO = 1.3;
+
+    const ZONAS = [
+      {
+        id: "cocina", cats: ["Cocina"], x: 0, y: 0, w: 5, d: 5, suelo: "#f6ecd9",
+        props: [
+          { x: 0.3, y: 0.3, w: 4.4, d: 0.9, h: 1.0, m: "madera" },
+          { x: 0.3, y: 1.6, w: 0.9, d: 1.1, h: 2.0, m: "claro" },
+          { x: 1.7, y: 2.7, w: 2.3, d: 1.4, h: 0.9, m: "madera" }
+        ]
+      },
+      {
+        id: "sala", cats: ["Electrónica", "Decoración", "Tecnología"], x: 5, y: 0, w: 6, d: 5, suelo: "#efe1cb",
+        props: [
+          { x: 0.5, y: 0.3, w: 3.0, d: 0.3, h: 1.5, m: "oscuro" },
+          { x: 1.0, y: 1.8, w: 2.2, d: 1.1, h: 0.4, m: "madera" },
+          { x: 0.5, y: 3.2, w: 3.8, d: 1.3, h: 0.8, m: "claro" },
+          { x: 4.6, y: 3.4, w: 0.8, d: 0.8, h: 1.1, m: "verde" }
+        ]
+      },
+      {
+        id: "habitacion", cats: ["Descanso"], x: 11, y: 0, w: 5, d: 5, suelo: "#f4e9dc",
+        props: [
+          { x: 0.8, y: 1.3, w: 3.1, d: 3.2, h: 0.65, m: "claro" },
+          { x: 0.8, y: 0.4, w: 0.9, d: 0.7, h: 0.55, m: "madera" },
+          { x: 3.2, y: 0.4, w: 0.9, d: 0.7, h: 0.55, m: "madera" }
+        ]
+      },
+      {
+        id: "bano", cats: ["Baño"], x: 0, y: 5, w: 4, d: 5, suelo: "#e6eae8",
+        props: [
+          { x: 0.4, y: 0.4, w: 1.5, d: 2.7, h: 0.7, m: "claro" },
+          { x: 2.4, y: 0.4, w: 1.1, d: 0.8, h: 0.95, m: "claro" },
+          { x: 2.5, y: 3.2, w: 1.0, d: 1.0, h: 0.1, m: "agua" }
+        ]
+      },
+      {
+        id: "lavadero", cats: ["Limpieza", "Organización"], x: 4, y: 5, w: 5, d: 5, suelo: "#eae4d6",
+        props: [
+          { x: 0.4, y: 0.4, w: 1.3, d: 1.2, h: 1.3, m: "claro" },
+          { x: 2.2, y: 0.4, w: 2.3, d: 0.7, h: 2.0, m: "madera" },
+          { x: 0.6, y: 2.8, w: 0.9, d: 0.9, h: 0.9, m: "oscuro" }
+        ]
+      },
+      {
+        id: "terraza", cats: ["Salud"], x: 9, y: 5, w: 7, d: 5, abierta: true, suelo: "#cdd8bb",
+        props: [
+          { x: 3.3, y: 0.7, w: 3.2, d: 3.6, h: 0.12, m: "agua" },
+          { x: 0.4, y: 0.4, w: 1.3, d: 1.0, h: 1.15, m: "oscuro" },
+          { x: 0.5, y: 2.4, w: 2.1, d: 0.9, h: 0.4, m: "madera" },
+          { x: 2.3, y: 0.5, w: 0.7, d: 0.7, h: 1.2, m: "verde" }
+        ]
+      }
+    ];
+
+    const ZONA_NOMBRE = {
+      cocina:     { es: "Cocina",            en: "Kitchen" },
+      sala:       { es: "Sala de estar",     en: "Living room" },
+      habitacion: { es: "Habitación",        en: "Bedroom" },
+      bano:       { es: "Baño",              en: "Bathroom" },
+      lavadero:   { es: "Lavadero",          en: "Laundry" },
+      terraza:    { es: "Terraza y piscina", en: "Terrace & pool" }
+    };
+
+    // Cuántos productos disponibles hay en cada zona.
+    const cuentaZona = z =>
+      products.filter(p => p.disponible !== false && z.cats.includes(p.category)).length;
+
+    /* ---------- Proyección isométrica ---------- */
+    const TW = 22, TH = 11, TZ = 15;
+    const iso = (x, y, z) => [((x - y) * TW).toFixed(1), ((x + y) * TH - (z || 0) * TZ).toFixed(1)];
+    const cara = (pts, fill, cls) =>
+      `<polygon class="${cls}" points="${pts.map(p => iso(p[0], p[1], p[2]).join(",")).join(" ")}" fill="${fill}"/>`;
+
+    // Caja 3D vista en isométrico: solo se dibujan las tres caras visibles.
+    function caja(x, y, z, w, d, h, mat) {
+      const m = MAT[mat] || MAT.madera;
+      return (
+        cara([[x, y + d, z], [x + w, y + d, z], [x + w, y + d, z + h], [x, y + d, z + h]], m.b, "zone-prop") +
+        cara([[x + w, y, z], [x + w, y + d, z], [x + w, y + d, z + h], [x + w, y, z + h]], m.a, "zone-prop") +
+        cara([[x, y, z + h], [x + w, y, z + h], [x + w, y + d, z + h], [x, y + d, z + h]], m.top, "zone-prop")
+      );
+    }
+
+    function renderHouse() {
+      const svg = document.getElementById("houseSvg");
+      if (!svg) return;
+
+      // De atrás hacia delante, para que las habitaciones cercanas tapen.
+      const orden = [...ZONAS].sort((a, b) => (a.x + a.y) - (b.x + b.y));
+
+      svg.setAttribute("viewBox", "-268 -100 650 420");
+
+      // Losa de terreno bajo la casa: la asienta y la separa del fondo.
+      const P = 0.8, GX = 16, GY = 10, GZ = 0.5;
+      const base =
+        cara([[-P, GY + P, -GZ], [GX + P, GY + P, -GZ], [GX + P, GY + P, 0], [-P, GY + P, 0]], "#c3b69c", "plinto") +
+        cara([[GX + P, -P, -GZ], [GX + P, GY + P, -GZ], [GX + P, GY + P, 0], [GX + P, -P, 0]], "#d2c6ac", "plinto") +
+        cara([[-P, -P, 0], [GX + P, -P, 0], [GX + P, GY + P, 0], [-P, GY + P, 0]], "#e0d5bd", "plinto");
+
+      svg.innerHTML = base + orden.map(z => {
+        const n = cuentaZona(z);
+        const nombre = ZONA_NOMBRE[z.id][lang] || ZONA_NOMBRE[z.id].es;
+        const h = z.abierta ? 0.28 : ALTO_MURO; // la terraza va sin muros altos
+
+        // Margen entre estancias: sin él, todos los suelos se funden en uno.
+        const g = 0.18;
+        const x = z.x + g, y = z.y + g, w = z.w - g * 2, d = z.d - g * 2;
+
+        const suelo = cara([[x, y, 0], [x + w, y, 0], [x + w, y + d, 0], [x, y + d, 0]],
+          z.suelo || "#f4ead9", "zone-floor");
+
+        const muroA = cara([[x, y, 0], [x + w, y, 0], [x + w, y, h], [x, y, h]],
+          "#d9c2a0", "zone-wall zone-wall-a");
+        const muroB = cara([[x, y, 0], [x, y + d, 0], [x, y + d, h], [x, y, h]],
+          "#bfa583", "zone-wall zone-wall-b");
+
+        const muebles = z.props
+          .map(p => caja(x + p.x, y + p.y, 0, p.w, p.d, p.h, p.m))
+          .join("");
+
+        // Etiqueta flotando sobre el centro de la zona.
+        const [cx, cy] = iso(z.x + z.w / 2, z.y + z.d / 2, h + 1.35);
+        const ancho = Math.max(70, nombre.length * 6.2 + 20);
+        const etiqueta = `<g class="zone-tag" transform="translate(${cx - ancho / 2},${cy - 26})">
+            <rect width="${ancho}" height="29" rx="4"/>
+            <text class="zt-name" x="${ancho / 2}" y="12.5" text-anchor="middle">${nombre}</text>
+            <text class="zt-count" x="${ancho / 2}" y="23.5" text-anchor="middle">${n} ${n === 1 ? S("cats.one") : S("cats.many")}</text>
+          </g>`;
+
+        return `<g class="zone" data-zona="${z.id}" role="button" tabindex="0"
+                   aria-label="${escAttr(nombre)}: ${n}">
+            ${suelo}${muroA}${muroB}${muebles}${etiqueta}
+          </g>`;
+      }).join("");
+
+      svg.querySelectorAll(".zone").forEach(g => {
+        g.addEventListener("click", () => activarZona(g.dataset.zona));
+        g.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activarZona(g.dataset.zona); }
+        });
+      });
+
+      document.getElementById("houseHint").innerHTML = S("house.hint");
+    }
+
+    /* ---------- Selección de zona ---------- */
+    // Se llama desde los filtros normales: al usarlos, la casa deja de mandar.
+    function limpiarZona() {
+      if (!activeZone) return;
+      activeZone = null;
+      document.querySelectorAll(".zone").forEach(g => g.classList.remove("active"));
+      const hint = document.getElementById("houseHint");
+      if (hint) hint.innerHTML = S("house.hint");
+    }
+
+    function activarZona(id) {
+      const z = ZONAS.find(x => x.id === id);
+      if (!z) return;
+
+      activeZone = id;
+      activeCategory = "Todas"; // la zona manda sobre los chips
+      buildFilters();
+      renderGrid();
+
+      document.querySelectorAll(".zone").forEach(g =>
+        g.classList.toggle("active", g.dataset.zona === id));
+
+      const nombre = ZONA_NOMBRE[id][lang] || ZONA_NOMBRE[id].es;
+      document.getElementById("houseHint").innerHTML =
+        `${S("house.showing")} <b>${nombre}</b>`;
+
+      document.getElementById("tienda").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    /* =====================================================================
+       VISTA 3D (bajo demanda)
+       ---------------------------------------------------------------------
+       Three.js solo se descarga si el visitante pulsa "Ver en 3D". Así el
+       resto de la web sigue pesando lo mismo. Si la carga falla, se avisa y
+       se sigue usando el plano isométrico, que nunca depende de la red.
+       ===================================================================== */
+    const CDN_THREE = "https://unpkg.com/three@0.160.0/build/three.module.js";
+    let THREE = null, escena3D = null;
+
+    const hex = c => parseInt(c.slice(1), 16);
+
+    async function construir3D(contenedor) {
+      THREE = await import(/* webpackIgnore: true */ CDN_THREE);
+
+      const anchoDe = () => contenedor.clientWidth || 800;
+      const altoDe = () => Math.round(anchoDe() * 0.625);
+
+      const escena = new THREE.Scene();
+      escena.background = new THREE.Color(hex("#faf7f2"));
+
+      const camara = new THREE.PerspectiveCamera(38, anchoDe() / altoDe(), 0.1, 400);
+      const render = new THREE.WebGLRenderer({ antialias: true });
+      render.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      render.setSize(anchoDe(), altoDe());
+      contenedor.appendChild(render.domElement);
+
+      escena.add(new THREE.AmbientLight(0xffffff, 1.5));
+      const sol = new THREE.DirectionalLight(0xffffff, 1.5);
+      sol.position.set(12, 20, 8);
+      escena.add(sol);
+
+      // La casa se centra en el origen para poder girarla cómodamente.
+      const CX = 8, CY = 5;
+      const bloque = (x, y, z, w, d, h, color, grupo) => {
+        const g = new THREE.Mesh(
+          new THREE.BoxGeometry(w, h, d),
+          new THREE.MeshLambertMaterial({ color: hex(color) })
+        );
+        g.position.set(x + w / 2 - CX, z + h / 2, y + d / 2 - CY);
+        grupo.add(g);
+      };
+
+      const grupos = [];
+      ZONAS.forEach(z => {
+        const grupo = new THREE.Group();
+        grupo.userData.zona = z.id;
+        const g = 0.18;
+        const x = z.x + g, y = z.y + g, w = z.w - g * 2, d = z.d - g * 2;
+        const h = z.abierta ? 0.28 : ALTO_MURO;
+
+        bloque(x, y, -0.15, w, d, 0.15, z.suelo || "#f4ead9", grupo);   // suelo
+        bloque(x, y, 0, w, 0.16, h, "#d9c2a0", grupo);                   // muro A
+        bloque(x, y, 0, 0.16, d, h, "#bfa583", grupo);                   // muro B
+        z.props.forEach(p =>
+          bloque(x + p.x, y + p.y, 0, p.w, p.d, p.h, (MAT[p.m] || MAT.madera).top, grupo));
+
+        escena.add(grupo);
+        grupos.push(grupo);
+      });
+
+      // Terreno
+      const suelo = new THREE.Mesh(
+        new THREE.BoxGeometry(18.5, 0.4, 12.5),
+        new THREE.MeshLambertMaterial({ color: hex("#e0d5bd") })
+      );
+      suelo.position.set(0, -0.35, 0);
+      escena.add(suelo);
+
+      /* --- Órbita propia: evita depender de OrbitControls y su import map --- */
+      let theta = -0.9, phi = 0.95, radio = 27;
+      function situarCamara() {
+        camara.position.set(
+          radio * Math.sin(phi) * Math.cos(theta),
+          radio * Math.cos(phi),
+          radio * Math.sin(phi) * Math.sin(theta)
+        );
+        camara.lookAt(0, 0, 0);
+      }
+      situarCamara();
+
+      let arrastrando = false, movido = 0, px = 0, py = 0;
+      const lienzo = render.domElement;
+      lienzo.style.touchAction = "pan-y";
+      lienzo.style.cursor = "grab";
+
+      lienzo.addEventListener("pointerdown", e => {
+        arrastrando = true; movido = 0; px = e.clientX; py = e.clientY;
+        lienzo.setPointerCapture(e.pointerId); lienzo.style.cursor = "grabbing";
+      });
+      lienzo.addEventListener("pointermove", e => {
+        if (!arrastrando) return;
+        const dx = e.clientX - px, dy = e.clientY - py;
+        movido += Math.abs(dx) + Math.abs(dy);
+        theta -= dx * 0.006;
+        phi = Math.min(1.45, Math.max(0.25, phi - dy * 0.005));
+        px = e.clientX; py = e.clientY;
+        situarCamara();
+      });
+      lienzo.addEventListener("pointerup", e => {
+        arrastrando = false; lienzo.style.cursor = "grab";
+        if (movido > 6) return; // fue un giro, no un clic
+
+        // Clic: se busca la zona bajo el puntero.
+        const r = lienzo.getBoundingClientRect();
+        const raton = new THREE.Vector2(
+          ((e.clientX - r.left) / r.width) * 2 - 1,
+          -((e.clientY - r.top) / r.height) * 2 + 1
+        );
+        const rayo = new THREE.Raycaster();
+        rayo.setFromCamera(raton, camara);
+        const tocado = rayo.intersectObjects(grupos, true)[0];
+        if (tocado) {
+          let o = tocado.object;
+          while (o && !o.userData.zona) o = o.parent;
+          if (o) activarZona(o.userData.zona);
+        }
+      });
+      lienzo.addEventListener("wheel", e => {
+        e.preventDefault();
+        radio = Math.min(45, Math.max(14, radio + Math.sign(e.deltaY) * 2));
+        situarCamara();
+      }, { passive: false });
+
+      window.addEventListener("resize", () => {
+        camara.aspect = anchoDe() / altoDe();
+        camara.updateProjectionMatrix();
+        render.setSize(anchoDe(), altoDe());
+      });
+
+      (function bucle() { requestAnimationFrame(bucle); render.render(escena, camara); })();
+      return true;
+    }
+
+    function initCasa3D() {
+      const btn = document.getElementById("house3dBtn");
+      const stage = document.getElementById("houseStage");
+      const err = document.getElementById("houseErr");
+      if (!btn || !stage) return;
+
+      btn.addEventListener("click", async () => {
+        // Si ya está construida, solo se alterna la vista.
+        if (escena3D) {
+          const en3D = stage.classList.toggle("mode3d");
+          btn.querySelector("[data-i18n]").textContent = S(en3D ? "house.view2d" : "house.view3d");
+          document.getElementById("houseHint").innerHTML = S(en3D ? "house.drag" : "house.hint");
+          return;
+        }
+
+        const etiqueta = btn.querySelector("[data-i18n]");
+        btn.disabled = true;
+        etiqueta.textContent = S("house.loading3d");
+        err.hidden = true;
+
+        try {
+          await construir3D(document.getElementById("house3d"));
+          escena3D = true;
+          stage.classList.add("mode3d");
+          etiqueta.textContent = S("house.view2d");
+          document.getElementById("houseHint").innerHTML = S("house.drag");
+        } catch (e) {
+          // Sin red, CDN caído o WebGL no disponible: el plano sigue sirviendo.
+          err.textContent = S("house.err3d");
+          err.hidden = false;
+          etiqueta.textContent = S("house.view3d");
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
+
     /* ---------- Tarjetas de categoría ---------- */
     function renderCategories() {
       const grid = document.getElementById("catGrid");
@@ -2218,6 +2706,7 @@
       grid.querySelectorAll(".cat-card").forEach(card => {
         card.addEventListener("click", () => {
           activeCategory = card.dataset.cat;
+          limpiarZona();
           buildFilters();
           renderGrid();
         });
@@ -2279,6 +2768,7 @@
       renderGrid();
       renderCategories();
       renderComparisons();
+      renderHouse();
       renderStats();
     }
 
@@ -2312,6 +2802,8 @@
     renderGrid();
     renderCategories();
     renderComparisons();
+    renderHouse();
+    initCasa3D();
     renderStats();
     setupReveal();
 
