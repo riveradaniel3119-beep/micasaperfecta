@@ -183,12 +183,54 @@
         .trust-item p { font-size: 13.5px; color: var(--ink-50); line-height: 1.5; }
 
         /* ---------- Casa interactiva ---------- */
-        .house-stage {
-            position: relative; background: var(--cream);
-            border: 1px solid var(--line); border-radius: 6px;
-            padding: 18px 18px 10px; overflow: hidden;
+        /* La casa abre la página, así que despeja la cabecera fija. */
+        .house-hero {
+            padding: calc(var(--header-h) + 46px) 0 60px;
+            background:
+                radial-gradient(circle at 22% 12%, rgba(196, 152, 106, .16), transparent 55%),
+                linear-gradient(180deg, var(--cream), #fff);
         }
-        .house-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+        .house-head { text-align: center; max-width: 680px; margin: 0 auto 30px; }
+        .house-head h2 { font-size: clamp(32px, 4.4vw, 50px); line-height: 1.08; margin: 14px 0 14px; }
+        .house-head p { color: var(--ink-70); font-size: 17px; }
+
+        .house-stage {
+            position: relative; background: #fff;
+            border: 1px solid var(--line); border-radius: 8px;
+            padding: 14px 14px 10px;
+            box-shadow: 0 34px 70px -46px rgba(28, 31, 38, .5);
+        }
+        .house-svg { display: none; width: 100%; height: auto; touch-action: manipulation; }
+
+        /* Etiquetas HTML flotando sobre el 3D: se colocan proyectando el
+           centro de cada habitación a coordenadas de pantalla en cada cuadro. */
+        .house-labels { position: absolute; inset: 14px; pointer-events: none; overflow: hidden; }
+        .h-label {
+            position: absolute; transform: translate(-50%, -100%);
+            background: rgba(255, 255, 255, .96); border: 1px solid var(--line);
+            border-radius: 5px; padding: 5px 10px; white-space: nowrap;
+            box-shadow: 0 6px 16px -8px rgba(28, 31, 38, .5);
+            transition: opacity .2s, background .2s; opacity: 0;
+        }
+        .h-label b { display: block; font-size: 12px; font-weight: 600; line-height: 1.2; }
+        .h-label span { font-size: 10.5px; color: var(--ink-50); }
+        .h-label.on { opacity: 1; }
+        .h-label.hot { background: var(--tan); border-color: var(--tan-dark); }
+        .h-label.hot b, .h-label.hot span { color: #fff; }
+
+        .house-loading {
+            position: absolute; inset: 14px; display: flex; gap: 12px;
+            align-items: center; justify-content: center;
+            background: var(--cream); border-radius: 6px;
+            font-size: 14px; color: var(--ink-50); z-index: 4;
+        }
+        .house-loading.done { display: none; }
+        .spin {
+            width: 17px; height: 17px; border-radius: 50%;
+            border: 2px solid var(--line); border-top-color: var(--tan);
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Cada habitación es un grupo pulsable. */
         .zone { cursor: pointer; transition: transform .28s cubic-bezier(.2,.8,.3,1), opacity .25s; }
@@ -229,43 +271,32 @@
         .house-btn[disabled] { opacity: .55; cursor: progress; }
         .house-btn .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tan); }
 
-        /* Lienzo 3D: solo se muestra cuando se carga bajo demanda. */
-        #house3d { display: none; width: 100%; aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden; }
+        /* El 3D es la vista por defecto; el plano SVG es el plan B. */
+        #house3d { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: var(--cream); }
         #house3d canvas { display: block; width: 100% !important; height: 100% !important; }
-        .house-stage.mode3d .house-svg { display: none; }
-        .house-stage.mode3d #house3d { display: block; }
+        .house-stage.mode2d #house3d,
+        .house-stage.mode2d .house-labels { display: none; }
+        .house-stage.mode2d .house-svg { display: block; }
         .house-err { font-size: 13px; color: #a4553f; margin-top: 10px; }
 
-        /* En móvil la casa entera no cabe legible: se deja desplazar en
-           horizontal en vez de encogerla hasta que no se lean las etiquetas. */
+        @media (max-width: 860px) {
+            #house3d { aspect-ratio: 4 / 3; }
+        }
+        /* El plano de reserva no cabe legible en móvil: se deja deslizar. */
         @media (max-width: 720px) {
-            .house-stage { overflow-x: auto; }
-            .house-svg { min-width: 600px; }
+            .house-stage.mode2d { overflow-x: auto; }
+            .house-stage.mode2d .house-svg { min-width: 600px; }
         }
         @media (max-width: 560px) {
-            .house-stage { padding: 10px 10px 6px; }
+            .house-hero { padding-top: calc(var(--header-h) + 26px); }
+            .house-stage { padding: 8px 8px 6px; }
+            .house-labels { inset: 8px; }
+            .house-loading { inset: 8px; }
+            .h-label { padding: 4px 8px; }
+            .h-label b { font-size: 11px; }
             .house-bar { justify-content: center; text-align: center; }
         }
 
-        /* ---------- Categorías ---------- */
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-        .cat-card {
-            position: relative; display: flex; flex-direction: column; justify-content: flex-end;
-            min-height: 210px; padding: 26px; border-radius: 6px; overflow: hidden;
-            border: 1px solid var(--line); background: var(--cream);
-            color: var(--ink); text-decoration: none; cursor: pointer;
-            transition: transform .3s ease, box-shadow .3s ease;
-        }
-        .cat-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 78% 22%, rgba(196, 152, 106, .26), transparent 60%);
-            transition: opacity .3s; opacity: .8;
-        }
-        .cat-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -32px rgba(28, 31, 38, .45); }
-        .cat-card:hover::before { opacity: 1; }
-        .cat-emoji { position: relative; font-size: 40px; margin-bottom: auto; }
-        .cat-name { position: relative; font-family: var(--serif); font-size: 24px; font-weight: 500; }
-        .cat-count { position: relative; font-size: 13px; color: var(--ink-50); margin-top: 4px; }
 
         /* ---------- Section base ---------- */
         .section { padding: 110px 0; }
@@ -513,7 +544,6 @@
             .trust-card { grid-template-columns: repeat(2, 1fr); }
             .trust-item:nth-child(2) { border-right: none; }
             .trust-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-            .cat-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 960px) {
             /* El héroe pasa a una columna: primero el texto, luego la imagen. */
@@ -552,7 +582,7 @@
         @media (max-width: 560px) {
             .logo-name { font-size: 18px; }
             .logo-mark { width: 32px; height: 32px; }
-            .products-grid, .benefits-grid, .cat-grid { grid-template-columns: 1fr; }
+            .products-grid, .benefits-grid { grid-template-columns: 1fr; }
             .trust-card { grid-template-columns: 1fr; }
             .trust-item { border-right: none; border-bottom: 1px solid var(--line); }
             .trust-item:last-child { border-bottom: none; }
@@ -608,6 +638,33 @@
         </nav>
     </header>
     <div class="mobile-menu" id="mobileMenu"><!-- mismos enlaces, inyectados por JS --></div>
+
+    <!-- Casa interactiva: es lo primero que se ve.
+         Por defecto se monta en 3D (Three.js). Si el CDN o WebGL fallan,
+         se dibuja el plano isométrico en SVG, que no depende de la red. -->
+    <section class="house-hero" id="casa">
+        <div class="container">
+            <div class="house-head">
+                <span class="pill-badge" data-i18n="house.eyebrow">Recorre la casa</span>
+                <h2 data-i18n="house.title">Entra y mira habitación por habitación</h2>
+                <p data-i18n="house.sub">Pulsa cualquier zona de la casa y te llevamos a los productos pensados para ella.</p>
+            </div>
+
+            <div class="house-stage" id="houseStage">
+                <div id="house3d"></div>
+                <svg class="house-svg" id="houseSvg" role="img" aria-label="Plano isométrico de la casa"></svg>
+                <div class="house-labels" id="houseLabels"></div>
+                <div class="house-loading" id="houseLoading"><span class="spin"></span><span data-i18n="house.loading3d">Cargando 3D…</span></div>
+                <div class="house-bar">
+                    <p class="house-hint" id="houseHint"></p>
+                    <button class="house-btn" id="house3dBtn" type="button">
+                        <span class="dot"></span><span data-i18n="house.view2d">Ver en plano</span>
+                    </button>
+                </div>
+                <p class="house-err" id="houseErr" hidden></p>
+            </div>
+        </div>
+    </section>
 
     <!-- Hero -->
     <section class="hero" id="inicio">
@@ -670,43 +727,6 @@
         </div>
     </section>
 
-    <!-- Casa interactiva.
-         La vista isométrica (SVG) la genera renderHouse() y pesa unos KB.
-         El modo 3D carga Three.js bajo demanda: nadie lo descarga si no pulsa. -->
-    <section class="section" id="casa">
-        <div class="container">
-            <div class="section-head" data-reveal>
-                <span class="eyebrow" data-i18n="house.eyebrow">Recorre la casa</span>
-                <h2 data-i18n="house.title">Entra y mira habitación por habitación</h2>
-                <hr class="rule center">
-                <p data-i18n="house.sub">Pulsa cualquier zona de la casa y te llevamos a los productos pensados para ella.</p>
-            </div>
-
-            <div class="house-stage" id="houseStage" data-reveal>
-                <svg class="house-svg" id="houseSvg" role="img" aria-label="Plano isométrico de la casa"></svg>
-                <div id="house3d"></div>
-                <div class="house-bar">
-                    <p class="house-hint" id="houseHint"></p>
-                    <button class="house-btn" id="house3dBtn" type="button">
-                        <span class="dot"></span><span data-i18n="house.view3d">Ver en 3D</span>
-                    </button>
-                </div>
-                <p class="house-err" id="houseErr" hidden></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categorías -->
-    <section class="section" id="categorias">
-        <div class="container">
-            <div class="section-head" data-reveal>
-                <h2 data-i18n="cats.title">Explora nuestras categorías</h2>
-                <hr class="rule center">
-                <p data-i18n="cats.sub">Cada categoría reúne solo lo que de verdad merece la pena para esa parte de tu casa.</p>
-            </div>
-            <div class="cat-grid" id="catGrid"><!-- tarjetas por JS --></div>
-        </div>
-    </section>
 
     <!-- Tienda -->
     <section class="section alt" id="tienda">
@@ -1711,8 +1731,6 @@
         "tc.3p": "Sus plazos y ventajas de Prime",
         "tc.4t": "Sin coste extra",
         "tc.4p": "La comisión la paga Amazon",
-        "cats.title": "Explora nuestras categorías",
-        "cats.sub": "Cada categoría reúne solo lo que de verdad merece la pena para esa parte de tu casa.",
         "cats.one": "producto",
         "cats.many": "productos",
         "nav.guides": "Guías",
@@ -1821,8 +1839,6 @@
         "tc.3p": "Their delivery times and Prime perks",
         "tc.4t": "No extra cost",
         "tc.4p": "Amazon pays the commission",
-        "cats.title": "Explore our categories",
-        "cats.sub": "Each category holds only what is genuinely worth it for that part of your home.",
         "cats.one": "product",
         "cats.many": "products",
         "nav.guides": "Guides",
@@ -2268,13 +2284,20 @@
         });
       });
 
-      // Los mismos enlaces alimentan el menú de escritorio y el de móvil.
-      // Al final, un enlace fijo a las guías (no filtra categorías).
-      const linksHTML = all
-        .map(c => `<a href="#tienda" class="${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${c === "Todas" ? S("nav.shop") : catLabel(c)}</a>`)
-        .join("") + `<a href="#casa">${S("nav.house")}</a><a href="#comparativas">${S("nav.compare")}</a><a href="#guias">${S("nav.guides")}</a>`;
-      document.getElementById("topMenu").innerHTML = linksHTML;
-      document.getElementById("mobileMenu").innerHTML = linksHTML;
+      // Menú de escritorio: corto a propósito. Con las 9 categorías dentro
+      // la barra se desbordaba a dos líneas. Ahora las categorías se recorren
+      // desde la casa y desde los chips del catálogo.
+      const secciones =
+        `<a href="#casa">${S("nav.house")}</a>` +
+        `<a href="#tienda" data-cat="Todas">${S("nav.shop")}</a>` +
+        `<a href="#comparativas">${S("nav.compare")}</a>` +
+        `<a href="#guias">${S("nav.guides")}</a>`;
+      document.getElementById("topMenu").innerHTML = secciones;
+
+      // El menú móvil es desplegable, así que ahí sí caben las categorías.
+      document.getElementById("mobileMenu").innerHTML = secciones + all.slice(1)
+        .map(c => `<a href="#tienda" class="${c === activeCategory ? "active" : ""}" data-cat="${escAttr(c)}">${catLabel(c)}</a>`)
+        .join("");
 
       document.querySelectorAll("#topMenu a[data-cat], #mobileMenu a[data-cat]").forEach(a => {
         a.addEventListener("click", () => {
@@ -2515,203 +2538,292 @@
 
       document.getElementById("tienda").scrollIntoView({ behavior: "smooth", block: "start" });
     }
-
     /* =====================================================================
-       VISTA 3D (bajo demanda)
+       VISTA 3D — es la vista principal de la casa
        ---------------------------------------------------------------------
-       Three.js solo se descarga si el visitante pulsa "Ver en 3D". Así el
-       resto de la web sigue pesando lo mismo. Si la carga falla, se avisa y
-       se sigue usando el plano isométrico, que nunca depende de la red.
+       Se monta con Three.js cargado desde CDN. Si la red o WebGL fallan, se
+       cae al plano isométrico en SVG, que no depende de nada externo.
+       La geometría sale del mismo array ZONAS que el plano, así que la casa
+       solo se describe una vez.
        ===================================================================== */
     const CDN_THREE = "https://unpkg.com/three@0.160.0/build/three.module.js";
-    let THREE = null, escena3D = null;
+    let THREE = null, casa3D = null;
 
     const hex = c => parseInt(c.slice(1), 16);
 
-    async function construir3D(contenedor) {
+    async function construir3D(contenedor, capaEtiquetas) {
       THREE = await import(/* webpackIgnore: true */ CDN_THREE);
 
-      const anchoDe = () => contenedor.clientWidth || 800;
-      const altoDe = () => Math.round(anchoDe() * 0.625);
+      const ancho = () => contenedor.clientWidth || 900;
+      const alto = () => contenedor.clientHeight || 520;
 
       const escena = new THREE.Scene();
-      escena.background = new THREE.Color(hex("#faf7f2"));
+      escena.background = new THREE.Color(hex("#f3ece2"));
+      escena.fog = new THREE.Fog(hex("#f3ece2"), 42, 78);
 
-      const camara = new THREE.PerspectiveCamera(38, anchoDe() / altoDe(), 0.1, 400);
+      const camara = new THREE.PerspectiveCamera(36, ancho() / alto(), 0.1, 300);
+
       const render = new THREE.WebGLRenderer({ antialias: true });
       render.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      render.setSize(anchoDe(), altoDe());
+      render.setSize(ancho(), alto());
+      render.shadowMap.enabled = true;
+      render.shadowMap.type = THREE.PCFSoftShadowMap;
       contenedor.appendChild(render.domElement);
 
-      escena.add(new THREE.AmbientLight(0xffffff, 1.5));
-      const sol = new THREE.DirectionalLight(0xffffff, 1.5);
-      sol.position.set(12, 20, 8);
+      // Luz: cielo + sol. Las sombras son lo que quita la sensación de plano.
+      escena.add(new THREE.HemisphereLight(hex("#ffffff"), hex("#d8c9ae"), 2.1));
+      const sol = new THREE.DirectionalLight(0xfff4e2, 2.3);
+      sol.position.set(16, 24, 11);
+      sol.castShadow = true;
+      sol.shadow.mapSize.set(2048, 2048);
+      const s = sol.shadow.camera;
+      s.left = -20; s.right = 26; s.top = 22; s.bottom = -14; s.near = 1; s.far = 70;
       escena.add(sol);
 
-      // La casa se centra en el origen para poder girarla cómodamente.
-      const CX = 8, CY = 5;
-      const bloque = (x, y, z, w, d, h, color, grupo) => {
-        const g = new THREE.Mesh(
-          new THREE.BoxGeometry(w, h, d),
-          new THREE.MeshLambertMaterial({ color: hex(color) })
-        );
-        g.position.set(x + w / 2 - CX, z + h / 2, y + d / 2 - CY);
-        grupo.add(g);
-      };
+      const CX = 8, CY = 5;                       // centro de la parcela
+      const mat = (color, rug) => new THREE.MeshStandardMaterial({
+        color: hex(color), roughness: rug === undefined ? 0.85 : rug, metalness: 0
+      });
 
+      function bloque(x, y, z, w, d, h, material, padre) {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+        m.position.set(x + w / 2 - CX, z + h / 2, y + d / 2 - CY);
+        m.castShadow = true; m.receiveShadow = true;
+        (padre || escena).add(m);
+        return m;
+      }
+
+      /* --- Terreno --- */
+      const cesped = new THREE.Mesh(new THREE.BoxGeometry(30, 0.6, 24), mat("#c6cfae", 1));
+      cesped.position.set(0, -0.9, 0);
+      cesped.receiveShadow = true;
+      escena.add(cesped);
+
+      const parcela = new THREE.Mesh(new THREE.BoxGeometry(19, 0.6, 13), mat("#e3d8c1", 1));
+      parcela.position.set(0, -0.3, 0);
+      parcela.receiveShadow = true;
+      escena.add(parcela);
+
+      /* --- Habitaciones --- */
       const grupos = [];
+      const MAT_MURO_A = mat("#e0cbaa"), MAT_MURO_B = mat("#c8ae8b");
+
       ZONAS.forEach(z => {
         const grupo = new THREE.Group();
         grupo.userData.zona = z.id;
+
         const g = 0.18;
         const x = z.x + g, y = z.y + g, w = z.w - g * 2, d = z.d - g * 2;
-        const h = z.abierta ? 0.28 : ALTO_MURO;
+        const h = z.abierta ? 0.25 : ALTO_MURO;
 
-        bloque(x, y, -0.15, w, d, 0.15, z.suelo || "#f4ead9", grupo);   // suelo
-        bloque(x, y, 0, w, 0.16, h, "#d9c2a0", grupo);                   // muro A
-        bloque(x, y, 0, 0.16, d, h, "#bfa583", grupo);                   // muro B
-        z.props.forEach(p =>
-          bloque(x + p.x, y + p.y, 0, p.w, p.d, p.h, (MAT[p.m] || MAT.madera).top, grupo));
+        bloque(x, y, -0.12, w, d, 0.12, mat(z.suelo || "#f4ead9", 0.95), grupo);
+        bloque(x, y, 0, w, 0.18, h, MAT_MURO_A, grupo);
+        bloque(x, y, 0, 0.18, d, h, MAT_MURO_B, grupo);
+
+        z.props.forEach(p => {
+          const esAgua = p.m === "agua";
+          const material = esAgua
+            ? new THREE.MeshStandardMaterial({
+                color: hex("#5fb0ad"), roughness: .15, metalness: .1,
+                transparent: true, opacity: .82 })
+            : mat((MAT[p.m] || MAT.madera).top);
+          const m = bloque(x + p.x, y + p.y, esAgua ? -0.1 : 0, p.w, p.d, p.h, material, grupo);
+          if (esAgua) m.castShadow = false;
+        });
+
+        // Pérgola sobre la terraza: le da carácter de casa finca.
+        if (z.abierta) {
+          const madera = mat("#a8825a");
+          const px = x + 0.3, py = y + 0.25, pw = 2.6, pd = 3.4, ph = 2.5;
+          [[px, py], [px + pw, py], [px, py + pd], [px + pw, py + pd]]
+            .forEach(([a, b]) => bloque(a, b, 0, 0.16, 0.16, ph, madera, grupo));
+          for (let i = 0; i <= 6; i++)
+            bloque(px, py + (pd / 6) * i, ph, pw + 0.16, 0.12, 0.12, madera, grupo);
+        }
 
         escena.add(grupo);
         grupos.push(grupo);
       });
 
-      // Terreno
-      const suelo = new THREE.Mesh(
-        new THREE.BoxGeometry(18.5, 0.4, 12.5),
-        new THREE.MeshLambertMaterial({ color: hex("#e0d5bd") })
-      );
-      suelo.position.set(0, -0.35, 0);
-      escena.add(suelo);
+      /* --- Vegetación --- */
+      function arbol(wx, wy, escala) {
+        const g = new THREE.Group();
+        const tronco = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.12 * escala, 0.16 * escala, 1.1 * escala, 7), mat("#8d6f4e"));
+        tronco.position.y = 0.55 * escala; tronco.castShadow = true;
+        const copa = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(0.75 * escala, 0), mat("#8fa877"));
+        copa.position.y = 1.5 * escala; copa.castShadow = true;
+        g.add(tronco, copa);
+        g.position.set(wx - CX, 0, wy - CY);
+        escena.add(g);
+      }
+      arbol(-1.8, -1.4, 1.5); arbol(18.2, 1.2, 1.2);
+      arbol(-1.6, 11.3, 1.3); arbol(17.6, 11.6, 1.6); arbol(6, -2.2, 1.1);
 
-      /* --- Órbita propia: evita depender de OrbitControls y su import map --- */
-      let theta = -0.9, phi = 0.95, radio = 27;
-      function situarCamara() {
+      /* --- Etiquetas HTML sobre cada habitación --- */
+      capaEtiquetas.innerHTML = "";
+      const etiquetas = ZONAS.map(z => {
+        const n = cuentaZona(z);
+        const el = document.createElement("div");
+        el.className = "h-label";
+        el.innerHTML = `<b>${ZONA_NOMBRE[z.id][lang] || ZONA_NOMBRE[z.id].es}</b>
+                        <span>${n} ${n === 1 ? S("cats.one") : S("cats.many")}</span>`;
+        capaEtiquetas.appendChild(el);
+        const alturaTexto = (z.abierta ? 2.9 : ALTO_MURO + 1.1);
+        return {
+          el, id: z.id,
+          punto: new THREE.Vector3(z.x + z.w / 2 - CX, alturaTexto, z.y + z.d / 2 - CY)
+        };
+      });
+
+      /* --- Órbita propia (sin OrbitControls, para no depender de import maps) --- */
+      // Gira sola al principio para que se note que es 3D, pero se detiene
+      // en cuanto acercas el puntero: apuntar a un objetivo en movimiento
+      // es incómodo, y en cuanto alguien la toca deja de girar del todo.
+      let theta = -1.05, phi = 0.98, radio = 31, autoGiro = true, encimaDelLienzo = false;
+      const situar = () => {
         camara.position.set(
           radio * Math.sin(phi) * Math.cos(theta),
           radio * Math.cos(phi),
-          radio * Math.sin(phi) * Math.sin(theta)
-        );
-        camara.lookAt(0, 0, 0);
-      }
-      situarCamara();
+          radio * Math.sin(phi) * Math.sin(theta));
+        camara.lookAt(0, 1.2, 0);
+      };
+      situar();
 
-      let arrastrando = false, movido = 0, px = 0, py = 0;
       const lienzo = render.domElement;
       lienzo.style.touchAction = "pan-y";
       lienzo.style.cursor = "grab";
 
-      lienzo.addEventListener("pointerdown", e => {
-        arrastrando = true; movido = 0; px = e.clientX; py = e.clientY;
-        lienzo.setPointerCapture(e.pointerId); lienzo.style.cursor = "grabbing";
-      });
-      lienzo.addEventListener("pointermove", e => {
-        if (!arrastrando) return;
-        const dx = e.clientX - px, dy = e.clientY - py;
-        movido += Math.abs(dx) + Math.abs(dy);
-        theta -= dx * 0.006;
-        phi = Math.min(1.45, Math.max(0.25, phi - dy * 0.005));
-        px = e.clientX; py = e.clientY;
-        situarCamara();
-      });
-      lienzo.addEventListener("pointerup", e => {
-        arrastrando = false; lienzo.style.cursor = "grab";
-        if (movido > 6) return; // fue un giro, no un clic
+      let arrastrando = false, movido = 0, px0 = 0, py0 = 0;
+      const parar = () => { autoGiro = false; };
+      lienzo.addEventListener("pointerenter", () => { encimaDelLienzo = true; });
+      lienzo.addEventListener("pointerleave", () => { encimaDelLienzo = false; });
 
-        // Clic: se busca la zona bajo el puntero.
+      lienzo.addEventListener("pointerdown", e => {
+        arrastrando = true; movido = 0; px0 = e.clientX; py0 = e.clientY;
+        parar(); lienzo.setPointerCapture(e.pointerId); lienzo.style.cursor = "grabbing";
+      });
+
+      const rayo = new THREE.Raycaster();
+      const raton = new THREE.Vector2();
+      let encima = null;
+
+      function zonaEn(cx, cy) {
         const r = lienzo.getBoundingClientRect();
-        const raton = new THREE.Vector2(
-          ((e.clientX - r.left) / r.width) * 2 - 1,
-          -((e.clientY - r.top) / r.height) * 2 + 1
-        );
-        const rayo = new THREE.Raycaster();
+        raton.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
         rayo.setFromCamera(raton, camara);
-        const tocado = rayo.intersectObjects(grupos, true)[0];
-        if (tocado) {
-          let o = tocado.object;
-          while (o && !o.userData.zona) o = o.parent;
-          if (o) activarZona(o.userData.zona);
+        const hit = rayo.intersectObjects(grupos, true)[0];
+        if (!hit) return null;
+        let o = hit.object;
+        while (o && !o.userData.zona) o = o.parent;
+        return o ? o.userData.zona : null;
+      }
+
+      lienzo.addEventListener("pointermove", e => {
+        if (arrastrando) {
+          const dx = e.clientX - px0, dy = e.clientY - py0;
+          movido += Math.abs(dx) + Math.abs(dy);
+          theta -= dx * 0.006;
+          phi = Math.min(1.4, Math.max(0.3, phi - dy * 0.005));
+          px0 = e.clientX; py0 = e.clientY;
+          situar();
+          return;
+        }
+        const z = zonaEn(e.clientX, e.clientY);
+        if (z !== encima) {
+          encima = z;
+          lienzo.style.cursor = z ? "pointer" : "grab";
+          etiquetas.forEach(l => l.el.classList.toggle("hot", l.id === z));
         }
       });
-      lienzo.addEventListener("wheel", e => {
-        e.preventDefault();
-        radio = Math.min(45, Math.max(14, radio + Math.sign(e.deltaY) * 2));
-        situarCamara();
-      }, { passive: false });
 
-      window.addEventListener("resize", () => {
-        camara.aspect = anchoDe() / altoDe();
-        camara.updateProjectionMatrix();
-        render.setSize(anchoDe(), altoDe());
+      lienzo.addEventListener("pointerup", e => {
+        arrastrando = false;
+        lienzo.style.cursor = encima ? "pointer" : "grab";
+        if (movido > 7) return;               // fue un giro, no un clic
+        const z = zonaEn(e.clientX, e.clientY);
+        if (z) activarZona(z);
       });
 
-      (function bucle() { requestAnimationFrame(bucle); render.render(escena, camara); })();
+      lienzo.addEventListener("wheel", e => {
+        e.preventDefault(); parar();
+        radio = Math.min(46, Math.max(15, radio + Math.sign(e.deltaY) * 2));
+        situar();
+      }, { passive: false });
+
+      function medir() {
+        camara.aspect = ancho() / alto();
+        camara.updateProjectionMatrix();
+        render.setSize(ancho(), alto());
+      }
+      window.addEventListener("resize", medir);
+
+      /* --- Bucle --- */
+      const v = new THREE.Vector3();
+      (function bucle() {
+        requestAnimationFrame(bucle);
+
+        if (autoGiro && !arrastrando && !encimaDelLienzo) { theta += 0.0009; situar(); }
+
+        const r = lienzo.getBoundingClientRect();
+        etiquetas.forEach(l => {
+          v.copy(l.punto).project(camara);
+          const visible = v.z < 1;
+          l.el.classList.toggle("on", visible);
+          if (visible) {
+            l.el.style.left = ((v.x * 0.5 + 0.5) * r.width) + "px";
+            l.el.style.top = ((-v.y * 0.5 + 0.5) * r.height) + "px";
+          }
+        });
+
+        render.render(escena, camara);
+      })();
+
       return true;
     }
 
-    function initCasa3D() {
-      const btn = document.getElementById("house3dBtn");
+    /* Arranca la casa: intenta 3D y, si no puede, deja el plano isométrico. */
+    async function initCasa() {
       const stage = document.getElementById("houseStage");
+      const btn = document.getElementById("house3dBtn");
+      const cargando = document.getElementById("houseLoading");
       const err = document.getElementById("houseErr");
-      if (!btn || !stage) return;
+      if (!stage) return;
 
-      btn.addEventListener("click", async () => {
-        // Si ya está construida, solo se alterna la vista.
-        if (escena3D) {
-          const en3D = stage.classList.toggle("mode3d");
-          btn.querySelector("[data-i18n]").textContent = S(en3D ? "house.view2d" : "house.view3d");
-          document.getElementById("houseHint").innerHTML = S(en3D ? "house.drag" : "house.hint");
-          return;
-        }
+      const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        const etiqueta = btn.querySelector("[data-i18n]");
-        btn.disabled = true;
-        etiqueta.textContent = S("house.loading3d");
-        err.hidden = true;
+      function caerAlPlano(mensaje) {
+        stage.classList.add("mode2d");
+        cargando.classList.add("done");
+        btn.querySelector("[data-i18n]").textContent = S("house.view3d");
+        document.getElementById("houseHint").innerHTML = S("house.hint");
+        if (mensaje) { err.textContent = mensaje; err.hidden = false; }
+      }
 
+      // Quien pide menos animación no debería recibir una escena que gira sola.
+      if (sinMovimiento) { caerAlPlano(null); }
+      else {
         try {
-          await construir3D(document.getElementById("house3d"));
-          escena3D = true;
-          stage.classList.add("mode3d");
-          etiqueta.textContent = S("house.view2d");
+          await construir3D(document.getElementById("house3d"),
+                            document.getElementById("houseLabels"));
+          casa3D = true;
+          cargando.classList.add("done");
           document.getElementById("houseHint").innerHTML = S("house.drag");
         } catch (e) {
-          // Sin red, CDN caído o WebGL no disponible: el plano sigue sirviendo.
-          err.textContent = S("house.err3d");
-          err.hidden = false;
-          etiqueta.textContent = S("house.view3d");
-        } finally {
-          btn.disabled = false;
+          caerAlPlano(S("house.err3d"));
         }
+      }
+
+      // El botón alterna entre 3D y plano (solo si el 3D llegó a montarse).
+      btn.addEventListener("click", () => {
+        if (!casa3D) return;
+        const en2D = stage.classList.toggle("mode2d");
+        btn.querySelector("[data-i18n]").textContent = S(en2D ? "house.view3d" : "house.view2d");
+        document.getElementById("houseHint").innerHTML = S(en2D ? "house.hint" : "house.drag");
       });
     }
 
-    /* ---------- Tarjetas de categoría ---------- */
-    function renderCategories() {
-      const grid = document.getElementById("catGrid");
-      const cuenta = new Map();
-      products
-        .filter(p => p.disponible !== false)
-        .forEach(p => cuenta.set(p.category, (cuenta.get(p.category) || 0) + 1));
-
-      grid.innerHTML = [...cuenta.entries()].map(([cat, n]) => `
-        <a href="#tienda" class="cat-card" data-cat="${escAttr(cat)}">
-          <span class="cat-emoji">${CATEGORY_ICON[cat] || "🏠"}</span>
-          <span class="cat-name">${catLabel(cat)}</span>
-          <span class="cat-count">${n} ${n === 1 ? S("cats.one") : S("cats.many")}</span>
-        </a>`).join("");
-
-      // Pulsar una categoría filtra el catálogo y el ancla lleva hasta él.
-      grid.querySelectorAll(".cat-card").forEach(card => {
-        card.addEventListener("click", () => {
-          activeCategory = card.dataset.cat;
-          limpiarZona();
-          buildFilters();
-          renderGrid();
-        });
-      });
-    }
 
     /* ---------- Menú móvil ---------- */
     const navToggle = document.getElementById("navToggle");
@@ -2766,7 +2878,6 @@
       applyStaticText();
       buildFilters();
       renderGrid();
-      renderCategories();
       renderComparisons();
       renderHouse();
       renderStats();
@@ -2800,10 +2911,9 @@
     applyStaticText(); // primero el idioma: el resto del render depende de él
     buildFilters();
     renderGrid();
-    renderCategories();
     renderComparisons();
     renderHouse();
-    initCasa3D();
+    initCasa();
     renderStats();
     setupReveal();
 
