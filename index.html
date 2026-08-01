@@ -250,9 +250,11 @@
         .zone-tag .zt-name { font-size: 11px; font-weight: 600; }
         .zone-tag .zt-count { font-size: 9.5px; fill: var(--ink-50); }
 
+        /* El hueco inferior deja sitio a la tarjeta de confianza, que se monta
+           sobre el héroe con margen negativo y si no taparía este texto. */
         .house-bar {
             display: flex; align-items: center; justify-content: space-between;
-            gap: 16px; flex-wrap: wrap; margin-top: 14px;
+            gap: 16px; flex-wrap: wrap; margin: 16px 0 104px;
         }
         .house-hint { font-size: 13.5px; color: var(--ink-50); }
         .house-hint b { color: var(--tan-dark); font-weight: 600; }
@@ -278,6 +280,7 @@
         @media (max-width: 960px) {
             /* Ya en una columna: la maqueta necesita altura propia. */
             #house3d { aspect-ratio: 5 / 4; }
+            .house-bar { margin-bottom: 0; }
         }
         /* El plano de reserva no cabe legible en móvil: se deja deslizar. */
         @media (max-width: 720px) {
@@ -360,6 +363,9 @@
         .card-actions { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
         .link-ficha { background: none; border: none; color: var(--ink); font-family: var(--sans); font-size: 14px; cursor: pointer; opacity: .7; transition: opacity .2s; padding: 4px; }
         .link-ficha:hover { opacity: 1; }
+        .card-links { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .card-links .link-ficha + .link-ficha::before { content: "·"; margin-right: 8px; opacity: .5; }
+        .link-casa { color: var(--tan-dark); }
         .arrow { transition: transform .25s; display: inline-block; }
         .product-cta:hover .arrow, .btn:hover .arrow { transform: translateX(4px); }
 
@@ -1723,6 +1729,7 @@
         "house.title": "Entra y mira habitación por habitación",
         "house.sub": "Pulsa cualquier zona de la casa y te llevamos a los productos pensados para ella.",
         "house.hint": "Pulsa una habitación para ver sus productos.",
+        "house.locate": "Ver en la casa",
         "house.showing": "Mostrando:",
         "house.view3d": "Ver en 3D",
         "house.view2d": "Ver en plano",
@@ -1831,6 +1838,7 @@
         "house.title": "Step in and look room by room",
         "house.sub": "Tap any part of the house and we'll take you to the products made for it.",
         "house.hint": "Tap a room to see its products.",
+        "house.locate": "See it in the house",
         "house.showing": "Showing:",
         "house.view3d": "View in 3D",
         "house.view2d": "View the floor plan",
@@ -2132,7 +2140,10 @@
           <p class="price-note">${S("priceNote")}</p>
           <div class="card-actions">
             <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-sm btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
-            <button class="link-ficha" onclick="openModal(${index})">${S("seeDetails")}</button>
+            <div class="card-links">
+              <button class="link-ficha" onclick="openModal(${index})">${S("seeDetails")}</button>
+              <button class="link-ficha link-casa" onclick="irACasa(${index})">${S("house.locate")}</button>
+            </div>
           </div>
         </div>
       </article>`;
@@ -2533,6 +2544,29 @@
       document.querySelectorAll(".zone").forEach(g => g.classList.remove("active"));
       const hint = document.getElementById("houseHint");
       if (hint) hint.innerHTML = S("house.hint");
+    }
+
+    /* Camino inverso: desde un producto se sube a la casa y se enfoca la
+       habitación a la que pertenece su categoría. */
+    function irACasa(indice) {
+      const p = products[indice];
+      const z = p && ZONAS.find(x => x.cats.includes(p.category));
+      if (!z) return;
+
+      document.getElementById("inicio").scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // Resalta la habitación y, si el 3D está montado, acerca la cámara.
+      document.querySelectorAll(".h-label").forEach(el => el.classList.remove("hot"));
+      const i = ZONAS.indexOf(z);
+      const marca = document.querySelectorAll("#houseLabels .h-label")[i];
+      if (marca) marca.classList.add("hot");
+      document.querySelectorAll(".zone").forEach(g =>
+        g.classList.toggle("active", g.dataset.zona === z.id));
+
+      if (casa3D && casa3D.enfocar) casa3D.enfocar(z.id);
+
+      const nombre = ZONA_NOMBRE[z.id][lang] || ZONA_NOMBRE[z.id].es;
+      document.getElementById("houseHint").innerHTML = `${S("house.showing")} <b>${nombre}</b>`;
     }
 
     function activarZona(id) {
@@ -2952,6 +2986,12 @@
       let theta = -1.02, phi = 0.86, radio = 30, zoom = 1;
       let autoGiro = true, encimaDelLienzo = false;
 
+      // La cámara orbita alrededor de `mira`. Moviendo ese punto se puede
+      // enfocar una habitación concreta sin recolocar toda la escena.
+      const mira = new THREE.Vector3(0, 0.6, 0);
+      const CENTRO = new THREE.Vector3(0, 0.6, 0);
+      let destino = null;   // {mira, zoom, phi} mientras dura la transición
+
       // La maqueta es ancha (17 x 10). En un lienzo estrecho hay que alejar
       // la cámara o se corta por los lados.
       function distancia() {
@@ -2962,12 +3002,28 @@
       const situar = () => {
         const r = distancia();
         camara.position.set(
-          r * Math.sin(phi) * Math.cos(theta),
-          r * Math.cos(phi),
-          r * Math.sin(phi) * Math.sin(theta));
-        camara.lookAt(0, 0.6, 0);
+          mira.x + r * Math.sin(phi) * Math.cos(theta),
+          mira.y + r * Math.cos(phi),
+          mira.z + r * Math.sin(phi) * Math.sin(theta));
+        camara.lookAt(mira);
       };
       situar();
+
+      /* Acerca la cámara a una habitación. Lo usa el enlace "ver en la casa"
+         de cada producto: la transición se interpola en el bucle. */
+      function enfocar(id) {
+        const z = ZONAS.find(x => x.id === id);
+        if (!z) return;
+        autoGiro = false;
+        destino = {
+          mira: new THREE.Vector3(z.x + z.w / 2 - CX, 0.9, z.y + z.d / 2 - CY),
+          zoom: 0.6, phi: 0.78
+        };
+      }
+      function alejar() {
+        autoGiro = false;
+        destino = { mira: CENTRO.clone(), zoom: 1, phi: 0.86 };
+      }
 
       const lienzo = render.domElement;
       lienzo.style.touchAction = "pan-y";
@@ -3043,6 +3099,15 @@
         requestAnimationFrame(bucle);
         if (autoGiro && !arrastrando && !encimaDelLienzo) { theta += 0.0009; situar(); }
 
+        // Transición suave al enfocar una habitación.
+        if (destino) {
+          mira.lerp(destino.mira, 0.09);
+          zoom += (destino.zoom - zoom) * 0.09;
+          phi += (destino.phi - phi) * 0.09;
+          situar();
+          if (mira.distanceTo(destino.mira) < 0.02 && Math.abs(zoom - destino.zoom) < 0.005) destino = null;
+        }
+
         const r = lienzo.getBoundingClientRect();
         etiquetas.forEach(l => {
           v.copy(l.punto).project(camara);
@@ -3057,7 +3122,7 @@
         render.render(escena, camara);
       })();
 
-      return true;
+      return { enfocar, alejar };
     }
 
     /* Arranca la casa: intenta 3D y, si no puede, deja el plano isométrico. */
@@ -3082,9 +3147,8 @@
       if (sinMovimiento) { caerAlPlano(null); }
       else {
         try {
-          await construir3D(document.getElementById("house3d"),
-                            document.getElementById("houseLabels"));
-          casa3D = true;
+          casa3D = await construir3D(document.getElementById("house3d"),
+                                     document.getElementById("houseLabels"));
           cargando.classList.add("done");
           document.getElementById("houseHint").innerHTML = S("house.drag");
         } catch (e) {
