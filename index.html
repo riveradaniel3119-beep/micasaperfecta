@@ -2348,6 +2348,9 @@
       metal:  { top: "#b9bcc0", a: "#a6a9ad", b: "#93969a" }
     };
 
+    // Equivalente plano de las texturas del 3D, para el plano de reserva.
+    const COLOR_SUELO = { madera: "#d3a978", baldosa: "#e7e4de", porcelanico: "#ded8ca" };
+
     // Altura de los tabiques interiores. Los muros exteriores son más altos.
     const ALTO_MURO = 1.5;
     const ALTO_FACHADA = 3.1;
@@ -2358,7 +2361,7 @@
        locales de cada estancia; `z` eleva la pieza si hace falta. */
     const ZONAS = [
       {
-        id: "cocina", cats: ["Cocina"], x: 0, y: 0, w: 4.5, d: 4, suelo: "#d9b98f",
+        id: "cocina", cats: ["Cocina"], x: 0, y: 0, w: 4.5, d: 4, tex: "madera",
         props: [
           { x: 0.25, y: 0.25, w: 3.9, d: 0.7,  h: 0.9,  m: "claro" },
           { x: 0.25, y: 0.3,  w: 3.9, d: 0.4,  h: 0.6, z: 1.85, m: "claro" },
@@ -2368,7 +2371,7 @@
         ]
       },
       {
-        id: "sala", cats: ["Electrónica", "Decoración", "Tecnología"], x: 4.5, y: 0, w: 4.5, d: 4, suelo: "#d9b98f",
+        id: "sala", cats: ["Electrónica", "Decoración", "Tecnología"], x: 4.5, y: 0, w: 4.5, d: 4, tex: "madera",
         props: [
           { x: 0.3,  y: 0.3,  w: 0.55, d: 3.0, h: 0.45, m: "claro" },
           { x: 0.42, y: 0.4,  w: 0.28, d: 2.8, h: 0.4,  z: 0.45, m: "claro" },
@@ -2381,7 +2384,7 @@
         ]
       },
       {
-        id: "habitacion", cats: ["Descanso"], x: 0, y: 4, w: 4.5, d: 4, suelo: "#d9b98f",
+        id: "habitacion", cats: ["Descanso"], x: 0, y: 4, w: 4.5, d: 4, tex: "madera",
         props: [
           { x: 1.1,  y: 1.0,  w: 2.3, d: 2.6, h: 0.32, m: "madera" },
           { x: 1.15, y: 1.05, w: 2.2, d: 2.5, h: 0.28, z: 0.32, m: "claro" },
@@ -2394,7 +2397,7 @@
         ]
       },
       {
-        id: "bano", cats: ["Baño"], x: 4.5, y: 4, w: 2.2, d: 4, suelo: "#e6e3dd",
+        id: "bano", cats: ["Baño"], x: 4.5, y: 4, w: 2.2, d: 4, tex: "baldosa",
         props: [
           { x: 0.25, y: 0.3,  w: 1.7, d: 0.75, h: 0.55, m: "claro" },
           { x: 0.35, y: 0.4,  w: 1.5, d: 0.55, h: 0.12, z: 0.55, m: "agua" },
@@ -2403,7 +2406,7 @@
         ]
       },
       {
-        id: "lavadero", cats: ["Limpieza", "Organización"], x: 6.7, y: 4, w: 2.3, d: 4, suelo: "#e2ded6",
+        id: "lavadero", cats: ["Limpieza", "Organización"], x: 6.7, y: 4, w: 2.3, d: 4, tex: "baldosa",
         props: [
           { x: 0.3,  y: 0.3,  w: 0.85, d: 0.8, h: 1.0,  m: "metal" },
           { x: 1.25, y: 0.3,  w: 0.85, d: 0.8, h: 1.0,  m: "claro" },
@@ -2414,7 +2417,7 @@
         ]
       },
       {
-        id: "terraza", cats: ["Salud"], x: 9, y: 0, w: 6.5, d: 8, abierta: true, suelo: "#ded8ca",
+        id: "terraza", cats: ["Salud"], x: 9, y: 0, w: 6.5, d: 8, abierta: true, tex: "porcelanico",
         // La piscina es una zona hundida: el suelo se genera alrededor de ella.
         piscina: { x: 1.4, y: 2.6, w: 3.8, d: 4.6 },
         props: [
@@ -2486,7 +2489,7 @@
         const x = z.x + g, y = z.y + g, w = z.w - g * 2, d = z.d - g * 2;
 
         const suelo = cara([[x, y, 0], [x + w, y, 0], [x + w, y + d, 0], [x, y + d, 0]],
-          z.suelo || "#f4ead9", "zone-floor");
+          COLOR_SUELO[z.tex] || "#f4ead9", "zone-floor");
 
         const muroA = cara([[x, y, 0], [x + w, y, 0], [x + w, y, h], [x, y, h]],
           "#d9c2a0", "zone-wall zone-wall-a");
@@ -2563,6 +2566,81 @@
 
     const hex = c => parseInt(c.slice(1), 16);
 
+    /* ---------------------------------------------------------------------
+       Texturas dibujadas por código. No puedo incluir fotos de materiales,
+       pero un lienzo 2D sí permite generar veta de madera, juntas de baldosa
+       y estampados: es lo que quita el aspecto de "cajas de color plano".
+       --------------------------------------------------------------------- */
+    function lienzoTextura(w, h, pintar) {
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      pintar(c.getContext("2d"), w, h);
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = 8;
+      return t;
+    }
+
+    function texMadera(base, veta) {
+      return lienzoTextura(512, 512, (x, w, h) => {
+        x.fillStyle = base; x.fillRect(0, 0, w, h);
+        const tabla = 74;
+        for (let y = 0; y < h; y += tabla) {
+          // Cada tabla con su tono, como un entarimado real.
+          x.fillStyle = `rgba(0,0,0,${0.02 + Math.random() * 0.05})`;
+          x.fillRect(0, y, w, tabla);
+          x.strokeStyle = "rgba(0,0,0,.18)"; x.lineWidth = 1.4;
+          x.beginPath(); x.moveTo(0, y); x.lineTo(w, y); x.stroke();
+          // Veta
+          for (let v = 0; v < 22; v++) {
+            x.strokeStyle = veta;
+            x.globalAlpha = 0.05 + Math.random() * 0.1;
+            x.lineWidth = 0.6 + Math.random();
+            const yy = y + Math.random() * tabla;
+            x.beginPath(); x.moveTo(0, yy);
+            x.bezierCurveTo(w * .3, yy + (Math.random() - .5) * 7, w * .7, yy + (Math.random() - .5) * 7, w, yy);
+            x.stroke(); x.globalAlpha = 1;
+          }
+          // Juntas verticales entre piezas
+          let px = Math.random() * 180;
+          while (px < w) {
+            x.strokeStyle = "rgba(0,0,0,.16)"; x.lineWidth = 1.2;
+            x.beginPath(); x.moveTo(px, y); x.lineTo(px, y + tabla); x.stroke();
+            px += 130 + Math.random() * 150;
+          }
+        }
+      });
+    }
+
+    function texBaldosa(base, junta, lado) {
+      return lienzoTextura(512, 512, (x, w, h) => {
+        x.fillStyle = junta; x.fillRect(0, 0, w, h);
+        const s = lado || 128, g = 4;
+        for (let a = 0; a < w; a += s) for (let b = 0; b < h; b += s) {
+          x.fillStyle = base;
+          x.fillRect(a + g, b + g, s - g * 2, s - g * 2);
+          x.fillStyle = `rgba(255,255,255,${Math.random() * .07})`;
+          x.fillRect(a + g, b + g, s - g * 2, s - g * 2);
+        }
+      });
+    }
+
+    function texAlfombra(fondo, linea) {
+      return lienzoTextura(256, 256, (x, w, h) => {
+        x.fillStyle = fondo; x.fillRect(0, 0, w, h);
+        x.strokeStyle = linea; x.lineWidth = 6;
+        x.strokeRect(16, 16, w - 32, h - 32);
+        x.lineWidth = 3;
+        x.strokeRect(34, 34, w - 68, h - 68);
+        for (let i = 0; i < 256; i += 16) {
+          x.globalAlpha = .12;
+          x.beginPath(); x.moveTo(i, 0); x.lineTo(i, h); x.stroke();
+          x.globalAlpha = 1;
+        }
+      });
+    }
+
     async function construir3D(contenedor, capaEtiquetas) {
       THREE = await import(/* webpackIgnore: true */ CDN_THREE);
 
@@ -2579,29 +2657,72 @@
       render.setSize(ancho(), alto());
       render.shadowMap.enabled = true;
       render.shadowMap.type = THREE.PCFSoftShadowMap;
+      // Mapeo tonal filmico y espacio de color correcto: sin esto los
+      // materiales se ven "lavados" y las luces se queman.
+      render.toneMapping = THREE.ACESFilmicToneMapping;
+      render.toneMappingExposure = 0.78;
+      render.outputColorSpace = THREE.SRGBColorSpace;
       contenedor.appendChild(render.domElement);
 
-      escena.add(new THREE.HemisphereLight(0xffffff, 0xc9c2b4, 2.0));
-      const sol = new THREE.DirectionalLight(0xfff6ea, 2.4);
+      /* Entorno: un degradado cielo-suelo convertido en mapa de reflexión.
+         Da luz indirecta y reflejos suaves, que es lo que separa un render
+         plano de uno con cuerpo. */
+      const pmrem = new THREE.PMREMGenerator(render);
+      const cielo = new THREE.Scene();
+      const domo = new THREE.Mesh(
+        new THREE.SphereGeometry(50, 24, 16),
+        new THREE.ShaderMaterial({
+          side: THREE.BackSide,
+          uniforms: {
+            arriba: { value: new THREE.Color(0xdfe8ee) },
+            abajo:  { value: new THREE.Color(0x9d968a) }
+          },
+          vertexShader: "varying vec3 p; void main(){ p = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
+          fragmentShader: "uniform vec3 arriba; uniform vec3 abajo; varying vec3 p; void main(){ float t = clamp(p.y/50.0*0.5+0.5,0.0,1.0); gl_FragColor = vec4(mix(abajo,arriba,t),1.0); }"
+        })
+      );
+      cielo.add(domo);
+      escena.environment = pmrem.fromScene(cielo, 0.04).texture;
+      pmrem.dispose();
+
+      escena.add(new THREE.HemisphereLight(0xffffff, 0xb5ad9d, 0.45));
+      const sol = new THREE.DirectionalLight(0xfff1de, 2.1);
       sol.position.set(15, 22, -13);
       sol.castShadow = true;
       sol.shadow.mapSize.set(2048, 2048);
       sol.shadow.bias = -0.0006;
+      sol.shadow.radius = 2.5;
       const sc = sol.shadow.camera;
       sc.left = -18; sc.right = 22; sc.top = 20; sc.bottom = -16; sc.near = 1; sc.far = 70;
       escena.add(sol);
-      const relleno = new THREE.DirectionalLight(0xffffff, 0.5);
+      const relleno = new THREE.DirectionalLight(0xd6e4ee, 0.22);
       relleno.position.set(-12, 10, 14);
       escena.add(relleno);
 
       const CX = 7.75, CY = 4;
-      const M = (c, r) => new THREE.MeshStandardMaterial({
-        color: hex(c), roughness: r === undefined ? 0.9 : r, metalness: 0
+      const M = (c, r, m) => new THREE.MeshStandardMaterial({
+        color: hex(c), roughness: r === undefined ? 0.9 : r, metalness: m || 0,
+        envMapIntensity: 0.7
       });
-      const PARED = M("#f7f4ef", 0.95);
-      const VIDRIO = new THREE.MeshStandardMaterial({
-        color: hex("#2f3a40"), roughness: 0.12, metalness: 0.35
+      const PARED = M("#f6f3ee", 0.92);
+      const VIDRIO = new THREE.MeshPhysicalMaterial({
+        color: hex("#2b353b"), roughness: 0.06, metalness: 0.1,
+        clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.6
       });
+
+      // Materiales con textura para los suelos
+      const TEX = {
+        madera: new THREE.MeshStandardMaterial({
+          map: texMadera("#a9713f", "#5d3a1c"), roughness: 0.66, envMapIntensity: 0.4
+        }),
+        baldosa: new THREE.MeshStandardMaterial({
+          map: texBaldosa("#dedbd4", "#b3aea4", 128), roughness: 0.3, envMapIntensity: 0.8
+        }),
+        porcelanico: new THREE.MeshStandardMaterial({
+          map: texBaldosa("#cfc7b6", "#ada593", 86), roughness: 0.55, envMapIntensity: 0.45
+        })
+      };
+      Object.values(TEX).forEach(m => { m.map.repeat.set(1.1, 1.1); });
 
       function bloque(x, y, z, w, d, h, material, padre, sombra) {
         const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
@@ -2638,7 +2759,13 @@
       ZONAS.forEach(z => {
         const grupo = new THREE.Group();
         grupo.userData.zona = z.id;
-        const matSuelo = M(z.suelo || "#d9b98f", 0.85);
+        // Suelo con textura; se clona para ajustar la escala de la trama al
+        // tamaño de cada estancia y que las tablas midan lo mismo en todas.
+        const matSuelo = TEX[z.tex || "madera"].clone();
+        matSuelo.map = TEX[z.tex || "madera"].map.clone();
+        matSuelo.map.needsUpdate = true;
+        matSuelo.map.wrapS = matSuelo.map.wrapT = THREE.RepeatWrapping;
+        matSuelo.map.repeat.set(z.w / 4.2, z.d / 4.2);
 
         if (z.piscina) {
           // Suelo en cuatro piezas para dejar hueco a la piscina.
@@ -2679,6 +2806,94 @@
         escena.add(grupo);
         grupos.push(grupo);
       });
+
+      /* ---------------- Detalles con geometría propia ----------------
+         Cilindros, esferas y conos en vez de cajas: las patas, macetas y
+         pantallas son lo que hace que deje de leerse como bloques. */
+      const porZona = {};
+      grupos.forEach(g => { porZona[g.userData.zona] = g; });
+      const pon = (m, gx, gy, gz, grupo) => {
+        m.position.set(gx - CX, gz, gy - CY);
+        m.castShadow = true; m.receiveShadow = true;
+        (grupo || escena).add(m);
+        return m;
+      };
+
+      const MAT_TIERRA = M("#4b3a2c", 1);
+      const MAT_HOJA = M("#5f8a52", .85);
+      const MAT_HOJA2 = M("#6f9c5e", .85);
+      const MAT_TERRACOTA = M("#b4674a", .8);
+      const MAT_PATA = M("#6b5540", .65);
+      const MAT_METAL = M("#9aa0a6", .3, .75);
+
+      function planta(gx, gy, e, grupo, maceta) {
+        const g = new THREE.Group();
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(0.17 * e, 0.13 * e, 0.3 * e, 14), maceta || MAT_TERRACOTA);
+        m.position.y = 0.15 * e; m.castShadow = true; g.add(m);
+        const t = new THREE.Mesh(new THREE.CylinderGeometry(0.155 * e, 0.155 * e, 0.04 * e, 14), MAT_TIERRA);
+        t.position.y = 0.3 * e; g.add(t);
+        for (let i = 0; i < 5; i++) {
+          const h = new THREE.Mesh(new THREE.SphereGeometry(0.17 * e, 10, 8), i % 2 ? MAT_HOJA : MAT_HOJA2);
+          h.scale.set(1, 1.5, 1);
+          const a = (i / 5) * Math.PI * 2;
+          h.position.set(Math.cos(a) * 0.13 * e, (0.5 + (i % 3) * 0.14) * e, Math.sin(a) * 0.13 * e);
+          h.castShadow = true; g.add(h);
+        }
+        g.position.set(gx - CX, 0.1, gy - CY);
+        (grupo || escena).add(g);
+      }
+
+      function silla(gx, gy, giro, grupo) {
+        const g = new THREE.Group();
+        const asiento = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.06, 0.42), M("#d8b98d", .7));
+        asiento.position.y = 0.44; asiento.castShadow = true; g.add(asiento);
+        const resp = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.4, 0.05), M("#d8b98d", .7));
+        resp.position.set(0, 0.66, -0.18); resp.castShadow = true; g.add(resp);
+        [[-.16, -.16], [.16, -.16], [-.16, .16], [.16, .16]].forEach(([a, b]) => {
+          const p = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.44, 7), MAT_PATA);
+          p.position.set(a, 0.22, b); p.castShadow = true; g.add(p);
+        });
+        g.rotation.y = giro || 0;
+        g.position.set(gx - CX, 0.1, gy - CY);
+        (grupo || escena).add(g);
+      }
+
+      function lampara(gx, gy, grupo) {
+        const g = new THREE.Group();
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.19, 0.05, 16), MAT_METAL);
+        base.position.y = 0.03; g.add(base);
+        const palo = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.35, 8), MAT_METAL);
+        palo.position.y = 0.7; palo.castShadow = true; g.add(palo);
+        const pant = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.34, 18, 1, true),
+          new THREE.MeshStandardMaterial({ color: hex("#f4ead6"), roughness: .8, side: THREE.DoubleSide, emissive: hex("#3a3020"), emissiveIntensity: .4 }));
+        pant.position.y = 1.45; pant.castShadow = true; g.add(pant);
+        g.position.set(gx - CX, 0.1, gy - CY);
+        (grupo || escena).add(g);
+      }
+
+      const matAlfombra = new THREE.MeshStandardMaterial({
+        map: texAlfombra("#cfc4b4", "#8d7b64"), roughness: .95, envMapIntensity: .3
+      });
+      function alfombra(gx, gy, w, d, grupo) {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.025, d), matAlfombra);
+        m.receiveShadow = true;
+        m.position.set(gx + w / 2 - CX, 0.11, gy + d / 2 - CY);
+        (grupo || escena).add(m);
+      }
+
+      // Colocación: pocas piezas, en los sitios donde se ven.
+      alfombra(5.6, 1.0, 2.2, 1.9, porZona.sala);
+      lampara(8.3, 3.4, porZona.sala);
+      planta(8.5, 0.6, 1.25, porZona.sala);
+      silla(2.0, 3.3, 0.2, porZona.cocina);
+      silla(2.9, 3.3, -0.25, porZona.cocina);
+      planta(0.6, 3.4, 1.1, porZona.cocina);
+      alfombra(0.7, 6.6, 2.6, 1.2, porZona.habitacion);
+      lampara(0.75, 4.7, porZona.habitacion);
+      planta(6.2, 4.7, 0.95, porZona.bano, M("#e6e2da", .5));
+      planta(10.0, 1.1, 1.5, porZona.terraza);
+      planta(14.9, 1.2, 1.3, porZona.terraza);
+      planta(10.1, 7.4, 1.35, porZona.terraza);
 
       /* ---------------- Muros ---------------- */
       const G = 0.16;
