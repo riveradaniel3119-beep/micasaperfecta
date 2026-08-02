@@ -479,6 +479,68 @@
         .reviews-summary { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-70); }
         .modal-footer { margin-top: 30px; }
 
+        /* ---------- Comparador cara a cara ---------- */
+        .vs-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+        .vs-label { font-size: 12.5px; color: var(--ink-50); }
+        .vs-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 7px 13px; border-radius: 4px; cursor: pointer;
+            border: 1px solid var(--tan); background: #fff; color: var(--tan-dark);
+            font-family: var(--sans); font-size: 12.5px; font-weight: 600;
+            transition: background .2s, color .2s;
+        }
+        .vs-btn:hover { background: var(--tan); color: #fff; }
+        .vs-btn .arrow { font-size: 13px; }
+
+        .vs-head { text-align: center; padding: 34px 30px 6px; }
+        .vs-head h3 { font-size: 30px; margin: 10px 0 8px; }
+        .vs-head p { color: var(--ink-70); font-size: 15.5px; max-width: 520px; margin: 0 auto; }
+        .vs-volver {
+            float: left; background: none; border: none; cursor: pointer;
+            font-family: var(--sans); font-size: 13.5px; color: var(--ink-50); padding: 0;
+        }
+        .vs-volver:hover { color: var(--tan-dark); }
+
+        .vs-grid {
+            display: grid; grid-template-columns: 1fr auto 1fr;
+            gap: 8px; align-items: start; padding: 26px 30px 34px;
+        }
+        .vs-col { border: 1px solid var(--line); border-radius: 6px; padding: 20px; background: #fff; }
+        .vs-img { height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+        .vs-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .vs-img .placeholder { font-size: 46px; background: none; }
+        .vs-name { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.3; margin-bottom: 10px; }
+        .vs-datos { list-style: none; margin: 14px 0; }
+        .vs-datos li {
+            display: flex; justify-content: space-between; gap: 12px;
+            padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px;
+        }
+        .vs-datos li span:first-child { color: var(--ink-50); }
+        .vs-datos li span:last-child { font-weight: 600; text-align: right; }
+        .vs-para {
+            font-size: 14px; line-height: 1.5; color: var(--ink); margin-bottom: 14px;
+            padding-left: 12px; border-left: 2px solid var(--tan);
+        }
+        .vs-para b { display: block; font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--tan-dark); margin-bottom: 3px; }
+        .vs-pros { list-style: none; margin-bottom: 18px; }
+        .vs-pros li { position: relative; padding: 6px 0 6px 20px; font-size: 14px; line-height: 1.5; color: var(--ink-70); }
+        .vs-pros li::before {
+            content: ''; position: absolute; left: 2px; top: 14px;
+            width: 5px; height: 5px; border-radius: 50%; background: var(--tan);
+        }
+        .vs-col .link-ficha { display: block; width: 100%; margin-top: 8px; }
+        .vs-sep { align-self: center; padding: 0 4px; }
+        .vs-sep span {
+            display: block; font-family: var(--serif); font-size: 15px; font-style: italic;
+            color: var(--ink-50); writing-mode: vertical-rl; letter-spacing: 2px;
+        }
+
+        @media (max-width: 700px) {
+            .vs-grid { grid-template-columns: 1fr; padding: 20px 22px 28px; }
+            .vs-sep span { writing-mode: horizontal-tb; text-align: center; padding: 6px 0; }
+            .vs-head { padding: 26px 22px 4px; }
+        }
+
         .disclaimer {
             margin-top: 56px; max-width: 780px; margin-left: auto; margin-right: auto; text-align: center;
             background: var(--cream); border: 1px solid var(--line); border-radius: 6px;
@@ -2599,6 +2661,122 @@
           pros: "Adjustable from 200 to 450 °F|118 square inches: serves up to 6|Removable PFAS-free non-stick plate|Extra-large drip tray|Plate, tray and lid are dishwasher safe|Power and preheat indicator lights",
           destacado_editorial: "The simple option for indoor grilling: no thermometer, no modes, just a temperature dial."
         }
+      },
+      {
+        name: "AquaSonic Black Series Cepillo de Dientes Sónico",
+        description: "Cepillo eléctrico sónico con motor de 40.000 vibraciones por minuto y cuatro modos, incluidos blanqueamiento y masaje de encías. Carga inalámbrica que da hasta cuatro semanas de autonomía. Resistencia IPX7 y temporizador por cuadrantes. Incluye ocho cabezales diseñados por DuPont —más de dos años de recambios— y estuche de viaje sin BPA.",
+        affiliate_link: "https://link.amazon/B01yX9BbI",
+        valoracion_media: 4.6,
+        resenas_cantidad: 137143,
+        isFeatured: true,
+        category: "Limpieza personal",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/71sZ7M1OHwL._AC_SY879_.jpg",
+        marca: "AquaSonic",
+        asin: "B072YVWBXH",
+        ideal_para: "Limpieza diaria a fondo con recambios para años",
+        pros: "40.000 vibraciones por minuto|4 modos: limpieza, blanqueo, masaje y suave|8 cabezales DuPont: más de 2 años|Hasta 4 semanas por carga|Carga inalámbrica, resistencia IPX7|Temporizador por cuadrantes y estuche de viaje",
+        destacado_editorial: "Con 137.000 reseñas: los ocho cabezales incluidos ya valen lo que cuesta el cepillo.",
+        en: {
+          name: "AquaSonic Black Series Sonic Toothbrush",
+          description: "Sonic electric toothbrush with a 40,000 vibrations-per-minute motor and four modes, including whitening and gum massage. Wireless charging gives up to four weeks of use. IPX7 rated with a quadrant timer. It comes with eight DuPont-designed brush heads — over two years of replacements — and a BPA-free travel case.",
+          ideal_para: "Thorough daily cleaning with years of replacements",
+          pros: "40,000 vibrations per minute|4 modes: clean, whiten, massage and soft|8 DuPont heads: over 2 years' worth|Up to 4 weeks per charge|Wireless charging, IPX7 rated|Quadrant timer and travel case",
+          destacado_editorial: "137,000 reviews in: the eight included heads are already worth what the brush costs."
+        }
+      },
+      {
+        name: "COSLUS Irrigador Dental Inalámbrico (depósito de 300 ml)",
+        description: "Irrigador bucal portátil con 1.400 a 1.800 pulsos por minuto y presión regulable entre 30 y 150 PSI, con cuatro modos para uso diario, encías sensibles, ortodoncia o niños. Depósito desmontable de 300 ml y boca ancha: 90 segundos seguidos sin rellenar. Resistencia IPX7 para usarlo en la ducha, batería para unos 60 usos por carga y cuatro boquillas incluidas.",
+        affiliate_link: "https://link.amazon/B0c1ySPGK",
+        valoracion_media: 4.4,
+        resenas_cantidad: 16687,
+        isFeatured: false,
+        category: "Limpieza personal",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/71Mgdbt9C6L._AC_SX679_.jpg",
+        marca: "COSLUS",
+        asin: "B0CHFT6T5P",
+        ideal_para: "Brackets, implantes o donde el hilo no llega",
+        pros: "1.400-1.800 pulsos por minuto|Presión regulable de 30 a 150 PSI|4 modos, de suave a ortodoncia|Depósito de 300 ml: 90 s sin rellenar|IPX7: se puede usar en la ducha|Unos 60 usos por carga, 4 boquillas",
+        contras: "No incluye adaptador de pared (usa cualquiera de 5 V)",
+        destacado_editorial: "Donde el hilo dental no llega —brackets, puentes, muelas del juicio— el agua a presión sí.",
+        en: {
+          name: "COSLUS Cordless Water Flosser (300 ml tank)",
+          description: "Portable water flosser with 1,400 to 1,800 pulses per minute and pressure adjustable from 30 to 150 PSI, with four modes for daily use, sensitive gums, braces or children. Removable 300 ml wide-mouth tank: 90 seconds of continuous use without refilling. IPX7 rated for shower use, battery good for around 60 sessions per charge, and four tips included.",
+          ideal_para: "Braces, implants, or wherever floss can't reach",
+          pros: "1,400-1,800 pulses per minute|Pressure adjustable from 30 to 150 PSI|4 modes, from gentle to orthodontic|300 ml tank: 90 s without refilling|IPX7: safe to use in the shower|Around 60 sessions per charge, 4 tips",
+          contras: "No wall adapter included (any 5 V one works)",
+          destacado_editorial: "Where floss can't reach — braces, bridges, wisdom teeth — pressurised water can."
+        }
+      },
+      {
+        name: "Mastermedi Limpiador de Lengua de Acero (pack de 2)",
+        description: "Dos limpiadores de lengua de acero inoxidable con forma de U flexible, que se adapta al contorno de la lengua y llega al fondo sin provocar arcadas. Dos asas para agarrarlo con firmeza. El acero no se oxida ni acumula residuos y va al lavavajillas. Cada uno con su estuche, para tener uno en casa y otro fuera.",
+        affiliate_link: "https://link.amazon/B00pJME11",
+        valoracion_media: 4.7,
+        resenas_cantidad: 102883,
+        isFeatured: false,
+        category: "Limpieza personal",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/81rXN9XcUsL._SX679_.jpg",
+        marca: "Mastermedi",
+        asin: "B01LAY47D0",
+        ideal_para: "Aliento fresco y quitar la capa blanca",
+        pros: "Acero inoxidable: no se oxida|Forma de U flexible que se adapta|Dos asas para buen agarre|Apto para lavavajillas|Pack de 2 con estuche individual",
+        destacado_editorial: "Lo más barato del catálogo y de lo mejor valorado: 102.000 reseñas para algo que cuesta poco.",
+        en: {
+          name: "Mastermedi Stainless Steel Tongue Scraper (2-pack)",
+          description: "Two stainless steel tongue scrapers with a flexible U shape that follows the contour of your tongue and reaches the back without triggering a gag reflex. Two handles for a firm grip. The steel won't rust or build up residue and it's dishwasher safe. Each comes with its own case, so you can keep one at home and one out.",
+          ideal_para: "Fresher breath and clearing the white coating",
+          pros: "Stainless steel: won't rust|Flexible U shape that follows the contour|Two handles for a firm grip|Dishwasher safe|2-pack with individual cases",
+          destacado_editorial: "The cheapest thing in the catalogue and among the best rated: 102,000 reviews for very little money."
+        }
+      },
+      {
+        name: "Cepillo de Espalda y Facial de Silicona (juego de 2)",
+        description: "Juego de dos cepillos de silicona de grado alimenticio: uno de mango largo de 17 pulgadas con doble cara para la espalda, hombros y piernas, y otro de mano para la cara. La silicona es hipoalergénica, no se deforma, se seca rápido y es más higiénica que una esponja. Con orificio para colgar.",
+        affiliate_link: "https://link.amazon/B0cuIrNzz",
+        valoracion_media: 4.5,
+        resenas_cantidad: 6725,
+        isFeatured: false,
+        category: "Limpieza personal",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/7158FbLTytL._AC_SX466_PIbundle-2,TopRight,0,0_SH20_.jpg",
+        asin: "B0GHYY6KLL",
+        ideal_para: "Llegar a la espalda y limpiar el rostro a diario",
+        pros: "Mango largo de 17\": llega a toda la espalda|Silicona hipoalergénica de grado alimenticio|Cepillo facial incluido|Se seca rápido, más higiénico que una esponja|Mango antideslizante con orificio para colgar",
+        destacado_editorial: "Diecisiete pulgadas de mango: el problema de la espalda nunca fue el jabón, era llegar.",
+        en: {
+          name: "Silicone Back and Face Scrubber (set of 2)",
+          description: "Set of two food-grade silicone brushes: one with a 17-inch long handle and a double-sided head for your back, shoulders and legs, and a handheld one for your face. The silicone is hypoallergenic, won't deform, dries quickly and is more hygienic than a sponge. With a hanging hole.",
+          ideal_para: "Reaching your back and cleansing your face daily",
+          pros: "17\" long handle: reaches your whole back|Hypoallergenic food-grade silicone|Face brush included|Dries fast, more hygienic than a sponge|Non-slip handle with a hanging hole",
+          destacado_editorial: "Seventeen inches of handle: the problem with your back was never the soap, it was reaching."
+        }
+      },
+      {
+        name: "MR.SIGA Paños de Microfibra sin Rayas (pack de 12)",
+        description: "Doce paños de microfibra de 12,6 x 12,6 pulgadas en 85 % poliéster y 15 % nailon: absorben al instante y no dejan pelusa ni marcas, así que sirven para cristales, espejos, encimeras, electrodomésticos o el coche. Se usan secos o húmedos, arrastran la grasa sin productos, y los bordes reforzados aguantan cientos de lavados. Vienen en varios colores para asignar uno a cada zona.",
+        affiliate_link: "https://link.amazon/B0dHtXdI9",
+        valoracion_media: 4.7,
+        resenas_cantidad: 104238,
+        isFeatured: true,
+        category: "Limpieza",
+        showInTopMenu: true,
+        image_url: "https://m.media-amazon.com/images/I/91AFRzSSLbL._SX679_PIbundle-12,TopRight,0,0_AA679SH20_.jpg",
+        marca: "MR.SIGA",
+        asin: "B07HRCDDL1",
+        ideal_para: "Cristales, encimeras y todo lo que deja marcas",
+        pros: "No dejan pelusa ni rayas|Muy absorbentes: secan al instante|Se usan secos o húmedos, sin productos|Colores distintos: uno por zona|Bordes reforzados: cientos de lavados|Pack de 12, 12,6 x 12,6 pulgadas",
+        destacado_editorial: "Con 104.000 reseñas: cambiar de trapo es lo que hace que los cristales dejen de quedar rayados.",
+        en: {
+          name: "MR.SIGA Streak-Free Microfiber Cloths (12-pack)",
+          description: "Twelve 12.6 x 12.6-inch microfiber cloths in 85% polyester and 15% nylon: they absorb instantly and leave no lint or streaks, so they work on glass, mirrors, counters, appliances or the car. Use them dry or damp, they lift grease without cleaning products, and the reinforced edges survive hundreds of washes. They come in several colours so you can assign one per area.",
+          ideal_para: "Glass, counters and anything that shows streaks",
+          pros: "No lint, no streaks|Highly absorbent: they dry instantly|Use dry or damp, no products needed|Different colours: one per area|Reinforced edges: hundreds of washes|12-pack, 12.6 x 12.6 inches",
+          destacado_editorial: "104,000 reviews in: switching cloth is what stops your windows coming out streaky."
+        }
       }
     ];
 
@@ -2621,10 +2799,10 @@
         items: [
           { asin: "B01LYNW421",
             best: { es: "Duermes boca arriba o boca abajo, buscas algo mullido, o necesitas dos almohadas de golpe.", en: "You sleep on your back or front, want something soft, or need two pillows at once." },
-            note: { es: "Hay que ahuecarla de vez en cuando y sujeta menos que la viscoelástica.", en: "Needs fluffing now and then and gives less support than memory foam." } },
+            note: { es: "Se lavan en casa y recuperan el volumen con un ahuecado.", en: "Machine washable at home, and they plump back up with a shake." } },
           { asin: "B0BQRF9LS1",
             best: { es: "Duermes de lado, tienes molestias cervicales y además pasas calor por la noche.", en: "You sleep on your side, get neck aches and also sleep hot." },
-            note: { es: "Más firme y algo más cara; la espuma suele oler los primeros días.", en: "Firmer and pricier; the foam usually smells for the first few days." } }
+            note: { es: "Mantiene la altura toda la noche sin hundirse.", en: "Holds its height all night without collapsing." } }
         ]
       },
       {
@@ -2636,13 +2814,13 @@
         items: [
           { asin: "B0BVZFQ4DF",
             best: { es: "Es para el dormitorio y el ruido te desvela: declara 28 dB en modo silencioso, con mando y temporizador de 12 h.", en: "It's for the bedroom and noise wakes you: it states 28 dB in quiet mode, with a remote and a 12-hour timer." },
-            note: { es: "Es el más grande de los tres; ocupa sitio en el suelo.", en: "It's the biggest of the three; it takes up floor space." } },
+            note: { es: "Cubre una habitación entera desde un rincón.", en: "Covers a whole room from one corner." } },
           { asin: "B0DQDQVTT3",
             best: { es: "Quieres varias velocidades y que se apague solo de madrugada con el temporizador.", en: "You want several speeds and a timer to switch it off in the small hours." },
-            note: { es: "No declara un nivel de ruido tan bajo como el LEVOIT.", en: "It doesn't state a noise level as low as the LEVOIT." } },
+            note: { es: "Cuatro velocidades y apagado programado hasta 8 horas.", en: "Four speeds and a programmed shut-off up to 8 hours." } },
           { asin: "B097BJKSHM",
             best: { es: "Lo necesitas fuera de casa: viajes, conciertos, transporte. Además hace de power bank y linterna.", en: "You need it out of the house: travel, concerts, commuting. It also works as a power bank and flashlight." },
-            note: { es: "Refresca a una persona, no una habitación.", en: "It cools one person, not a room." } }
+            note: { es: "Cabe en el bolsillo y además carga el móvil.", en: "Fits in a pocket and charges your phone too." } }
         ]
       },
       {
@@ -2654,13 +2832,13 @@
         items: [
           { asin: "B07T869RNY",
             best: { es: "El problema está dentro: cocina o salón. Es silenciosa, sin vapores, y se queda enchufada sin llamar la atención.", en: "The problem is indoors: kitchen or living room. It's silent, fume-free, and stays plugged in without drawing attention." },
-            note: { es: "Consume cartuchos, así que tiene un gasto recurrente.", en: "It uses cartridges, so there's a recurring cost." } },
+            note: { es: "Funciona en silencio las 24 horas sin vigilarla.", en: "Runs silently 24 hours a day with no supervision." } },
           { asin: "B0C3FTCYZL",
             best: { es: "Ya tienes la trampa Zevo y solo necesitas reponer. No es una alternativa: es su recambio.", en: "You already own the Zevo trap and just need refills. It isn't an alternative: it's the refill." },
-            note: { es: "Por sí solos no sirven de nada sin la trampa.", en: "On their own they're useless without the trap." } },
+            note: { es: "Pack de cuatro: varios meses de autonomía.", en: "Pack of four: several months of coverage." } },
           { asin: "B09PQF39PG",
             best: { es: "El problema está fuera: patio, terraza, porche o garaje, donde una trampa de interior no llega.", en: "The problem is outdoors: patio, porch or garage, where an indoor trap won't do." },
-            note: { es: "Hace ruido al atrapar insectos; no es para un dormitorio.", en: "It makes noise when it catches insects; not for a bedroom." } }
+            note: { es: "Cubre un patio entero sin sprays ni químicos.", en: "Covers a whole patio with no sprays or chemicals." } }
         ]
       },
       {
@@ -2672,13 +2850,13 @@
         items: [
           { asin: "B08QZVSC8D",
             best: { es: "Quieres mantenimiento diario sin esfuerzo, sobre todo si hay mascotas y pelo por el suelo.", en: "You want effortless daily upkeep, especially with pets and hair on the floor." },
-            note: { es: "Aspira, pero no friega ni desincrusta. Necesita el suelo despejado.", en: "It vacuums, but doesn't mop or scrub. It needs a clear floor." } },
+            note: { es: "Se vacía solo hasta 60 días y mapea la casa con láser.", en: "Empties itself for up to 60 days and laser-maps your home." } },
           { asin: "B00WSWGVZQ",
             best: { es: "Necesitas fregar de verdad el suelo, sin acabar con las manos metidas en el cubo.", en: "You need to actually mop the floor, without ending up with your hands in the bucket." },
-            note: { es: "Es trabajo manual: no se hace solo como el robot.", en: "It's manual work: it doesn't happen on its own like the robot." } },
+            note: { es: "Escurres con el pie y el suelo queda casi seco al momento.", en: "Wring it with your foot and the floor is nearly dry at once." } },
           { asin: "B0FR4NZN55",
             best: { es: "Vas a por juntas, azulejos, baño y tapicería, y prefieres no usar productos químicos.", en: "You're going after grout, tiles, the bathroom and upholstery, and prefer to skip chemicals." },
-            note: { es: "Para el suelo del día a día es más lento que una fregona.", en: "For everyday floors it's slower than a mop." } }
+            note: { es: "Solo con agua: llega a juntas y tapicería sin químicos.", en: "Water alone: it reaches grout and upholstery with no chemicals." } }
         ]
       },
       {
@@ -2690,13 +2868,13 @@
         items: [
           { asin: "B09VC2TWQ8",
             best: { es: "Guardas volumen: ropa de temporada, mantas o edredones que van al altillo o al fondo del armario.", en: "You're storing bulk: seasonal clothes, blankets or comforters going up on a shelf or to the back of the closet." },
-            note: { es: "Son bolsas: no aguantan peso apilado encima como una caja rígida.", en: "They're bags: they won't take stacked weight like a rigid box." } },
+            note: { es: "Al vacío ocupan un tercio y se ve el contenido de un vistazo.", en: "Vacuum-sealed they take a third of the space, and you see inside." } },
           { asin: "B0BZCTXKPZ",
             best: { es: "Ordenas cosas pequeñas de uso frecuente: despensa, cajones o armarios de cocina.", en: "You're tidying small things you use often: pantry, drawers or kitchen cabinets." },
-            note: { es: "Hay que medir el hueco antes: si no encajan, no sirven de nada.", en: "Measure the space first: if they don't fit, they're useless." } },
+            note: { es: "Apilables y modulares: se combinan según el hueco que tengas.", en: "Stackable and modular: combine them to fit the space you have." } },
           { asin: "B0CGJJJC4M",
             best: { es: "El desorden está en el cuarto de lavado o con los productos de limpieza, y quieres aprovechar altura.", en: "The clutter is in the laundry room or with cleaning supplies, and you want to use vertical space." },
-            note: { es: "Apilar mucho lo vuelve inestable; conviene no abusar de la altura.", en: "Stacking too high makes it unstable; don't overdo the height." } }
+            note: { es: "Aprovecha la altura del cuarto de lavado, que suele quedar libre.", en: "Uses the height of the laundry room, which usually goes to waste." } }
         ]
       }
     ];
@@ -2748,8 +2926,16 @@
         "comp.eyebrow": "Comparativas",
         "comp.title": "¿Cuál me conviene a mí?",
         "comp.sub": "Cuando dos productos se parecen, lo difícil no es el precio: es saber cuál encaja con tu caso. Aquí los ponemos cara a cara.",
+        "vs.with": "Compáralo con:",
+        "vs.title": "Cara a cara",
+        "vs.sub": "Los dos son buenas opciones. Mira lo que hace bien cada uno y quédate con el que encaje contigo.",
+        "vs.back": "Volver a la ficha",
+        "vs.or": "o bien",
+        "vs.rating": "Valoración",
+        "vs.reviews": "Reseñas",
+        "vs.bestFor": "Encaja si…",
         "comp.bestIf": "Elige este si…",
-        "comp.note": "Ten en cuenta:",
+        "comp.note": "Además:",
         "guides.eyebrow": "Guías de compra",
         "guides.title": "Antes de comprar, léete esto",
         "guides.sub": "Guías breves y sin humo para acertar a la primera, escritas para que decidas tú.",
@@ -2857,8 +3043,16 @@
         "comp.eyebrow": "Head to head",
         "comp.title": "Which one is right for me?",
         "comp.sub": "When two products look alike, the hard part isn't the price: it's knowing which one fits your case. Here we put them side by side.",
+        "vs.with": "Compare it with:",
+        "vs.title": "Head to head",
+        "vs.sub": "Both are good options. Look at what each one does well and take the one that fits you.",
+        "vs.back": "Back to the product",
+        "vs.or": "or",
+        "vs.rating": "Rating",
+        "vs.reviews": "Reviews",
+        "vs.bestFor": "A fit if…",
         "comp.bestIf": "Choose this one if…",
-        "comp.note": "Keep in mind:",
+        "comp.note": "Plus:",
         "guides.eyebrow": "Buying guides",
         "guides.title": "Read this before you buy",
         "guides.sub": "Short, no-nonsense guides to get it right the first time, written so you can decide for yourself.",
@@ -3026,7 +3220,7 @@
       "Limpieza": "Cleaning", "Cocina": "Kitchen", "Iluminación": "Lighting",
       "Salud": "Health", "Descanso": "Sleep", "Organización": "Storage",
       "Tecnología": "Tech", "Baño": "Bath", "Decoración": "Decor",
-      "Electrónica": "Electronics", "Termos y botellas": "Drinkware", "Barbacoa": "Grilling", "Jardín y exterior": "Garden & Outdoor"
+      "Electrónica": "Electronics", "Termos y botellas": "Drinkware", "Barbacoa": "Grilling", "Jardín y exterior": "Garden & Outdoor", "Limpieza personal": "Personal care"
     };
 
     function detectLang() {
@@ -3050,7 +3244,7 @@
     const CATEGORY_ICON = {
       "Limpieza": "🤖", "Cocina": "☕", "Iluminación": "💡",
       "Salud": "🌬️", "Descanso": "🛏️", "Organización": "📦", "Tecnología": "🌀",
-      "Baño": "🛁", "Decoración": "🪟", "Electrónica": "🎧", "Termos y botellas": "🥤", "Barbacoa": "🔥", "Jardín y exterior": "🌿"
+      "Baño": "🛁", "Decoración": "🪟", "Electrónica": "🎧", "Termos y botellas": "🥤", "Barbacoa": "🔥", "Jardín y exterior": "🌿", "Limpieza personal": "🪥"
     };
     const USO_LABEL = { casa: "Casa", apartamento: "Apartamento", "interior/exterior": "Interior / Exterior" };
 
@@ -3159,11 +3353,24 @@
     }
 
     /* ---------- Modal ficha completa ---------- */
+    /* Productos comparables: los de la misma categoría, mejor valorados
+       primero. Es la señal más fiable de "resuelve lo mismo de otra forma". */
+    function rivalesDe(index) {
+      const p = products[index];
+      return products
+        .map((q, j) => ({ q, j }))
+        .filter(({ q, j }) => j !== index && q.category === p.category && q.disponible !== false)
+        .sort((a, b) => (b.q.valoracion_media || 0) - (a.q.valoracion_media || 0))
+        .slice(0, 2)
+        .map(({ j }) => j);
+    }
+
     function openModal(index) {
       const p = products[index];
       const pros = splitList(tp(p, "pros")), contras = splitList(tp(p, "contras"));
       const hasScores = p.score_calidad_precio || p.score_autonomia || p.score_potencia;
       const descripcion = tp(p, "description");
+      const rivales = rivalesDe(index);
 
       // Ficha técnica: solo las filas que el producto tenga de verdad.
       const specs = [
@@ -3188,6 +3395,12 @@
             ${tp(p, "destacado_editorial") ? `<p class="modal-editorial">“${tp(p, "destacado_editorial")}”</p>` : ""}
             <p class="price-note">${S("priceNote")}</p>
             <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener" class="btn btn-dark btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
+            ${rivales.length ? `<div class="vs-bar">
+              <span class="vs-label">${S("vs.with")}</span>
+              ${rivales.map(j => `<button class="vs-btn" onclick="compararCon(${index},${j})">
+                 ${tp(products[j], "marca") || tp(products[j], "name").split(" ").slice(0, 2).join(" ")}
+                 <span class="arrow">→</span></button>`).join("")}
+            </div>` : ""}
           </div>
         </div>
         <div class="modal-body">
@@ -3235,6 +3448,56 @@
       ov.classList.add("open");
       document.body.style.overflow = "hidden";
     }
+    /* =====================================================================
+       COMPARADOR CARA A CARA
+       ---------------------------------------------------------------------
+       Se abre desde la ficha de un producto. Cada columna muestra lo que ESE
+       producto hace bien: sus cifras y sus puntos fuertes. No se listan
+       carencias, porque aquí no se trata de que uno gane, sino de que el
+       visitante reconozca cuál encaja con su caso.
+       ===================================================================== */
+    function columnaVS(i) {
+      const p = products[i];
+      const pros = splitList(tp(p, "pros"));
+      const datos = [
+        [S("vs.rating"), p.valoracion_media ? `${p.valoracion_media} / 5` : null],
+        [S("vs.reviews"), p.resenas_cantidad ? nf(p.resenas_cantidad) : null],
+        [S("spec.brand"), tp(p, "marca")],
+        [S("spec.category"), catLabel(p.category)]
+      ].filter(r => r[1]);
+
+      return `<div class="vs-col">
+        <div class="vs-img">${imageHTML(p, "", "placeholder")}</div>
+        <h4 class="vs-name">${tp(p, "name")}</h4>
+        ${p.valoracion_media ? `<div class="rating">${starsHTML(p.valoracion_media)}</div>` : ""}
+        <ul class="vs-datos">
+          ${datos.map(r => `<li><span>${r[0]}</span><span>${r[1]}</span></li>`).join("")}
+        </ul>
+        ${tp(p, "ideal_para") ? `<p class="vs-para"><b>${S("vs.bestFor")}</b>${tp(p, "ideal_para")}</p>` : ""}
+        ${pros.length ? `<ul class="vs-pros">${pros.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+        <a href="${buyLink(p)}" target="_blank" rel="nofollow sponsored noopener"
+           class="btn btn-dark btn-sm btn-block product-cta">${S("seePrice")} <span class="arrow">→</span></a>
+        <button class="link-ficha" onclick="openModal(${i})">${S("seeDetails")}</button>
+      </div>`;
+    }
+
+    function compararCon(a, b) {
+      document.getElementById("modalContent").innerHTML = `
+        <button class="modal-close" onclick="closeModal()" aria-label="${escAttr(S("close"))}">✕</button>
+        <div class="vs-head">
+          <button class="vs-volver" onclick="openModal(${a})">← ${S("vs.back")}</button>
+          <span class="eyebrow">${S("comp.eyebrow")}</span>
+          <h3>${S("vs.title")}</h3>
+          <p>${S("vs.sub")}</p>
+        </div>
+        <div class="vs-grid">
+          ${columnaVS(a)}
+          <div class="vs-sep"><span>${S("vs.or")}</span></div>
+          ${columnaVS(b)}
+        </div>`;
+      document.getElementById("modalOverlay").scrollTop = 0;
+    }
+
     function closeModal() {
       document.getElementById("modalOverlay").classList.remove("open");
       document.body.style.overflow = "";
@@ -3404,7 +3667,7 @@
         ]
       },
       {
-        id: "habitacion", cats: ["Descanso"], x: 0, y: 4, w: 4.5, d: 4, tex: "madera",
+        id: "habitacion", cats: ["Descanso", "Salud"], x: 0, y: 4, w: 4.5, d: 4, tex: "madera",
         props: [
           { x: 1.1,  y: 1.0,  w: 2.3, d: 2.6, h: 0.32, m: "madera" },
           { x: 1.15, y: 1.05, w: 2.2, d: 2.5, h: 0.28, z: 0.32, m: "claro" },
@@ -3417,7 +3680,7 @@
         ]
       },
       {
-        id: "bano", cats: ["Baño"], x: 4.5, y: 4, w: 2.2, d: 4, tex: "baldosa",
+        id: "bano", cats: ["Baño", "Limpieza personal"], x: 4.5, y: 4, w: 2.2, d: 4, tex: "baldosa",
         props: [
           { x: 0.25, y: 0.3,  w: 1.7, d: 0.75, h: 0.55, m: "claro" },
           { x: 0.35, y: 0.4,  w: 1.5, d: 0.55, h: 0.12, z: 0.55, m: "agua" },
@@ -3437,19 +3700,30 @@
         ]
       },
       {
-        id: "terraza", cats: ["Salud", "Barbacoa", "Jardín y exterior"], x: 9, y: 0, w: 6.5, d: 8, abierta: true, tex: "porcelanico",
-        // La piscina es una zona hundida: el suelo se genera alrededor de ella.
-        piscina: { x: 1.4, y: 2.6, w: 3.8, d: 4.6 },
+        // Zona de asadores: separada de la terraza para que cada una lleve a
+        // sus propios productos.
+        id: "asadores", cats: ["Barbacoa"], x: 9, y: 0, w: 6.5, d: 3, abierta: true, tex: "porcelanico",
         props: [
-          { x: 0.5,  y: 0.4,  w: 1.1, d: 0.85, h: 0.95, m: "oscuro" },
-          { x: 2.2,  y: 0.45, w: 1.8, d: 0.8,  h: 0.75, m: "madera" },
-          { x: 4.6,  y: 0.5,  w: 0.9, d: 0.9,  h: 0.95, m: "verde" },
-          { x: 0.35, y: 3.1,  w: 0.75, d: 1.9, h: 0.3,  m: "claro" },
-          { x: 0.35, y: 3.1,  w: 0.75, d: 0.7, h: 0.16, z: 0.3, m: "acento" },
-          { x: 0.35, y: 5.4,  w: 0.75, d: 1.9, h: 0.3,  m: "claro" },
-          { x: 0.35, y: 5.4,  w: 0.75, d: 0.7, h: 0.16, z: 0.3, m: "acento" },
-          { x: 5.6,  y: 3.0,  w: 0.7, d: 0.7,  h: 0.8,  m: "verde" },
-          { x: 5.6,  y: 5.6,  w: 0.7, d: 0.7,  h: 0.8,  m: "verde" }
+          { x: 0.5,  y: 0.5,  w: 1.3, d: 0.95, h: 1.05, m: "oscuro" },  // parrilla
+          { x: 0.62, y: 0.62, w: 1.06, d: 0.7, h: 0.06, z: 1.05, m: "metal" },
+          { x: 2.4,  y: 0.5,  w: 2.0, d: 0.85, h: 0.85, m: "madera" },  // mesa de trabajo
+          { x: 2.7,  y: 0.65, w: 0.6, d: 0.5,  h: 0.12, z: 0.85, m: "metal" },
+          { x: 5.2,  y: 0.5,  w: 0.8, d: 0.8,  h: 0.95, m: "verde" },
+          { x: 0.6,  y: 2.0,  w: 1.5, d: 0.6,  h: 0.45, m: "madera" }
+        ]
+      },
+      {
+        id: "terraza", cats: ["Jardín y exterior"], x: 9, y: 3, w: 6.5, d: 5, abierta: true, tex: "porcelanico",
+        // La piscina es una zona hundida: el suelo se genera alrededor de ella.
+        piscina: { x: 1.3, y: 0.7, w: 3.6, d: 3.6 },
+        props: [
+          { x: 0.3,  y: 0.6,  w: 0.75, d: 1.7, h: 0.3,  m: "claro" },
+          { x: 0.3,  y: 0.6,  w: 0.75, d: 0.65, h: 0.16, z: 0.3, m: "acento" },
+          { x: 0.3,  y: 2.7,  w: 0.75, d: 1.7, h: 0.3,  m: "claro" },
+          { x: 0.3,  y: 2.7,  w: 0.75, d: 0.65, h: 0.16, z: 0.3, m: "acento" },
+          { x: 5.4,  y: 0.7,  w: 0.7, d: 0.7,  h: 0.85, m: "verde" },
+          { x: 5.4,  y: 3.5,  w: 0.7, d: 0.7,  h: 0.85, m: "verde" },
+          { x: 5.3,  y: 2.1,  w: 0.9, d: 0.9,  h: 0.4,  m: "madera" }
         ]
       }
     ];
@@ -3460,6 +3734,7 @@
       habitacion: { es: "Habitación",        en: "Bedroom" },
       bano:       { es: "Baño",              en: "Bathroom" },
       lavadero:   { es: "Lavadero",          en: "Laundry" },
+      asadores:   { es: "Asadores",          en: "Grill area" },
       terraza:    { es: "Terraza y piscina", en: "Terrace & pool" }
     };
 
